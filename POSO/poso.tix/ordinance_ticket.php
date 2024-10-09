@@ -22,11 +22,17 @@ $_SESSION['ticket_number'] = $ticket_number;
 <div class="ticket-container">
     <div class="header-container"> <!-- New div class for the header -->
         <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
-        <h1>City of Biñan</h1>
-        <img src="/POSO/images/right.png" alt="Right Logo" class="logo">
+      
+        <div class="col text-center">
+            <p class="title">Traffic Violations</p>
+            <p class="city">-City of Binan, Laguna-</p>
+        </div>
+
+        <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
     </div>
 
     <div class="ticket-info">
+
         <p class="ticket-label">Ordinance Infraction Ticket</p>
         <p class="ticket-number">No. <?php echo $ticket_number; ?></p>
     </div>
@@ -35,10 +41,15 @@ $_SESSION['ticket_number'] = $ticket_number;
         <!-- Hidden input field to pass the ticket number -->
         <input type="hidden" name="ticket_number" value="<?php echo $ticket_number; ?>">
 
+
+        <div class="gray"> 
+        <p>Violator's Information:</p> </div>
         <div class="section">
-            <h3>Violator's Information:</h3>
+        <img class="bg" src="/POSO/images/poso.png" alt="Background Image"> <!-- Background Image -->
+
+
             <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" required>
+            <input type="text" id="first_name"  name="first_name" required>
 
             <label for="middle_name">Middle Name:</label>
             <input type="text" id="middle_name" name="middle_name">
@@ -56,16 +67,18 @@ $_SESSION['ticket_number'] = $ticket_number;
             <input type="text" id="license" name="license" required>
         </div>
 
+        <div class="gray">
+        <p>License Confiscated:</p> </div>
         <div class="section">
-            <h3>License Confiscated:</h3>
             <label for="confiscated_yes">Yes</label> 
             <input type="radio" id="confiscated_yes" name="confiscated" value="yes">
             <label for="confiscated_no">No</label>
             <input type="radio" id="confiscated_no" name="confiscated" value="no">
         </div>
 
+        <div class="gray">
+        <p>Date & Time:</p> </div>
         <div class="section">
-            <h3>Date & Time:</h3>
             <label for="date">Date:</label>
             <input type="date" id="date" name="date">
 
@@ -73,8 +86,9 @@ $_SESSION['ticket_number'] = $ticket_number;
             <input type="time" id="time" name="time">
         </div>
 
+        <div class="gray">
+        <p>Place of Violation</p> </div>
         <div class="section">
-            <h3>Place of Violation</h3>
             <label for="street">Street:</label>
             <input type="text" id="street" name="street">
 
