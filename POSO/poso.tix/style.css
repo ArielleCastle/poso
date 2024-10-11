@@ -101,12 +101,15 @@ body {
 }
 
 .ticket-label {
-    font-size: 18px;
-    color: #555;
+    font-size: 14px;
+    color: #000000;
+    font-weight: bold;
+    text-transform: uppercase;    
+    padding: 15px;
 }
 
 .ticket-number {
-    font-size: 18px;
+    font-size: 14px;
     color: red;
     font-weight: bold;
     padding: 5px 15px; /* Added horizontal padding (left and right) */
@@ -135,7 +138,7 @@ input[type="time"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 3px solid #a0d4fa;
+    border: 2px solid #a0d4fa;
     background-color: #eef6fa ;
     border-radius: 4px;
     font-size: 16px;
