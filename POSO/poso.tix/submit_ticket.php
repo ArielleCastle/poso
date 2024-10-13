@@ -36,7 +36,7 @@ $vehicle_owner = $_POST['vehicle_owner'];
 
 // Prepare SQL statement to insert data
 $sql = "INSERT INTO report (ticket_number, first_name, middle_name, last_name, dob, address, license, confiscated, violation_date, violation_time, street, plate_number, city, registration, vehicle_type, vehicle_owner)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" ;
 
 // Prepare the statement
 $stmt = $conn->prepare($sql);
@@ -62,7 +62,9 @@ $stmt->bind_param(
 
 // Execute the query and check if it was successful
 if ($stmt->execute()) {
-    echo "New record created successfully. Ticket Number: " . $ticket_number;
+    // Redirect to violation.php with the ticket number, first name, and last name in the URL
+    header("Location: violation.php?ticket_number=" . urlencode($ticket_number) . "&first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name));
+    exit(); // Make sure to exit after redirect
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
