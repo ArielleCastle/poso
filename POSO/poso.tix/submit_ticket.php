@@ -5,7 +5,7 @@ session_start();
 // Database connection settings
 $servername = "localhost";
 $username = "root"; // Change this to your database username
-$password = "12345";     // Change this to your database password
+$password = "";     // Change this to your database password
 $dbname = "poso";   // Database name
 
 // Create connection
