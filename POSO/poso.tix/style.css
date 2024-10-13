@@ -9,7 +9,6 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
     padding: 10px;
-
 }
 
 .ticket-container {
@@ -39,7 +38,7 @@ body {
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent repeat */
     z-index: -1; /* Ensure it's behind other content */
-    opacity: 0.1; /* Adjust opacity to your liking */
+    opacity: 0.1;
 }
 
 .header-container {
@@ -72,8 +71,7 @@ body {
     color: white;
     margin-bottom: 0;
     text-transform: uppercase;
-    padding: 5px 10px; /* Add some padding for better spacing inside */
-
+    padding: 5px 10px;
 }
 
 .city {
@@ -82,10 +80,9 @@ body {
     margin-top: 0;
     text-align: center;
     text-transform: uppercase;
-
 }
 
-.gray{
+.gray {
     color: rgb(0, 0, 0);
     text-transform: uppercase;
     font-weight: bold;
@@ -94,11 +91,10 @@ body {
     background-color: #d2d1d1;
     height: 35px;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;     /* Center vertically */
+    justify-content: center;
+    align-items: center;
     margin-bottom: 10px;
 }
-
 
 /* ac end */
 
@@ -113,7 +109,7 @@ body {
     font-size: 14px;
     color: #000000;
     font-weight: bold;
-    text-transform: uppercase;    
+    text-transform: uppercase;
     padding: 15px;
 }
 
@@ -121,11 +117,11 @@ body {
     font-size: 14px;
     color: red;
     font-weight: bold;
-    padding: 5px 15px; /* Added horizontal padding (left and right) */
+    padding: 5px 15px;
 }
 
 .section {
-    position: relative; /* Make this a positioning context */
+    position: relative;
     margin-bottom: 20px;
     padding: 15px;
 }
@@ -135,7 +131,6 @@ label {
     margin-bottom: 5px;
     color: #333;
     font-weight: bold;
-
 }
 
 input[type="text"],
@@ -146,13 +141,20 @@ input[type="time"] {
     padding: 10px;
     margin-bottom: 15px;
     border: 2px solid #a0d4fa;
-    background-color: #eef6fa ;
+    background-color: #eef6fa;
     border-radius: 4px;
     font-size: 16px;
 }
 
 input[type="radio"] {
     margin-right: 10px;
+}
+
+.section.radio-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Adds space between radio buttons and labels */
 }
 
 button {
@@ -216,7 +218,6 @@ button:hover {
     .ticket-number {
         font-size: 16px; /* Adjust number size */
     }
-
 
     label {
         font-size: 12px; /* Smaller labels */

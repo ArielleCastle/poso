@@ -1,4 +1,4 @@
-<!-- done hheeader-->
+
 <?php
 // Start the session
 session_start();
@@ -15,13 +15,15 @@ $_SESSION['ticket_number'] = $ticket_number;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ordinance Infraction Ticket</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ordinance Infraction Ticket</title> 
+    <!-- Cache-busting by adding a version query string -->
+    <link rel="stylesheet" href="style.css?v=1.0">
 </head>
 <body>
 
 <div class="ticket-container">
-    <div class="header-container"> <!-- New div class for the header -->
+    <div class="header-container"> 
+        <!-- Ensure correct image paths relative to the PHP file -->
         <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
       
         <div class="col text-center">
@@ -33,7 +35,6 @@ $_SESSION['ticket_number'] = $ticket_number;
     </div>
 
     <div class="ticket-info">
-
         <p class="ticket-label">Ordinance Infraction Ticket</p>
         <p class="ticket-number">No. <?php echo $ticket_number; ?></p>
     </div>
@@ -42,16 +43,17 @@ $_SESSION['ticket_number'] = $ticket_number;
         <!-- Hidden input field to pass the ticket number -->
         <input type="hidden" name="ticket_number" value="<?php echo $ticket_number; ?>">
 
-
+        <!-- Violator's Information Section -->
         <div class="gray"> 
-        <p>Violator's Information:</p> </div>
+            <p>Violator's Information:</p> 
+        </div>
         <div class="section">
             
         <img class="bg" src="/POSO/images/poso.png" alt="Background Image"> <!-- Background Image -->
 
 
             <label for="first_name">First Name:</label>
-            <input type="text" id="first_name"  name="first_name" required>
+            <input type="text" id="first_name" name="first_name" required>
 
             <label for="middle_name">Middle Name:</label>
             <input type="text" id="middle_name" name="middle_name">
@@ -69,17 +71,23 @@ $_SESSION['ticket_number'] = $ticket_number;
             <input type="text" id="license" name="license" required>
         </div>
 
+        <!-- License Confiscation Section -->
         <div class="gray">
-        <p>License Confiscated:</p> </div>
-        <div class="section">
-            <label for="confiscated_yes">Yes</label> 
-            <input type="radio" id="confiscated_yes" name="confiscated" value="yes">
-            <label for="confiscated_no">No</label>
-            <input type="radio" id="confiscated_no" name="confiscated" value="no">
+          <p>License Confiscated:</p> 
         </div>
+       <!-- Add the 'radio-group' class here -->
+       <div class="section radio-group">
+           <label for="confiscated_yes">Yes</label> 
+           <input type="radio" id="confiscated_yes" name="confiscated" value="yes">
+           <label for="confiscated_no">No</label>
+           <input type="radio" id="confiscated_no" name="confiscated" value="no">
+       </div>
 
+
+        <!-- Date & Time Section -->
         <div class="gray">
-        <p>Date & Time:</p> </div>
+            <p>Date & Time:</p> 
+        </div>
         <div class="section">
             <label for="date">Date:</label>
             <input type="date" id="date" name="date">
@@ -88,8 +96,10 @@ $_SESSION['ticket_number'] = $ticket_number;
             <input type="time" id="time" name="time">
         </div>
 
+        <!-- Place of Violation Section -->
         <div class="gray">
-        <p>Place of Violation</p> </div>
+            <p>Place of Violation</p> 
+        </div>
         <div class="section">
             <label for="street">Street:</label>
             <input type="text" id="street" name="street">
@@ -110,7 +120,7 @@ $_SESSION['ticket_number'] = $ticket_number;
             <input type="text" id="vehicle_owner" name="vehicle_owner">
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit">Next</button>
     </form>
 </div>
 
