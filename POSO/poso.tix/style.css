@@ -16,23 +16,26 @@ body {
     width: 100%;
     max-width: 400px;
     margin: 20px auto;
-    background-image: url("images/poso.png"); /* Ensure the path is correct */
-    background-size: cover; /* Adjust image size */
-    background-position: center; /* Center the image */
     padding: 0px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
-}
+
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-attachment: fixed; /* Fix the background within the container */
+    background-repeat: no-repeat; /* Prevent background repeat */
+    overflow-y: auto; /* Allow the content inside the container to scroll */
+    height: 500px; 
+    }
 
 /* ac  start*/
 .bg {
     position: absolute; /* Absolutely position within the section */
     top: 0; /* Align to the top */
     left: 0; /* Align to the left */
-    height: 100%; /* Full height of the section */
+    height: 90%; /* Full height of the section */
     width: 100%; /* Full width of the section */
-    background-image: url("/POSO/images/poso.png"); /* Background image */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent repeat */
     z-index: -1; /* Ensure it's behind other content */
@@ -40,16 +43,21 @@ body {
 }
 
 .header-container {
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width of the header */
+    z-index: 10; /* Ensure it stays above other contents */
+    
     display: flex;
     align-items: center;
     justify-content: space-between; /* Space logos and heading evenly */
-    margin-bottom: 20px; /* Space between header and ticket info */
     background-color: #0c1ddd;
     height: 75px;
-    box-shadow:  0 4px 8px -2px rgb(80, 79, 79); /* Adds a subtle shadow */
-
-    
+    box-shadow: 0 4px 8px -2px rgb(80, 79, 79); /* Adds a subtle shadow */
+    margin-bottom: 20px; /* Space between header and ticket info */
 }
+
 
 .logo {
     margin: 10px;
@@ -119,10 +127,8 @@ body {
 .section {
     position: relative; /* Make this a positioning context */
     margin-bottom: 20px;
-    padding: 20px; /* Add some padding for space between inputs and background */
+    padding: 15px;
 }
-
-
 
 label {
     display: block;

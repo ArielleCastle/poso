@@ -46,6 +46,7 @@ $_SESSION['ticket_number'] = $ticket_number;
         <div class="gray"> 
         <p>Violator's Information:</p> </div>
         <div class="section">
+            
         <img class="bg" src="/POSO/images/poso.png" alt="Background Image"> <!-- Background Image -->
 
 
