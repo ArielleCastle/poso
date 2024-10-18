@@ -30,16 +30,17 @@ body {
 
 /* ac  start*/
 .bg {
-    position: absolute; /* Absolutely position within the section */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    height: 90%; /* Full height of the section */
-    width: 100%; /* Full width of the section */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent repeat */
-    z-index: -1; /* Ensure it's behind other content */
-    opacity: 0.1;
+    position: fixed; /* Keep the image fixed while scrolling */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Correct the centering */
+    z-index: -1; /* Ensure the image stays behind the form */
+    opacity: 0.1; /* Keep the image transparent */
+    height: 70%; /* Maintain custom height */
+    width: 30%; /* Maintain custom width */
 }
+
+
 
 .header-container {
     position: sticky; /* Make the header sticky */
@@ -96,6 +97,22 @@ body {
     margin-bottom: 10px;
 }
 
+.gray1{
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    background-color: #d2d1d1;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    line-height: 1.7;
+}
+
 /* ac end */
 
 .ticket-info {
@@ -121,9 +138,11 @@ body {
 }
 
 .section {
-    position: relative;
+    position: relative; /* Ensure section is a containing block */
     margin-bottom: 20px;
     padding: 15px;
+    height: auto; /* Adjust as needed */
+    overflow: hidden; /* Ensures that the image stays inside the section */
 }
 
 label {
@@ -234,4 +253,7 @@ button:hover {
         padding: 8px; /* Adjust button padding */
         font-size: 14px; /* Smaller button font */
     }
+
+
+
 }

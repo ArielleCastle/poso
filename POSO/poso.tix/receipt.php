@@ -6,7 +6,7 @@ session_start();
 $host = 'localhost';
 $dbname = 'poso';  // Adjust as needed
 $username = 'root';
-$password = '';  // Adjust your password
+$password = '12345';  // Adjust your password
 $conn = new mysqli($host, $username, $password, $dbname);
 
 // Check connection

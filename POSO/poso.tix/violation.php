@@ -6,7 +6,7 @@ session_start();
 $host = 'localhost';
 $dbname = 'poso';  // Adjust as needed
 $username = 'root';
-$password = '';  // Adjust your password
+$password = '12345';  // Adjust your password
 $conn = new mysqli($host, $username, $password, $dbname);
 
 // Check connection
@@ -77,6 +77,7 @@ $conn->close();
 </head>
 <body>
     <div class="ticket-container">
+        
         <div class="header-container">
             <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
             <div class="col text-center">
@@ -96,11 +97,13 @@ $conn->close();
     <!-- Hidden input for ticket number -->
     <input type="hidden" name="ticket_number" value="<?php echo $ticket_number; ?>">
 
+
     <!-- Violations list -->
-    <div class="gray">
+    <div class="gray1">
         <p>You are hereby cited for committing the traffic violations:</p>
     </div>
     <div class="section">
+
         <input type="checkbox" name="violations[]" value="Illegal Parking - 300" data-price="300"> Illegal Parking <br>
         <input type="checkbox" name="violations[]" value="Overloading - 500" data-price="500"> Overloading <br>
         <input type="checkbox" name="violations[]" value="Speeding - 700" data-price="700"> Speeding<br>
@@ -108,6 +111,8 @@ $conn->close();
 
     <div class="gray">
         <p>Total Amount:</p>
+
+
     </div>
     <div class="section">
         <label for="total">Total:</label>
