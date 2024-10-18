@@ -2,16 +2,9 @@
 // Start session
 session_start();
 
-// Database connection
-$host = 'localhost';
-$dbname = 'poso';  // Adjust as needed
-$username = 'root';
-$password = '12345';  // Adjust your password
-$conn = new mysqli($host, $username, $password, $dbname);
+// Include the database connection file
+include 'connection.php'; // Ensure the path is correct
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 // Get the ticket number from the session
