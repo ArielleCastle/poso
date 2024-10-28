@@ -18,7 +18,7 @@ $_SESSION['ticket_number'] = $ticket_number;
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <!-- Your custom stylesheet with cache-busting -->
-    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -34,9 +34,9 @@ $_SESSION['ticket_number'] = $ticket_number;
 
             <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
         </div>
-
+<br>
         <div class="ticket-info">
-            <p class="ticket-label">Ordinance Infraction Ticket</p>
+            <p class="ticket-label">ORDINANCE INFRACTION TICKET</p>
             <p class="ticket-number">No. <?php echo $ticket_number; ?></p>
         </div>
 
@@ -50,8 +50,7 @@ $_SESSION['ticket_number'] = $ticket_number;
             </div>
 
             <div class="section">
-                <img class="bg img-fluid" src="/POSO/images/poso.png" alt="Background Image">
-
+                
                 <label for="first_name">First Name:</label>
                 <input type="text" id="first_name" name="first_name" required class="form-control">
 
@@ -89,7 +88,7 @@ $_SESSION['ticket_number'] = $ticket_number;
             <div class="section">
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" class="form-control">
-
+<br>
                 <label for="time">Time:</label>
                 <input type="time" id="time" name="time" class="form-control">
             </div>

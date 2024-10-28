@@ -4,7 +4,6 @@ session_start();
 
 // Include the database connection file
 include 'connection.php'; // Ensure the path is correct
-}
 
 // Get the ticket number from the session
 $ticket_number = $_SESSION['ticket_number'];
@@ -22,48 +21,127 @@ $result = $stmt->get_result();
 $report = $result->fetch_assoc();
 
 if ($report) {
-    // If the report exists, check for violations
+    // Check for violations in the violation table for the given person
     $sql_violation = "SELECT * FROM violation WHERE first_name = ? AND last_name = ?";
     $stmt_violation = $conn->prepare($sql_violation);
     $stmt_violation->bind_param("ss", $first_name, $last_name);
     $stmt_violation->execute();
     $violation_result = $stmt_violation->get_result();
 
+    // Check if the person has violations
     if ($violation_result->num_rows == 0) {
-        // If no violations exist for this person, insert the first violation
+        // No violations, insert into first_violation
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $violations = $_POST['violations'];  // Violations from the form
             $total_amount = $_POST['total'];  // Total amount calculated
-            $notes = $_POST['notes']; // Capture notes from the form
-            
-            // Concatenate all violations into a string
-            $violations_string = implode(", ", $violations);
+            $others_total = isset($_POST['others_total']) ? $_POST['others_total'] : 0;
+            $others_violation = isset($_POST['others_violation']) ? $_POST['others_violation'] : null;
+            $notes = isset($_POST['notes']) ? $_POST['notes'] : null; // Get notes from the form
 
-            // Debugging output
-            // echo "Total Amount: " . htmlspecialchars($total_amount); // Uncomment for debugging
+            // Insert into violation table with first_violation and notes
+            $sql_insert = "INSERT INTO violation (ticket_number, first_name, last_name, first_violation, first_total, others_violation, others_total, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt_insert = $conn->prepare($sql_insert);
+            $stmt_insert->bind_param("isssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
 
-            // Insert the violations into the violation table
-            $sql_insert = "INSERT INTO violation (ticket_number, first_name, last_name, first_violation, first_total, notes) VALUES (?, ?, ?, ?, ?, ?)";
-            
-            // Validate total_amount before binding
-            if (!empty($total_amount)) {
-                $stmt_insert = $conn->prepare($sql_insert);
-                $stmt_insert->bind_param("isssss", $ticket_number, $first_name, $last_name, $violations_string, $total_amount, $notes);
-                
-                if ($stmt_insert->execute()) {
-                    // Redirect to receipt.php
-                    header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&first_total=" . urlencode($total_amount));
-                    exit();  // Ensure no further code is executed
-                } else {
-                    echo "Error: " . $stmt_insert->error;
-                }
+            if ($stmt_insert->execute()) {
+                header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&first_total=" . urlencode($total_amount));
+                exit();  // Ensure no further code is executed
             } else {
-                echo "Total amount cannot be empty.";
+                echo "Error: " . $stmt_insert->error;
             }
         }
     } else {
-        // If there are already violations, handle accordingly (you can choose to update or not)
-        echo "This person already has violations recorded.";
+        // If the person has violations, check the specific violations
+        $existing_violation = $violation_result->fetch_assoc();
+        $first_violation = $existing_violation['first_violation'];
+        $second_violation = $existing_violation['second_violation'];
+        $third_violation = $existing_violation['third_violation'];
+
+        if (empty($first_violation)) {
+            // Insert into first_violation
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $violations = $_POST['violations'];  // Violations from the form
+                $total_amount = $_POST['total'];  // Total amount calculated
+                $others_total = isset($_POST['others_total']) ? $_POST['others_total'] : 0;
+                $others_violation = isset($_POST['others_violation']) ? $_POST['others_violation'] : null;
+                $notes = isset($_POST['notes']) ? $_POST['notes'] : null; // Get notes from the form
+
+                // Update first_violation
+                $sql_update = "UPDATE violation SET first_violation = ?, first_total = ?, others_violation = ?, others_total = ?, notes = ? WHERE first_name = ? AND last_name = ?";
+                $stmt_update = $conn->prepare($sql_update);
+                $stmt_update->bind_param("sssssss", implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes, $first_name, $last_name);
+
+                if ($stmt_update->execute()) {
+                    header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&first_total=" . urlencode($total_amount));
+                    exit();  // Ensure no further code is executed
+                } else {
+                    echo "Error: " . $stmt_update->error;
+                }
+            }
+        } elseif (empty($second_violation)) {
+            // Insert into second_violation
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $violations = $_POST['violations'];  // Violations from the form
+                $total_amount = $_POST['total'];  // Total amount calculated
+                $others_total = isset($_POST['others_total']) ? $_POST['others_total'] : 0;
+                $others_violation = isset($_POST['others_violation']) ? $_POST['others_violation'] : null;
+                $notes = isset($_POST['notes']) ? $_POST['notes'] : null; // Get notes from the form
+
+                // Update second_violation
+                $sql_update = "UPDATE violation SET second_violation = ?, second_total = ?, others_violation = ?, others_total = ?, notes = ? WHERE first_name = ? AND last_name = ?";
+                $stmt_update = $conn->prepare($sql_update);
+                $stmt_update->bind_param("sssssss", implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes, $first_name, $last_name);
+
+                if ($stmt_update->execute()) {
+                    header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&second_total=" . urlencode($total_amount));
+                    exit();  // Ensure no further code is executed
+                } else {
+                    echo "Error: " . $stmt_update->error;
+                }
+            }
+        } elseif (empty($third_violation)) {
+            // Insert into third_violation
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $violations = $_POST['violations'];  // Violations from the form
+                $total_amount = $_POST['total'];  // Total amount calculated
+                $others_total = isset($_POST['others_total']) ? $_POST['others_total'] : 0;
+                $others_violation = isset($_POST['others_violation']) ? $_POST['others_violation'] : null;
+                $notes = isset($_POST['notes']) ? $_POST['notes'] : null; // Get notes from the form
+
+                // Update third_violation
+                $sql_update = "UPDATE violation SET third_violation = ?, third_total = ?, others_violation = ?, others_total = ?, notes = ? WHERE first_name = ? AND last_name = ?";
+                $stmt_update = $conn->prepare($sql_update);
+                $stmt_update->bind_param("sssssss", implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes, $first_name, $last_name);
+
+                if ($stmt_update->execute()) {
+                    header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&third_total=" . urlencode($total_amount));
+                    exit();  // Ensure no further code is executed
+                } else {
+                    echo "Error: " . $stmt_update->error;
+                }
+            }
+        } else {
+            // If all violations are filled, insert into multiple_violations
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $violations = $_POST['violations'];  // Violations from the form
+                $total_amount = $_POST['total'];  // Total amount calculated
+                $others_total = isset($_POST['others_total']) ? $_POST['others_total'] : 0;
+                $others_violation = isset($_POST['others_violation']) ? $_POST['others_violation'] : null;
+                $notes = isset($_POST['notes']) ? $_POST['notes'] : null; // Get notes from the form
+
+                // Update with multiple violations
+                $sql_update_multiple = "UPDATE violation SET multiple_violations = ?, multiple_total = ?, notes = ? WHERE first_name = ? AND last_name = ?";
+                $stmt_update_multiple = $conn->prepare($sql_update_multiple);
+                $stmt_update_multiple->bind_param("sssss", implode(", ", $violations), $total_amount, $notes, $first_name, $last_name);
+
+                if ($stmt_update_multiple->execute()) {
+                    header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&multiple_total=" . urlencode($total_amount));
+                    exit();  // Ensure no further code is executed
+                } else {
+                    echo "Error: " . $stmt_update_multiple->error;
+                }
+            }
+        }
     }
 } else {
     echo "No report found for this ticket number.";
