@@ -1,5 +1,4 @@
-
-}
+/* done header */
 * {
     margin: 0;
     padding: 0;
@@ -8,117 +7,190 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-image: url('/POSO/images/poso.png');
-    background-size: contain; /* Adjusts image size to fit nicely */
-    background-position: center; /* Centers the background */
-    background-repeat: no-repeat; /* Prevents image tiling */
-    background-attachment: fixed; /* Keeps background fixed on scroll */
+    background-color: #ffffff;
     padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    overflow-y: auto; /* Allows scrolling */
 }
 
+/* Adjusted ticket-container for POS */
 .ticket-container {
     width: 100%;
-    max-width: 450px;
-    margin: 10px auto;
-    padding: 0;
+    max-width: 400px; /* Reduced width for better fit */
+    margin: 20px auto;
+    padding: 15px; /* Added padding for touch-friendly UI */
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background for contrast */
     overflow-y: auto;
-    height: 600px;
+    height: auto; /* Allow dynamic height based on content */
+    max-height: 600px; /* Maintain max height for larger screens */
+    position: relative;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('/POSO/images/poso.png');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ticket-container {
+        margin: 10px; /* Reduce margin for smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .ticket-container {
+        margin: 5px; /* Reduce margin even more */
+        padding: 10px; /* Adjust padding for very small screens */
+    }
+}
+
+/* AC start */
+.bg {
+    position: fixed; /* Keep the image fixed while scrolling */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Ensure the image stays behind the form */
+    opacity: 0.1; /* Keep the image transparent */
+    height: 70%; /* Maintain custom height */
+    width: 30%; /* Maintain custom width */
 }
 
 .header-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensures full width */
+    z-index: 10;
+
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Space logos and heading evenly */
     background-color: #0c1ddd;
-    height: 75px;
+    height: 60px; /* Height for POS layout */
     box-shadow: 0 4px 8px -2px rgb(80, 79, 79);
-    padding: 10px;
+    margin-bottom: 10px; /* Space between header and content */
 }
 
 .logo {
-    width: 50px;
-    height: auto;
+    margin: 0; /* Removed margin for better fit */
+    padding: 5px; /* Keep padding for touch usability */
+    width: 40px; /* Adjust logo size */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .title {
-    font-size: 20px;
+    font-size: 18px; /* Adjusted font size */
     font-weight: bold;
     color: white;
+    margin: 0; /* Removed margin to keep it centered */
     text-transform: uppercase;
 }
 
 .city {
-    font-size: 12px;
+    font-size: 10px; /* Smaller font size */
     color: white;
-    text-align: center;
+    margin: 0; /* Removed margin to keep it centered */
+    text-align: center; /* Center align text in header */
     text-transform: uppercase;
 }
 
+
 .gray {
-    color: black;
+    color: rgb(0, 0, 0);
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 12px; /* Smaller font size */
     text-align: center;
     background-color: #d2d1d1;
-    height: 35px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
 
+.gray1 {
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px; /* Smaller font size */
+    text-align: center;
+    background-color: #d2d1d1;
+    height: 50px; /* Slightly smaller height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px; /* Adjusted padding */
+    line-height: 1.7;
+}
+
+/* AC end */
+
 .ticket-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
 }
 
 .ticket-label {
-    font-size: 14px;
+    font-size: 12px; /* Smaller font size */
+    color: #000000;
     font-weight: bold;
-}
-.ticket-number {
-    font-size: 14px;
-    font-weight: bold;
-    color: red;
+    text-transform: uppercase;
+    padding: 10px; /* Adjusted padding */
 }
 
+.ticket-number {
+    font-size: 12px; /* Smaller font size */
+    color: red;
+    font-weight: bold;
+    padding: 5px 10px; /* Adjusted padding */
+}
 
 .section {
-    margin-bottom: 20px;
-    padding: 15px;
+    position: relative;
+    margin-bottom: 15px; /* Reduced margin */
+    padding: 10px; /* Adjusted padding */
+    height: auto;
+    overflow: hidden;
 }
 
 label {
-    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
     color: #333;
+    font-weight: bold;
 }
 
 input[type="text"],
 input[type="date"],
 input[type="time"] {
+    height: 40px; /* Adjusted height for touch usability */
     width: 100%;
     padding: 10px;
+    margin-bottom: 10px; /* Reduced margin */
     border: 2px solid #a0d4fa;
     background-color: #eef6fa;
     border-radius: 4px;
-    font-size: 16px;
-    margin-bottom: 15px;
+    font-size: 14px; /* Smaller font size */
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+.section.radio-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 button {
+    display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Increased padding for touch-friendly */
     background-color: #007BFF;
     color: white;
     border: none;
@@ -131,17 +203,65 @@ button:hover {
     background-color: #0056b3;
 }
 
-
-
-/* Center content for mobile */
-@media (max-width: 720px) {
-    body {
-        padding: 0;
-    }
-    
+/* Media query for Pixel 7 screen size */
+@media only screen and (max-width: 1080px) {
     .ticket-container {
-        padding: 10px;
-        width: 90%;
         max-width: 100%;
+        padding: 10px; /* Adjusted padding */
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* Media query for 5.5 inches 1280 x 720 screens */
+@media only screen and (max-width: 720px) {
+    .ticket-container {
+        padding: 5px; /* Further reduce padding */
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .ticket-label {
+        font-size: 14px; /* Adjust label size */
+    }
+
+    .ticket-number {
+        font-size: 14px; /* Adjust number size */
+    }
+
+    label {
+        font-size: 12px; /* Smaller labels */
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"] {
+        font-size: 14px; /* Smaller input text */
+        padding: 6px; /* Adjust input padding */
+    }
+
+    button {
+        padding: 8px; /* Adjust button padding */
+        font-size: 14px; /* Smaller button font */
     }
 }
