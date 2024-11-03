@@ -8,140 +8,118 @@ include 'connection.php'; // Ensure the path is correct
 // Get the ticket number from the session
 $ticket_number = $_SESSION['ticket_number'];
 
-// Get the first name and last name from the URL
-$first_name = $_GET['first_name'];  // Pass these values in the URL from the previous page
-$last_name = $_GET['last_name']; 
+// Get the first name, last name, and total from the URL
+$first_name = $_GET['first_name'];
+$last_name = $_GET['last_name'];
+$total_amount = $_GET['total'];
 
-// Fetch violations associated with the first name and last name
-$sql = "SELECT first_violation, first_total, second_violation, second_total, third_violation, third_total, multiple_violations, multiple_total, others_violation, others_total, notes 
-        FROM violation 
-        WHERE first_name = ? AND last_name = ?";
+// Fetch the violation record for the given ticket number
+$sql = "SELECT 'First Violation' AS violation_type, first_violation, first_total, notes FROM violation WHERE ticket_number = ?
+        UNION ALL
+        SELECT 'Second Violation' AS violation_type, second_violation, second_total, notes FROM 2_violation WHERE ticket_number = ?
+        UNION ALL
+        SELECT 'Third Violation' AS violation_type, third_violation, third_total, notes FROM 3_violation WHERE ticket_number = ?
+        ORDER BY violation_type ASC"; // Order the results by violation type
+
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $first_name, $last_name);
+$stmt->bind_param("iii", $ticket_number, $ticket_number, $ticket_number);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Initialize total amount and violations array
-$total_amount = 0;
-$violations = [];
-$notes = '';  // Initialize notes variable here
+if ($result->num_rows > 0) {
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Violation Receipt</title>
+        <link rel="stylesheet" href="style.css?v=1.0"> <!-- Link to the stylesheet -->
+        <style>
+            .impound-warning {
+                color: red;
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.2em;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="ticket-container">
+                <div class="header-container d-flex justify-content-between align-items-center"> 
+                    <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
+                    <div class="col text-center">
+                        <p class="title">Traffic Violations</p>
+                        <p class="city">-City of Binan, Laguna-</p>
+                    </div>
+                    <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
+                </div>
 
-// Fetch violations and calculate total
-if ($row = $result->fetch_assoc()) {
-    // Check for different types of violations
-    if (!empty($row['first_violation'])) {
-        // Add first violation
-        $violations[] = [
-            'violation' => $row['first_violation'],
-            'total' => (int)$row['first_total']
-        ];
-        $total_amount += (int)$row['first_total'];
-    }
-    
-    // Add others violation only once
-    if (!empty($row['others_violation']) && !in_array($row['others_violation'], array_column($violations, 'violation'))) {
-        // Add others violation
-        $violations[] = [
-            'violation' => $row['others_violation'],
-            'total' => (int)$row['others_total']
-        ];
-        $total_amount += (int)$row['others_total'];
-    }
+                <div class="ticket-info">
+                    <p class="ticket-label">Ordinance Infraction Ticket</p>
+                    <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p> <!-- Display the ticket number -->
+                </div>
+                <div class="gray">
 
-    // Check for second violation
-    if (!empty($row['second_violation'])) {
-        $violations[] = [
-            'violation' => $row['second_violation'],
-            'total' => (int)$row['second_total']
-        ];
-        $total_amount += (int)$row['second_total'];
-    }
+                <h3>BREAKDOWN OF VIOLATION CHARGES</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>VIOLATION NUMBER</th>
+                            <th>VIOLATION</th>
+                            <th>AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        while ($violation = $result->fetch_assoc()) {
+                            echo "<tr>
+                                <td>" . htmlspecialchars($violation['violation_type']) . "</td>
+                                <td>" . htmlspecialchars($violation['first_violation'] ?? $violation['second_violation'] ?? $violation['third_violation']) . "</td>
+                                <td>" . htmlspecialchars($violation['first_total'] ?? $violation['second_total'] ?? $violation['third_total']) . "</td>
+                            </tr>";
 
-    // Check for third violation
-    if (!empty($row['third_violation'])) {
-        $violations[] = [
-            'violation' => $row['third_violation'],
-            'total' => (int)$row['third_total']
-        ];
-        $total_amount += (int)$row['third_total'];
-    }
+                            // Display impound warning if this is the third violation
+                            if ($violation['violation_type'] === 'Third Violation') {
+                                echo "<tr><td colspan='3' class='impound-warning'>THIS VIOLATOR IS SUBJECT FOR VEHICLE IMPOUND.</td></tr>";
+                            }
+                        }
 
-    // Check for multiple violations
-    if (!empty($row['multiple_violations'])) {
-        $violations[] = [
-            'violation' => $row['multiple_violations'],
-            'total' => (int)$row['multiple_total']
-        ];
-        $total_amount += (int)$row['multiple_total'];
-    }
+                        if ($result->num_rows == 0) {
+                            echo "<tr><td colspan='3'>No violations found.</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
 
-    // Capture the notes
-    $notes = $row['notes'] ? $row['notes'] : '';  // Capture the notes from the row, default to an empty string
+               
+<br>
+                <h4>NOTES:</h4>
+                <ul>
+                    <?php
+                    // Reset the result pointer to fetch notes
+                    $result->data_seek(0); // Move to the first record
+                    while ($violation = $result->fetch_assoc()) {
+                        echo "<li>" . htmlspecialchars($violation['notes']) . "</li>";
+                    }
+                    ?>
+                </ul>
+
+                <p><strong>Total Amount:</strong> <?php echo htmlspecialchars($total_amount); ?></p>
+                <p>Thank you for your compliance.</p>
+                
+            </div>
+        </div>
+    </body>
+    </html>
+    <?php
+} else {
+    echo "<p>No violation records found for this individual.</p>";
 }
 
-// HTML receipt layout
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Violation Receipt</title>
-    <link rel="stylesheet" href="style.css?"> <!-- Link to the stylesheet -->
-</head>
-<body>
-    <div class="container">
-    <div class="ticket-container">
-        <div class="header-container d-flex justify-content-between align-items-center"> 
-            <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
-          
-            <div class="col text-center">
-                <p class="title">Traffic Violations</p>
-                <p class="city">-City of Binan, Laguna-</p>
-            </div>
-
-            <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
-        </div>
-
-        <div class="ticket-info">
-            <p class="ticket-label">Ordinance Infraction Ticket</p>
-            <p class="ticket-number">No. <?php echo $ticket_number; ?></p>
-        </div>
-
-                
-        
-        <h3>BREAKDOWN OF VIOLATION CHARGES</h3>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>VIOLATION</th>
-                    <th>AMOUNT</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($violations as $violation): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($violation['violation']); ?></td>
-                    <td><?php echo htmlspecialchars($violation['total']); ?></td> <!-- Display the amount for each violation -->
-                </tr>
-                <?php endforeach; ?>
-                <tr>
-                    <td class="total">TOTAL:</td>
-                    <td class="total"><?php echo htmlspecialchars($total_amount); ?></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <?php if ($notes): // Check if there are any notes ?>
-            <h4>Additional Notes:</h4>
-            <p><?php echo nl2br(htmlspecialchars($notes)); ?></p> <!-- Display notes, converting new lines to <br> -->
-        <?php endif; ?>
-    </div>
-</body>
-</html>
-
-<?php
 // Close connection
 $stmt->close();
 $conn->close();

@@ -18,7 +18,7 @@ $_SESSION['ticket_number'] = $ticket_number;
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <!-- Your custom stylesheet with cache-busting -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.0">
 </head>
 <body>
 
@@ -111,7 +111,17 @@ $_SESSION['ticket_number'] = $ticket_number;
                 <input type="text" id="registration" name="registration" class="form-control">
 
                 <label for="vehicle_type">Vehicle Type:</label>
-                <input type="text" id="vehicle_type" name="vehicle_type" class="form-control">
+<select id="vehicle_type" name="vehicle_type" class="form-control">
+    <option value="">Select Vehicle Type</option>
+    <option value="Passenger Car">Passenger Car</option>
+    <option value="Motorcycle or Scooter">Motorcycle or Scooter</option>
+    <option value="Public Utility Vehicle">Public Utility Vehicle (PUV)</option>
+    <option value="Truck or Delivery Vehicle">Truck or Delivery Vehicle</option>
+    <option value="Commercial Vehicle">Commercial Vehicle</option>
+    <option value="Emergency Vehicle">Emergency Vehicle</option>
+    <option value="Heavy Equipment">Heavy Equipment Vehicle</option>
+</select>
+
 
                 <label for="vehicle_owner">Vehicle Owner:</label>
                 <input type="text" id="vehicle_owner" name="vehicle_owner" class="form-control">

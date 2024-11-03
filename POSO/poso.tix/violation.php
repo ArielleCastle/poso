@@ -48,7 +48,10 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordinance Infraction Ticket</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css?v=1.0">
     <script>
         function calculateTotal() {
             let checkboxes = document.querySelectorAll('input[name="violations[]"]:checked');
