@@ -48,7 +48,7 @@ function displayImage($imageData) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="d_style.css">
+    <link rel="stylesheet" href="/POSO/admin/css/d_style.css?v1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -57,9 +57,9 @@ function displayImage($imageData) {
             <img src="/POSO/images/right.png" alt="POSO Logo">
         </div>
         <ul>
-            <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="#"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
             <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
             <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
@@ -68,6 +68,7 @@ function displayImage($imageData) {
         <header>
             <img src="/POSO/images/left.png" alt="City Logo">
             <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
+            <img src="/POSO/images/arman.png" alt="POSO Logo">
         </header>
         <br><br><br>
         <div class="welcome-box">

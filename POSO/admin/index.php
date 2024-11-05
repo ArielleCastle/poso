@@ -12,7 +12,7 @@ include 'connection.php'; // Make sure this path is correct
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POSO Admin Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/POSO/admin/css/style.css?v=1.0">
 </head>
 <body>
     <br>
@@ -22,7 +22,7 @@ include 'connection.php'; // Make sure this path is correct
             <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
             <h2>CITY OF BIÑAN</h2>
         </div>
-        <img src="/POSO/images/right.png" alt="Right Logo" class="logo">
+        <img src="/POSO/images/arman.png" alt="POSO Logo">
     </div> 
     <br><br><br>
     <div class="container">

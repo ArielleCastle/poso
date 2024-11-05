@@ -25,21 +25,38 @@ if (isset($_POST['confirm'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logout Confirmation</title>
+    <title>POSO Admin Logout</title>
+    <link rel="stylesheet" href="/POSO/admin/css/style.css?v=1.0">
     <script>
         function confirmLogout() {
-            // Automatically submit the form without confirmation
+            // Automatically submit the form for confirmation
             document.getElementById("logoutForm").submit();
         }
     </script>
 </head>
 <body>
-    <h1>Logout Confirmation</h1>
-    <p>Are you sure you want to logout?</p>
-    <form id="logoutForm" method="POST" action="logout.php">
-        <input type="hidden" name="confirm" value="yes"> <!-- Hidden input to confirm -->
-        <button type="button" onclick="confirmLogout()">Yes</button>
-        <button type="button" onclick="window.location.href='dashboard.php'">No</button>
-    </form>
+    <br>
+    <div class="header-container">
+        <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
+        <div>
+            <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
+            <h2>CITY OF BIÑAN</h2>
+        </div>
+        <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
+    </div> 
+    <br><br><br>
+
+    <div class="container">
+        <div class="login-form">
+            <h3>Logout Confirmation</h3>
+            <p>Are you sure you want to logout?</p>
+            <form id="logoutForm" method="POST" action="logout.php">
+                <input type="hidden" name="confirm" value="yes">
+                <button type="button" onclick="confirmLogout()">Yes</button>
+<br>
+                <button type="button" onclick="window.location.href='dashboard.php'">No</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
