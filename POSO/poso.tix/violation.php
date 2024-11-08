@@ -50,7 +50,7 @@ $conn->close();
     <title>Ordinance Infraction Ticket</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="/POSO/images/poso.png" type="image/png">
+
     <link rel="stylesheet" href="style.css?v=1.0">
     <script>
         function calculateTotal() {
