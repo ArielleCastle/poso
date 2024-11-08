@@ -103,7 +103,7 @@ $conn->close();
         <div class="header-container">
             <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
             <div class="col text-center">
-                <p class="title">Traffic Violations</p>
+                <p class="title">POSO Traffic Violations</p>
                 <p class="city">-City of Biñan, Laguna-</p>
             </div>
             <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">

@@ -1,142 +1,174 @@
-<?php
+<?php 
 // Start the session
 session_start();
-
-// Generate random 8-digit ticket number
-$ticket_number = rand(10000000, 99999999);
-
-// Store the ticket number in the session
-$_SESSION['ticket_number'] = $ticket_number;
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" href="/POSO/images/poso.png" type="image/png">
+    <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ordinance Infraction Ticket</title> 
+    <title>POSO Ticketing System Login</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Your custom stylesheet with cache-busting -->
-    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/style.css?v=1.0">
+    <style>
+        /* Fullscreen overlay styling */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+        }
+        
+        /* Popup styling */
+        .popup {
+            background-color: #ffffff;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Styling for success and error icons */
+        .popup .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .popup .error-icon { color: #d9534f; }
+        .popup .success-icon { color: #28a745; }
+        
+        .popup h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .popup .error-text { color: #d9534f; }
+        .popup .success-text { color: #28a745; }
+
+        .popup p {
+            color: #6c757d;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .popup .retry-btn { background-color: #d9534f; color: white; }
+        .popup .continue-btn { background-color: #28a745; color: white; }
+
+        /* Fade-in and fade-out animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        .fade-out {
+            animation: fadeOut 0.5s ease forwards;
+        }
+    </style>
 </head>
-<body>
-
-<div class="container">
-    <div class="ticket-container">
-        <div class="header-container d-flex justify-content-between align-items-center"> 
-            <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
-          
-            <div class="col text-center">
-                <p class="title">Traffic Violations</p>
-                <p class="city">-City of Binan, Laguna-</p>
+<body class="d-flex flex-column align-items-center justify-content-center vh-100">
+    <!-- Error Popup Overlay -->
+    <?php if (isset($_SESSION['error'])): ?>
+        <div id="errorOverlay" class="overlay fade-in">
+            <div id="errorPopup" class="popup">
+                <div class="icon error-icon">✖</div>
+                <h2 class="error-text">Oh no!</h2>
+                <p><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></p>
+                <button onclick="closeError()" class="retry-btn">Try Again</button>
             </div>
-
-            <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
         </div>
-<br>
-        <div class="ticket-info">
-            <p class="ticket-label">ORDINANCE INFRACTION TICKET</p>
-            <p class="ticket-number">No. <?php echo $ticket_number; ?></p>
+    <?php endif; ?>
+
+    <!-- Success Popup Overlay -->
+    <?php if (isset($_SESSION['success'])): ?>
+        <div id="successOverlay" class="overlay fade-in">
+            <div id="successPopup" class="popup">
+                <div class="icon success-icon">✔</div>
+                <h2 class="success-text">Login Successfully!</h2>
+                <p><?php echo $_SESSION['success']; ?></p>
+                <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p> <!-- Display username here -->
+                <button onclick="continueToDashboard()" class="continue-btn">Continue</button>
+            </div>
         </div>
+        <?php unset($_SESSION['success']); // Remove success message after displaying ?>
+    <?php endif; ?>
 
-        <form action="submit_ticket.php" method="POST">
-            <!-- Hidden input field to pass the ticket number -->
-            <input type="hidden" name="ticket_number" value="<?php echo $ticket_number; ?>">
-
-            <!-- Violator's Information Section -->
-            <div class="gray"> 
-                <p>Violator's Information:</p> 
-            </div>
-
-            <div class="section">
-                
-                <label for="first_name">First Name:</label>
-                <input type="text" id="first_name" name="first_name" required class="form-control">
-
-                <label for="middle_name">Middle Name:</label>
-                <input type="text" id="middle_name" name="middle_name" class="form-control">
-
-                <label for="last_name">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" required class="form-control">
-
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required class="form-control">
-
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" required class="form-control">
-
-                <label for="license">License No.:</label>
-                <input type="text" id="license" name="license" required class="form-control">
-            </div>
-
-            <!-- License Confiscation Section -->
-            <div class="gray">
-                <p>License Confiscated:</p> 
-            </div>
-            <div class="section radio-group d-flex justify-content-center">
-                <label for="confiscated_yes">Yes</label> 
-                <input type="radio" id="confiscated_yes" name="confiscated" value="yes" class="me-2">
-                <label for="confiscated_no">No</label>
-                <input type="radio" id="confiscated_no" name="confiscated" value="no" class="me-2">
-            </div>
-
-            <!-- Date & Time Section -->
-            <div class="gray">
-                <p>Date & Time:</p> 
-            </div>
-            <div class="section">
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" class="form-control">
-<br>
-                <label for="time">Time:</label>
-                <input type="time" id="time" name="time" class="form-control">
-            </div>
-
-            <!-- Place of Violation Section -->
-            <div class="gray">
-                <p>Place of Violation</p> 
-            </div>
-            <div class="section">
-                <label for="street">Street:</label>
-                <input type="text" id="street" name="street" class="form-control">
-
-                <label for="plate_number">Plate Number:</label>
-                <input type="text" id="plate_number" name="plate_number" class="form-control">
-
-                <label for="city">City/Municipality:</label>
-                <input type="text" id="city" name="city" class="form-control">
-
-                <label for="registration">Registration Number:</label>
-                <input type="text" id="registration" name="registration" class="form-control">
-
-                <label for="vehicle_type">Vehicle Type:</label>
-<select id="vehicle_type" name="vehicle_type" class="form-control">
-    <option value="">Select Vehicle Type</option>
-    <option value="Passenger Car">Passenger Car</option>
-    <option value="Motorcycle or Scooter">Motorcycle or Scooter</option>
-    <option value="Public Utility Vehicle">Public Utility Vehicle (PUV)</option>
-    <option value="Truck or Delivery Vehicle">Truck or Delivery Vehicle</option>
-    <option value="Commercial Vehicle">Commercial Vehicle</option>
-    <option value="Emergency Vehicle">Emergency Vehicle</option>
-    <option value="Heavy Equipment">Heavy Equipment Vehicle</option>
-</select>
-
-
-                <label for="vehicle_owner">Vehicle Owner:</label>
-                <input type="text" id="vehicle_owner" name="vehicle_owner" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Next</button>
-        </form>
+    <!-- Header Section -->
+    <div class="text-center mb-4">
+        <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
     </div>
-</div>
+    <div class="container" style="max-width: 300px;">
+        <div class="card shadow-sm p-4">
+            <form action="authenticate.php" method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label">USERNAME</label>
+                    <input type="text" name="username" id="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">PASSWORD</label>
+                    <input type="password" name="password" id="password" class="form-control" required>
+                </div>
+                <div class="text-end mb-3">
+                    <a href="#" class="small text-decoration-none">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">LOGIN</button>
+            </form>
+        </div>
+    </div>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script>
+        function closeError() {
+            const overlay = document.getElementById('errorOverlay');
+            if (overlay) {
+                overlay.classList.add('fade-out');
+                setTimeout(() => overlay.remove(), 500);
+            }
+        }
 
+        function continueToDashboard() {
+            const overlay = document.getElementById('successOverlay');
+            if (overlay) {
+                overlay.classList.add('fade-out');
+                setTimeout(() => {
+                    overlay.remove();
+                    window.location.href = 'ticket.php'; // Redirect to the dashboard or desired page
+                }, 500);
+            }
+        }
+
+        // Automatically close the success popup after 4 seconds
+        setTimeout(() => {
+            if (document.getElementById('successOverlay')) {
+                continueToDashboard();
+            }
+        }, 4000);
+    </script>
 </body>
 </html>
