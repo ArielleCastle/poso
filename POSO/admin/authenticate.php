@@ -23,11 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch the user data
         $_SESSION['user_id'] = $row['ID']; // Store user ID in the session
         $_SESSION['username'] = $username; // Store username in the session (optional)
-        header("Location: dashboard.php"); // Redirect to the dashboard
+        
+        // Set success message and redirect
+        $_SESSION['success'] = 'You have successfully logged in!';
+        header("Location: index.php"); // Redirect back to the login page
         exit(); // Always use exit after a redirect
     } else {
         // Authentication failed
-        echo "Invalid username or password.";
+        $_SESSION['error'] = 'Invalid username or password.';
+        header("Location: index.php"); // Redirect back to the login page
+        exit(); // Always use exit after a redirect
     }
 }
 ?>
