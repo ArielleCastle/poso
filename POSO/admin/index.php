@@ -22,7 +22,7 @@ include 'connection.php'; // Make sure this path is correct
             <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
             <h2>CITY OF BIÑAN</h2>
         </div>
-        <img src="/POSO/images/arman.png" alt="POSO Logo">
+        <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
     </div> 
     <br><br><br>
     <div class="container">

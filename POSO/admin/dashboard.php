@@ -16,7 +16,7 @@ include 'connection.php'; // Make sure this path is correct
 $user_id = $_SESSION['user_id'];  // Get the stored user_id from the session
 
 // Prepare SQL query to prevent SQL injection
-$stmt = $conn->prepare("SELECT username, image FROM login WHERE id = :user_id");
+$stmt = $conn->prepare("SELECT username, image FROM login WHERE ID = :user_id");
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 

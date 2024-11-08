@@ -101,7 +101,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Payment Status 
                             <span class="tooltip">
                                 <i class="fas fa-info-circle"></i>
-                                <span class="tooltiptext">Payment Status is verified via Biñan City Treasury and cannot be modified by any POSO admin.</span>
+                                <span class="tooltiptext">Payment Status is verified by Biñan City Treasury and cannot be modified by any POSO admin.</span>
                             </span>
                         </th>
                         <th>Action</th>
@@ -119,8 +119,8 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td>{$violatorName}</td>
                                 <td class='".strtolower($paymentStatus)."'>{$paymentStatus}</td>
                                 <td>
-                                    <a href='#'><i class='fas fa-eye'></i></a>
-                                    <a href='#'><i class='fas fa-trash-alt'></i></a>
+                                    <a href='sm.php?ticket_number={$report['ticket_number']}'><i class='fas fa-eye'></i></a>
+                                    <a href='del_rec.php'><i class='fas fa-trash-alt'></i></a>
                                 </td>
                               </tr>";
                     }

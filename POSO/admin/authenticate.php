@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->rowCount() > 0) {
         // User authenticated successfully
         $row = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch the user data
-        $_SESSION['user_id'] = $row['id']; // Store user ID in the session
+        $_SESSION['user_id'] = $row['ID']; // Store user ID in the session
         $_SESSION['username'] = $username; // Store username in the session (optional)
         header("Location: dashboard.php"); // Redirect to the dashboard
         exit(); // Always use exit after a redirect
