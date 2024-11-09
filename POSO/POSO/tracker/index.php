@@ -3,7 +3,7 @@
 $host = 'localhost';
 $db = 'poso';
 $user = 'root';
-$pass = '12345';
+$pass = '';
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8";
 $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 
