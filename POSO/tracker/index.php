@@ -1,9 +1,9 @@
 <?php
-// Database connection (update with your own connection details)
+// Database connection (same as before)
 $host = 'localhost';
 $db = 'poso';
 $user = 'root';
-$pass = '12345';
+$pass = '';
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8";
 $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 
@@ -14,8 +14,9 @@ try {
     exit;
 }
 
-// Get the ticket number from the URL
+// Get the ticket number and license number from the URL
 $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : '';
+$license_number = isset($_GET['license_number']) ? $_GET['license_number'] : '';
 
 // Initialize variables to hold data
 $violator_name = '';
@@ -26,11 +27,9 @@ $status = '';
 $confiscated = '';
 $violation_date = '';
 $violation_time = '';
-$vehicle_type = '';
-$plate_number = '';
-$vehicle_owner = '';
+$license = ''; // Add variable for license number
 
-// Fetch the violation and report data if ticket number exists
+// Fetch the violation and report data if ticket number or license number exists
 if ($ticket_number) {
     // Check ticket number in violation table
     $stmt = $pdo->prepare("SELECT first_name, last_name, first_violation, first_total, status FROM violation WHERE ticket_number = ?");
@@ -75,9 +74,9 @@ if ($ticket_number) {
         }
     }
 
-    // Fetch the data from the report table
+    // Fetch the data from the report table (including license)
     if ($violator_name) {
-        $stmt = $pdo->prepare("SELECT confiscated, violation_date, violation_time, vehicle_type, plate_number, vehicle_owner FROM report WHERE ticket_number = ?");
+        $stmt = $pdo->prepare("SELECT confiscated, violation_date, violation_time, license FROM report WHERE ticket_number = ?");
         $stmt->execute([$ticket_number]);
         $report = $stmt->fetch();
 
@@ -85,9 +84,38 @@ if ($ticket_number) {
             $confiscated = $report['confiscated'];
             $violation_date = $report['violation_date'];
             $violation_time = $report['violation_time'];
-            $vehicle_type = $report['vehicle_type'];
-            $plate_number = $report['plate_number'];
-            $vehicle_owner = $report['vehicle_owner'];
+            $license = $report['license']; // Fetch the license number
+        }
+    }
+}
+
+// Fetch data based on license number
+if ($license_number) {
+    // Check license number in report table
+    $stmt = $pdo->prepare("SELECT ticket_number, first_name, last_name, first_violation, first_total, status FROM violation WHERE ticket_number IN (SELECT ticket_number FROM report WHERE license = ?)");
+    $stmt->execute([$license_number]);
+    $violation = $stmt->fetch();
+
+    if ($violation) {
+        $violator_name = $violation['first_name'] . ' ' . $violation['last_name'];
+        $violation_count = 'First Violation';
+        $violations = $violation['first_violation'];
+        $amount = $violation['first_total'];
+        $status = $violation['status'];
+        $ticket_number = $violation['ticket_number'];
+    }
+
+    // Fetch the data from the report table (including license)
+    if ($violator_name) {
+        $stmt = $pdo->prepare("SELECT confiscated, violation_date, violation_time, license FROM report WHERE license = ?");
+        $stmt->execute([$license_number]);
+        $report = $stmt->fetch();
+
+        if ($report) {
+            $confiscated = $report['confiscated'];
+            $violation_date = $report['violation_date'];
+            $violation_time = $report['violation_time'];
+            $license = $report['license']; // Fetch the license number
         }
     }
 }
@@ -95,6 +123,7 @@ if ($ticket_number) {
 // Clear the search
 if (isset($_GET['clear'])) {
     $ticket_number = '';
+    $license_number = '';
     header("Location: index.php");
     exit;
 }
@@ -106,78 +135,72 @@ if (isset($_GET['clear'])) {
  <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/POSO/tracker/css/style.css">
     <title>POSO Violation Tracker</title>
-    <link rel="stylesheet" href="/POSO/tracker/css/d_style.css?v=1.0">
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="/POSO/images/poso.png" alt="Logo">
-        </div>
-        <ul></ul>
-    </div>
-
     <div class="main-content">
-       <div class="main-content">
         <header>
             <img src="/POSO/images/left.png" alt="City Logo">
             <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
             <img src="/POSO/images/arman.png" alt="POSO Logo">
         </header>
-<br>
-<br>
+        <br><br>
 
         <div class="report-container">
+            <h1> Please enter a valid ticket number or license number </h1>
             <form method="GET" action="" class="search-filter">
-    <div class="search-bar">
-        <input type="text" id="ticket_number" name="ticket_number" placeholder="Enter Ticket Number" value="<?php echo $ticket_number; ?>" required>
-        <?php if ($ticket_number): ?>
-            <a href="?clear=true" class="clear-search">CLEAR</a>
-        <?php endif; ?>
-    </div>
-    <button type="submit">Search</button>
-</form>
-
-
-            <?php if ($violator_name): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Ticket Number</th>
-                            <th>Violator's Name</th>
-                            <th>Violation Count</th>
-                            <th>Violations</th>
-                            <th>Amount</th>
-                            <th>Payment Status</th>
-                            <th>License Confiscated</th>
-                            <th>Violation Date</th>
-                            <th>Violation Time</th>
-                            <th>Vehicle Type</th>
-                            <th>Plate Number</th>
-                            <th>Vehicle Owner</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><?php echo $ticket_number; ?></td>
-                            <td><?php echo $violator_name; ?></td>
-                            <td><?php echo $violation_count; ?></td>
-                            <td><?php echo $violations; ?></td>
-                            <td><?php echo $amount; ?></td>
-                            <td class="<?php echo ($status == 'Paid' ? 'paid' : 'unpaid'); ?>"><?php echo $status; ?></td>
-                            <td><?php echo $confiscated; ?></td>
-                            <td><?php echo $violation_date; ?></td>
-                            <td><?php echo $violation_time; ?></td>
-                            <td><?php echo $vehicle_type; ?></td>
-                            <td><?php echo $plate_number; ?></td>
-                            <td><?php echo $vehicle_owner; ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-            <?php elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && !$violator_name): ?>
-                <p>No data found for the provided ticket number.</p>
-            <?php endif; ?>
+                <div class="search-bar">
+                    <input type="text" id="ticket_number" name="ticket_number" placeholder="Ticket Number" value="<?php echo $ticket_number; ?>">
+                    <input type="text" id="license_number" name="license_number" placeholder="License Number" value="<?php echo $license_number; ?>">
+                    <?php if ($ticket_number || $license_number): ?>
+                        <a href="?clear=true" class="clear-search">CLEAR</a>
+                    <?php endif; ?>
+                    &nbsp;&nbsp;<button type="submit">Search</button>
+                </div>
+<p>*License Number can be empty if Ticket Number is present.</p>
+            </form>
         </div>
     </div>
+
+<?php if ($violator_name): ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket Number</th>
+                <?php if ($license_number): ?>
+                    <th>License Number</th>
+                <?php endif; ?>
+                <th>Violator's Name</th>
+                <th>Violation Count</th>
+                <th>Violations</th>
+                <th>Amount</th>
+                <th>Payment Status</th>
+                <th>License Confiscated</th>
+                <th>Violation Date</th>
+                <th>Violation Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo $ticket_number; ?></td>
+                <?php if ($license_number): ?>
+                    <td><?php echo $license; ?></td>
+                <?php endif; ?>
+                <td><?php echo $violator_name; ?></td>
+                <td><?php echo $violation_count; ?></td>
+                <td><?php echo $violations; ?></td>
+                <td><?php echo $amount; ?></td>
+                <td class="<?php echo ($status == 'Paid' ? 'paid' : 'unpaid'); ?>"><?php echo $status; ?></td>
+                <td><?php echo $confiscated; ?></td>
+                <td><?php echo $violation_date; ?></td>
+                <td><?php echo $violation_time; ?></td>
+            </tr>
+        </tbody>
+    </table>
+<?php elseif (($ticket_number || $license_number) && !$violator_name): ?>
+    <p>No data found for the provided ticket number or license number.</p>
+<?php endif; ?>
+
 </body>
 </html>

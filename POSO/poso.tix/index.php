@@ -9,7 +9,7 @@ session_start();
     <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POSO Ticketing System Login</title>
+    <title>POSO Ticketing System</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
@@ -119,8 +119,11 @@ session_start();
     <!-- Header Section -->
     <div class="text-center mb-4">
         <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
+        <h2>CITY OF BIÑAN</h2>
+<br>
+<br>
     </div>
-    <div class="container" style="max-width: 300px;">
+    <div class="container" style="max-width: 295px;">
         <div class="card shadow-sm p-4">
             <form action="authenticate.php" method="POST">
                 <div class="mb-3">
@@ -134,6 +137,7 @@ session_start();
                 <div class="text-end mb-3">
                     <a href="#" class="small text-decoration-none">Forgot Password?</a>
                 </div>
+<br>
                 <button type="submit" class="btn btn-primary w-100">LOGIN</button>
             </form>
         </div>
