@@ -63,7 +63,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/POSO/admin/css/d_style.css">
+    <link rel="stylesheet" href="/POSO/admin/css/d_style.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -86,12 +86,14 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <img src="/POSO/images/arman.png" alt="POSO Logo">
         </header>
         <br><br>
-        <div class="report-container">
-            <div class="search-filter">
-                <input type="text" placeholder="Search">
+        <div class="search-filter">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <input type="text" placeholder="Search">
                 <button><i class="fas fa-filter"></i> Filters</button>
                 <button><i class="fas fa-calendar-alt"></i> Date</button>
             </div>
+        <div class="report-container">
+            
             <table>
                 <thead>
                     <tr>

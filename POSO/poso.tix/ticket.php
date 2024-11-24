@@ -3,7 +3,7 @@
 session_start();
 
 // Generate random 8-digit ticket number
-$ticket_number = rand(10000000, 99999999);
+$ticket_number = rand(100000, 999999);
 
 // Store the ticket number in the session
 $_SESSION['ticket_number'] = $ticket_number;
