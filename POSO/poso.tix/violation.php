@@ -126,28 +126,30 @@ $conn->close();
                 <input type="checkbox" name="violations[]" value="OPEN MUFFLER/NUISANCE - 1000" data-price="1000"> OPEN MUFFLER/NUISANCE <br>
                 <input type="checkbox" name="violations[]" value="ARROGANT - 1000" data-price="1000"> ARROGANT<br>
                 <input type="checkbox" name="violations[]" value="ONEWAY - 200" data-price="200"> ONEWAY<br>
+                <input type="checkbox" name="violations[]" value="ILLEGAL PARKING - 200" data-price="200"> ILLEGAL PARKING<br>
                 <input type="checkbox" name="violations[]" value="DRIVING WITHOUT LICENSE/INVALID LICENSE - 1000" data-price="1000"> DRIVING WITHOUT LICENSE/INVALID LICENSE<br>
                 <input type="checkbox" name="violations[]" value="NO OR/CR WHILE DRIVING - 500" data-price="500"> NO OR/CR WHILE DRIVING<br>
+                <input type="checkbox" name="violations[]" value="DRIVING UNREGISTERED VEHICLE - 500" data-price="DRIVING UNREGISTERED VEHICLE"> ONEWAY<br>
                 <input type="checkbox" name="violations[]" value="UNREGISTERED MOTOR VEHICLE - 500" data-price="500"> UNREGISTERED MOTOR VEHICLE<br>
-                <input type="checkbox" name="violations[]" value="OBSTRUCTION - 500" data-price="500"> OBSTRUCTION<br>
-                <input type="checkbox" name="violations[]" value="DISREGARDING TRAFFIC SIGNS - 100" data-price="100"> DISREGARDING TRAFFIC SIGNS<br>
-                <input type="checkbox" name="violations[]" value="DISREGARDING TRAFFIC OFFICER - 100" data-price="100"> DISREGARDING TRAFFIC OFFICER<br>
-                <input type="checkbox" name="violations[]" value="TRUCK BAN - 100" data-price="100"> TRUCK BAN<br>
-                <input type="checkbox" name="violations[]" value="STALLED VEHICLE - 100" data-price="100"> STALLED VEHICLE<br>
+                <input type="checkbox" name="violations[]" value="OBSTRUCTION - 200" data-price="200"> OBSTRUCTION<br>
+                <input type="checkbox" name="violations[]" value="DISREGARDING TRAFFIC SIGNS - 200" data-price="200"> DISREGARDING TRAFFIC SIGNS<br>
+                <input type="checkbox" name="violations[]" value="DISREGARDING TRAFFIC OFFICER - 200" data-price="200"> DISREGARDING TRAFFIC OFFICER<br>
+                <input type="checkbox" name="violations[]" value="TRUCK BAN - 200" data-price="200"> TRUCK BAN<br>
+                <input type="checkbox" name="violations[]" value="STALLED VEHICLE - 200" data-price="200"> STALLED VEHICLE<br>
                 <input type="checkbox" name="violations[]" value="RECKLESS DRIVING - 100" data-price="100"> RECKLESS DRIVING<br>
-                <input type="checkbox" name="violations[]" value="DRIVING UNDER THE INFLUENCE OF LIQUOR - 100" data-price="100"> DRIVING UNDER THE INFLUENCE OF LIQUOR<br>
-                <input type="checkbox" name="violations[]" value="INVALID OR NO FRANCHISE/COLORUM - 100" data-price="100"> INVALID OR NO FRANCHISE/COLORUM<br>
-                <input type="checkbox" name="violations[]" value="OPERATING OUT OF LINE - 100" data-price="100"> OPERATING OUT OF LINE<br>
-                <input type="checkbox" name="violations[]" value="TRIP - CUTTING - 100" data-price="100"> TRIP - CUTTING<br>
-                <input type="checkbox" name="violations[]" value="OVERLOADING - 100" data-price="100"> OVERLOADING<br>
-                <input type="checkbox" name="violations[]" value="LOADING/UNLOADING IN PROHIBITED ZONE - 100" data-price="100"> LOADING/UNLOADING IN PROHIBITED ZONE<br>
-                <input type="checkbox" name="violations[]" value="INVOLVE IN ACCIDENT - 100" data-price="100"> INVOLVE IN ACCIDENT<br>
-                <input type="checkbox" name="violations[]" value="SMOKE BELCHING - 100" data-price="100"> SMOKE BELCHING<br>
-                <input type="checkbox" name="violations[]" value="NO SIDE MIRROR - 100" data-price="100"> NO SIDE MIRROR<br>
-                <input type="checkbox" name="violations[]" value="JAY WALKING - 100" data-price="100"> JAY WALKING<br>
-                <input type="checkbox" name="violations[]" value="WEARING SLIPPERS/SHORTS/SANDO - 100" data-price="100"> WEARING SLIPPERS/SHORTS/SANDO<br>
-                <input type="checkbox" name="violations[]" value="ILLEGAL VENDING - 100" data-price="100"> ILLEGAL VENDING<br>
-                <input type="checkbox" name="violations[]" value="IMPOUNDED - 100" data-price="100"> IMPOUNDED<br>
+                <input type="checkbox" name="violations[]" value="DRIVING UNDER THE INFLUENCE OF LIQUOR - 200" data-price="200"> DRIVING UNDER THE INFLUENCE OF LIQUOR<br>
+                <input type="checkbox" name="violations[]" value="INVALID OR NO FRANCHISE/COLORUM - 2000" data-price="2000"> INVALID OR NO FRANCHISE/COLORUM<br>
+                <input type="checkbox" name="violations[]" value="OPERATING OUT OF LINE - 2000" data-price="2000"> OPERATING OUT OF LINE<br>
+                <input type="checkbox" name="violations[]" value="TRIP - CUTTING - 200" data-price="200"> TRIP - CUTTING<br>
+                <input type="checkbox" name="violations[]" value="OVERLOADING - 200" data-price="200"> OVERLOADING<br>
+                <input type="checkbox" name="violations[]" value="LOADING/UNLOADING IN PROHIBITED ZONE - 200" data-price="200"> LOADING/UNLOADING IN PROHIBITED ZONE<br>
+                <input type="checkbox" name="violations[]" value="INVOLVE IN ACCIDENT - 200" data-price="200"> INVOLVE IN ACCIDENT<br>
+                <input type="checkbox" name="violations[]" value="SMOKE BELCHING - 500" data-price="500"> SMOKE BELCHING<br>
+                <input type="checkbox" name="violations[]" value="NO SIDE MIRROR - 200" data-price="200"> NO SIDE MIRROR<br>
+                <input type="checkbox" name="violations[]" value="JAY WALKING - 200" data-price="200"> JAY WALKING<br>
+                <input type="checkbox" name="violations[]" value="WEARING SLIPPERS/SHORTS/SANDO - 300" data-price="300"> WEARING SLIPPERS/SHORTS/SANDO<br>
+                <input type="checkbox" name="violations[]" value="ILLEGAL VENDING - 200" data-price="200"> ILLEGAL VENDING<br>
+                <input type="checkbox" name="violations[]" value="IMPOUNDED - 800" data-price="800"> IMPOUNDED<br>
                 <input type="checkbox" name="violations[]" value="OTHERS" id="others-checkbox" onclick="toggleOthersField()"> OTHERS<br>
                 <div class="section" id="othersViolation" style="display:none;">
                     <label for="others_violation">Describe OTHERS Violation:</label>

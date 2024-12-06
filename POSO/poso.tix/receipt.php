@@ -31,7 +31,6 @@ if ($result->num_rows > 0) {
     <!DOCTYPE html>
     <html lang="en">
     <head>
-   
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>POSO Violation Receipt</title>
@@ -45,13 +44,12 @@ if ($result->num_rows > 0) {
                 font-size: 1.2em;
                 margin-top: 10px;
             }
-           .compliance-message {
-               text-align: center;
-               font-weight: regular;
-               margin-top: 20px;
-              font-size: 1.2em;
+            .compliance-message {
+                text-align: center;
+                font-weight: regular;
+                margin-top: 20px;
+                font-size: 1.2em;
             }
-
         </style>
     </head>
     <body>
@@ -71,8 +69,7 @@ if ($result->num_rows > 0) {
                     <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p> <!-- Display the ticket number -->
                 </div>
                 <div class="gray">
-
-                <h3>BREAKDOWN OF VIOLATION CHARGES</h3>
+                    <h3>BREAKDOWN OF VIOLATION CHARGES</h3>
                 </div>
                 <table>
                     <thead>
@@ -83,35 +80,42 @@ if ($result->num_rows > 0) {
                         </tr>
                     </thead>
                     <tbody>
-                            <?php
-    while ($violation = $result->fetch_assoc()) {
-        $violation_details = htmlspecialchars($violation['first_violation'] ?? $violation['second_violation'] ?? $violation['third_violation']);
-        $violation_amount = htmlspecialchars($violation['first_total'] ?? $violation['second_total'] ?? $violation['third_total']);
+                        <?php
+                        $impoundFound = false; // Flag to track if "IMPOUNDED" is found in any violation
 
-        // Replace commas with line breaks for displaying each violation per line
-        $formatted_violation_details = str_replace(", ", "<br>", $violation_details);
+                        while ($violation = $result->fetch_assoc()) {
+                            $violation_details = htmlspecialchars($violation['first_violation'] ?? $violation['second_violation'] ?? $violation['third_violation']);
+                            $violation_amount = htmlspecialchars($violation['first_total'] ?? $violation['second_total'] ?? $violation['third_total']);
 
-        echo "<tr>
-            <td>" . htmlspecialchars($violation['violation_type']) . "</td>
-            <td>" . $formatted_violation_details . "</td>
-            <td>" . $violation_amount . "</td>
-        </tr>";
+                            // Replace commas with line breaks for displaying each violation per line
+                            $formatted_violation_details = str_replace(", ", "<br>", $violation_details);
 
-        // Display impound warning if this is the third violation
-        if ($violation['violation_type'] === 'Third Violation') {
-            echo "<tr><td colspan='3' class='impound-warning'>THIS VIOLATOR IS SUBJECT FOR VEHICLE IMPOUND.</td></tr>";
-        }
-    }
+                            // Check if "IMPOUNDED" exists in the violation details (case-insensitive)
+                            if (stripos($violation_details, 'IMPOUNDED') !== false) {
+                                $impoundFound = true; // Set the flag to true
+                            }
 
-    if ($result->num_rows == 0) {
-        echo "<tr><td colspan='3'>No violations found.</td></tr>";
-    }
-    ?>
+                            echo "<tr>
+                                <td>" . htmlspecialchars($violation['violation_type']) . "</td>
+                                <td>" . $formatted_violation_details . "</td>
+                                <td>" . $violation_amount . "</td>
+                            </tr>";
+                        }
+
+                        // Display the impound warning if the flag is set
+                        if ($impoundFound) {
+                            echo "<tr><td colspan='3' class='impound-warning'>THIS VIOLATOR IS SUBJECT FOR VEHICLE IMPOUND.</td></tr>";
+                        }
+
+                        // Handle case where no violations are found
+                        if ($result->num_rows == 0) {
+                            echo "<tr><td colspan='3'>No violations found.</td></tr>";
+                        }
+                        ?>
                     </tbody>
                 </table>
 
-               
-<br>
+                <br>
                 <h4>NOTES:</h4>
                 <ul>
                     <?php
@@ -123,11 +127,14 @@ if ($result->num_rows > 0) {
                     ?>
                 </ul>
 
-                <p class="compliance-message">THANK YOU FOR YOUR COMPLIANCE.</p>
+                <p class="compliance-message"> PLEASE PROCEED TO OFFICE OF THE CITY TREASURER. THANK YOU FOR YOUR COMPLIANCE.</p>
+<br>
 
-                
+<button type="button" class="btn btn-secondary" onclick="window.location.href='BLK.php?ticket_number=<?php echo urlencode($ticket_number); ?>';">Next</button>
+
             </div>
         </div>
+
     </body>
     </html>
     <?php

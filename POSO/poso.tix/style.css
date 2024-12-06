@@ -249,15 +249,23 @@ button:hover {
     .ticket-number { font-size: 14px; }
     label { font-size: 12px; }
 
-    input[type="text"],
-    input[type="date"],
-    input[type="time"] {
-        font-size: 14px;
+    input[type="text"], input[type="date"], input[type="time"] {
+        font-size: 12px;
         padding: 6px;
     }
 
     button {
-        padding: 8px;
         font-size: 14px;
+        padding: 10px;
     }
+}
+
+.signature-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.canvas-container img {
+    max-width: 100%;
+    height: auto;
 }
