@@ -49,6 +49,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordinance Infraction Ticket</title>
     <!-- Bootstrap CSS -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <link rel="stylesheet" href="style.css?v=1.0">
@@ -99,7 +100,13 @@ $conn->close();
     </script>
 </head>
 <body>
-    <div class="ticket-container">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+        <div class="ticket-container">
         <div class="header-container">
             <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
             <div class="col text-center">

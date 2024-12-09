@@ -25,36 +25,61 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("iii", $ticket_number, $ticket_number, $ticket_number);
 $stmt->execute();
 $result = $stmt->get_result();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POSO Violation Receipt</title>
+    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="icon" href="/POSO/images/poso.png" type="image/png">
+    <style>
+        .impound-warning {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .compliance-message {
+            text-align: center;
+            font-weight: regular;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            width: 120px;      /* Set a specific width */
+            height: 35px;      /* Set a specific height */
+            padding: 0;        /* Remove padding */
+            font-size: 14px;   /* Smaller font size */
+            margin: 5px;       /* Reduced margin */
+            display: inline-block;
 
-if ($result->num_rows > 0) {
-    ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>POSO Violation Receipt</title>
-        <link rel="stylesheet" href="style.css?v=1.0"> <!-- Link to the stylesheet -->
-        <link rel="icon" href="/POSO/images/poso.png" type="image/png">  
-        <style>
-            .impound-warning {
-                color: red;
-                text-align: center;
-                font-weight: bold;
-                font-size: 1.2em;
-                margin-top: 10px;
-            }
-            .compliance-message {
-                text-align: center;
-                font-weight: regular;
-                margin-top: 20px;
-                font-size: 1.2em;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <?php if ($result->num_rows > 0) : ?>
             <div class="ticket-container">
+                <!-- Header -->
                 <div class="header-container d-flex justify-content-between align-items-center"> 
                     <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
                     <div class="col text-center">
@@ -64,10 +89,13 @@ if ($result->num_rows > 0) {
                     <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
                 </div>
 
+                <!-- Ticket Information -->
                 <div class="ticket-info">
                     <p class="ticket-label">Ordinance Infraction Ticket</p>
-                    <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p> <!-- Display the ticket number -->
+                    <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p>
                 </div>
+
+                <!-- Violation Breakdown -->
                 <div class="gray">
                     <h3>BREAKDOWN OF VIOLATION CHARGES</h3>
                 </div>
@@ -115,7 +143,8 @@ if ($result->num_rows > 0) {
                     </tbody>
                 </table>
 
-                <br>
+                <!-- Notes Section -->
+<br>
                 <h4>NOTES:</h4>
                 <ul>
                     <?php
@@ -126,22 +155,40 @@ if ($result->num_rows > 0) {
                     }
                     ?>
                 </ul>
+                <p class="compliance-message">PLEASE PROCEED TO OFFICE OF THE CITY TREASURER. THANK YOU FOR YOUR COMPLIANCE.</p>
 
-                <p class="compliance-message"> PLEASE PROCEED TO OFFICE OF THE CITY TREASURER. THANK YOU FOR YOUR COMPLIANCE.</p>
-<br>
-
-<button type="button" class="btn btn-secondary" onclick="window.location.href='BLK.php?ticket_number=<?php echo urlencode($ticket_number); ?>';">Next</button>
-
+                <!-- Buttons -->
+                <div class="button-container">
+                    <button id="printButton" onclick="printReceipt()">Print</button>
+                    <button id="nextButton" class="btn btn-secondary" disabled onclick="goToNextPage()">Next</button>
+                </div>
             </div>
-        </div>
+        <?php else : ?>
+            <p>No violation records found for this individual.</p>
+        <?php endif; ?>
+    </div>
 
-    </body>
-    </html>
-    <?php
-} else {
-    echo "<p>No violation records found for this individual.</p>";
-}
+    <script>
+        // Print function
+        function printReceipt() {
+            // Trigger print
+            window.print();
 
+            // Enable "Next" button after a short delay (printing takes some time to complete)
+            setTimeout(() => {
+                document.getElementById('nextButton').disabled = false;
+            }, 2000); // Adjust delay as needed
+        }
+
+        // Redirect to next page
+        function goToNextPage() {
+            const ticketNumber = "<?php echo urlencode($ticket_number); ?>";
+            window.location.href = 'BLK.php?ticket_number=' + ticketNumber;
+        }
+    </script>
+</body>
+</html>
+<?php
 // Close connection
 $stmt->close();
 $conn->close();

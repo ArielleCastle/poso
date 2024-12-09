@@ -17,13 +17,13 @@ body {
     display: flex;
     justify-content: center;  /* Center horizontally */
     align-items: center;      /* Center vertically */
-    min-height: 100vh;        /* Full viewport height for vertical centering */
+    min-height: 90vh;        /* Full viewport height for vertical centering */
 }
 
 /* Adjusted ticket-container for POS layout */
 .ticket-container {
     width: 100%;
-    max-width: 400px; /* Ensures it's not too wide */
+    max-width: 425px; /* Ensures it's not too wide */
     padding: 15px; /* Padding for content spacing */
     margin: 20px auto;
     border-radius: 8px;

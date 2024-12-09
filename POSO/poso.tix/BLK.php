@@ -4,7 +4,6 @@ session_start();
 
 // Get the ticket number from the URL (if it's available)
 $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A'; // Default to 'N/A' if not set
-
 ?>
 
 <!DOCTYPE html>
@@ -12,10 +11,9 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Signature Picker</title>
-    <!-- Link to external CSS file -->
+    <title>POSO Signature</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="/POSO/images/poso.png" type="image/png">  
+    <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <style>
         .logo {
             width: 50px;
@@ -45,7 +43,7 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
         .canvas-container {
             margin-top: 10px;
             text-align: center;
-            border: 2px solid #ccc; /* Bordered canvas */
+            border: 2px solid #ccc;
             padding: 20px;
             width: 300px;
             height: 150px;
@@ -60,6 +58,21 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 200px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        /* Penalty Message Style */
+        .penalty-message {
+            font-size: 11px;
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -77,28 +90,30 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
 
             <div class="ticket-info">
                 <p class="ticket-label">Ordinance Infraction Ticket</p>
-                <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p> <!-- Display the ticket number -->
+                <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p>
             </div>
 
+            <!-- Officer's Signature -->
             <div class="signature-section">
-                <h3>OFFICER'S SIGNATURE</h3>
-                <select id="officerSignature" onchange="updateSignature('signatureCanvas', 'officerSignature')">
+                <div class="gray">
+                    <h3>OFFICER'S SIGNATURE</h3>
+                </div>
+                <br>
+                <select id="officerSignature" onchange="updateSignature('officerSignatureCanvas', 'officerSignature')">
                     <option value="">Select Officer</option>
                     <?php
-                    // Fetch officer signatures from the database
                     $conn = new mysqli("localhost", "root", "", "poso");
 
                     if ($conn->connect_error) {
                         die("Connection failed: " . $conn->connect_error);
                     }
 
-                    // Query to fetch last names and signatures
-                    $sql = "SELECT lastname, signature FROM login WHERE signature IS NOT NULL";
+                    $sql = "SELECT firstname, lastname, signature FROM hh_login WHERE signature IS NOT NULL";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                            echo '<option value="data:image/jpeg;base64,' . base64_encode($row['signature']) . '">' . htmlspecialchars($row['lastname']) . '</option>';
+                            echo '<option value="data:image/jpeg;base64,' . base64_encode($row['signature']) . '">' . htmlspecialchars($row['firstname'] . ' ' . $row['lastname']) . '</option>';
                         }
                     } else {
                         echo '<option value="">No officers found</option>';
@@ -108,30 +123,138 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
                     ?>
                 </select>
 
-                <!-- Canvas for displaying the signature -->
-                <div class="canvas-container" id="signatureCanvas">
-                    <!-- Signature will be displayed here as an image -->
+                <div class="canvas-container" id="officerSignatureCanvas"></div>
+            </div>
+
+            <!-- Driver's Signature -->
+            <div class="signature-section">
+                <div class="gray">
+                    <h3>DRIVER'S SIGNATURE</h3>
                 </div>
+                <div class="canvas-container">
+                    <canvas id="driverSignatureCanvas" width="300" height="150"></canvas>
+                </div>
+                
+                <!-- Message about penalty -->
+                <p class="penalty-message">
+                    PAY THE PENALTY TO CITY/ MUNICIPAL TREASURER’S OFFICE WITHIN (3) DAYS. FAILURE TO DO SO WILL FORCE THE REFERRAL TO MUNICIPAL TRIAL COURT OF BINAN, LAGUNA FOR LEGAL ACTION.
+                </p>
+
+                <!-- Buttons -->
+                <button onclick="clearSignature()">Clear</button>
+                <button onclick="saveSignature()">Save</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Function to update the signature display
+        // Update Officer's Signature
         function updateSignature(canvasId, selectId) {
             const canvasContainer = document.getElementById(canvasId);
             const selectElement = document.getElementById(selectId);
             const selectedValue = selectElement.value;
 
-            // Clear the existing content
             canvasContainer.innerHTML = "";
 
-            // If a signature is selected, display it
             if (selectedValue) {
                 const img = document.createElement("img");
-                img.src = selectedValue; // Base64 image data
+                img.src = selectedValue;
                 canvasContainer.appendChild(img);
             }
+        }
+
+        // Canvas for Driver's Signature
+        const canvas = document.getElementById('driverSignatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        // Function to get the correct position for mouse/touch
+        function getPosition(event) {
+            const rect = canvas.getBoundingClientRect();
+            if (event.touches) { // For touch events
+                return {
+                    x: event.touches[0].clientX - rect.left,
+                    y: event.touches[0].clientY - rect.top
+                };
+            } else { // For mouse events
+                return {
+                    x: event.offsetX,
+                    y: event.offsetY
+                };
+            }
+        }
+
+        // Mouse Events
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            const pos = getPosition(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (drawing) {
+                const pos = getPosition(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => (drawing = false));
+        canvas.addEventListener('mouseout', () => (drawing = false));
+
+        // Touch Events
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent scrolling
+            drawing = true;
+            const pos = getPosition(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Prevent scrolling
+            if (drawing) {
+                const pos = getPosition(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener('touchend', () => (drawing = false));
+        canvas.addEventListener('touchcancel', () => (drawing = false));
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveSignature() {
+            const signatureData = canvas.toDataURL('image/png'); // Get the current signature as a data URL
+            const ticketNumber = "<?php echo htmlspecialchars($ticket_number); ?>";
+
+            if (ticketNumber === 'N/A') {
+                alert("Invalid ticket number!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('signature', signatureData);
+            formData.append('ticket_number', ticketNumber);
+
+            fetch('save_driver_signature.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+
+                // Disable the canvas to make it uneditable
+                canvas.style.pointerEvents = 'none'; // Prevent interactions with the canvas
+                document.querySelector('button[onclick="clearSignature()"]').disabled = true; // Disable Clear button
+                document.querySelector('button[onclick="saveSignature()"]').disabled = true; // Disable Save button
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>

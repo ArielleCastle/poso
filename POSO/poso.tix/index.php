@@ -13,7 +13,7 @@ session_start();
 
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/POSO/admin/css/style.css?v=1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/style.css">
     <style>
         /* Fullscreen overlay styling */
         .overlay {
