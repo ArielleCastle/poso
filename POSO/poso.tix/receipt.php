@@ -92,6 +92,11 @@ $plate_number = $violator['plate_number'];
         th {
             background-color: #f0f0f0;
         }
+@media print {
+        .button-container {
+            display: none; /* Hide buttons during the printing process */
+        }
+    }
     </style>
 </head>
 <body>
@@ -201,9 +206,12 @@ $plate_number = $violator['plate_number'];
     </div>
 
     <script>
-        // Print function
-        function printReceipt() {
+   // Print function
+function printReceipt() {
     try {
+        // Hide the buttons before starting the print process
+        document.querySelector('.button-container').style.display = 'none';
+
         // Check if the device-specific API is available
         if (typeof InnerPrinter !== "undefined" && InnerPrinter.print) {
             const receiptContent = document.querySelector('.container').innerHTML;
@@ -232,16 +240,25 @@ $plate_number = $violator['plate_number'];
             // Fallback for browser printing
             window.print();
         }
+
     } catch (error) {
         console.error("Printing error: ", error);
         alert("Printing failed. Check your printer connection.");
     }
 
-    // Enable "Next" button after a short delay
+    // Re-enable the buttons after printing is done
     setTimeout(() => {
+        // Enable the "Next" button
         document.getElementById('nextButton').disabled = false;
-    }, 2000);
+
+        // Retrieve the ticket number from the session or current page
+        const ticketNumber = <?php echo json_encode($ticket_number); ?>;
+
+        // Redirect to BLK.php and pass the ticket number in the query string
+        window.location.href = "BLK.php?ticket_number=" + ticketNumber;
+    }, 1000);  // You can adjust this delay based on when printing completes
 }
+
     </script>
 </body>
 </html>

@@ -4,6 +4,46 @@ session_start();
 
 // Get the ticket number from the URL (if it's available)
 $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A'; // Default to 'N/A' if not set
+
+// If ticket number is provided, proceed with the database update
+if ($ticket_number !== 'N/A') {
+    $conn = new mysqli("localhost", "root", "", "poso");
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Fetch officer details from the hh_login table
+    $sql = "SELECT firstname, lastname, signature FROM hh_login WHERE signature IS NOT NULL LIMIT 1";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $officerDetails = $result->fetch_assoc();
+
+        // Check and update officer's details in the corresponding violation table
+        $tables = ['violation', '2_violation', '3_violation'];
+        $columns = ['o_firstname', 'o_lastname', 'o_signature', '2o_firstname', '2o_lastname', '2o_signature', '3o_firstname', '3o_lastname', '3o_signature'];
+
+        foreach ($tables as $index => $table) {
+            $sql = "SELECT * FROM $table WHERE ticket_number = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $ticket_number);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                // Determine the correct column to update based on the table
+                $columnPrefix = $index === 0 ? '' : ($index === 1 ? '2' : '3');
+                $updateSql = "UPDATE $table SET {$columnPrefix}o_firstname = ?, {$columnPrefix}o_lastname = ?, {$columnPrefix}o_signature = ? WHERE ticket_number = ?";
+                $stmtUpdate = $conn->prepare($updateSql);
+                $stmtUpdate->bind_param("ssss", $officerDetails['firstname'], $officerDetails['lastname'], $officerDetails['signature'], $ticket_number);
+                $stmtUpdate->execute();
+            }
+        }
+    }
+
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -143,6 +183,7 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
                 <!-- Buttons -->
                 <button onclick="clearSignature()">Clear</button>
                 <button onclick="saveSignature()">Save</button>
+                <button onclick="submitTicket()">Done</button>
             </div>
         </div>
     </div>
@@ -255,6 +296,18 @@ $ticket_number = isset($_GET['ticket_number']) ? $_GET['ticket_number'] : 'N/A';
                 document.querySelector('button[onclick="saveSignature()"]').disabled = true; // Disable Save button
             })
             .catch(error => console.error('Error:', error));
+        }
+
+        function submitTicket() {
+            const ticketNumber = "<?php echo htmlspecialchars($ticket_number); ?>";
+
+            if (ticketNumber === 'N/A') {
+                alert("Invalid ticket number!");
+                return;
+            }
+
+            // Redirect to another page after successful submission
+            window.location.href = 'ticket.php?';
         }
     </script>
 </body>

@@ -27,9 +27,19 @@ if ($stmt->rowCount() > 0) {
     $imageData = $row['image'];
 }
 
-// Fetch report data with violation status and number
-$reports = [];
-$stmt = $conn->prepare("
+// Get filter value (default to all if not set)
+$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+
+// Search functionality
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
+// Pagination logic
+$limit = 10; // Number of records per page
+$page = isset($_GET['page']) ? $_GET['page'] : 1; // Current page
+$start = ($page - 1) * $limit; // Calculate the starting row
+
+// Prepare the base query with a WHERE clause for search term
+$sql = "
     SELECT 
         r.ticket_number,
         r.violation_date,
@@ -50,21 +60,172 @@ $stmt = $conn->prepare("
         2_violation AS v2 ON r.ticket_number = v2.ticket_number
     LEFT JOIN 
         3_violation AS v3 ON r.ticket_number = v3.ticket_number
-");
+    WHERE 
+        (r.ticket_number LIKE :searchTerm
+        OR r.first_name LIKE :searchTerm
+        OR r.last_name LIKE :searchTerm)
+";
+
+// Add a filter condition if a specific violation level is selected
+if ($filter) {
+    $sql .= " AND 
+        CASE 
+            WHEN v.ticket_number IS NOT NULL THEN 'First Violation'
+            WHEN v2.ticket_number IS NOT NULL THEN 'Second Violation'
+            WHEN v3.ticket_number IS NOT NULL THEN 'Third Violation'
+            
+        END = :filter";
+}
+
+// Add pagination limit
+$sql .= " LIMIT :start, :limit";
+
+$stmt = $conn->prepare($sql);
+$stmt->bindValue(':searchTerm', '%' . $searchTerm . '%');  // Wildcards for partial match
+$stmt->bindValue(':start', $start, PDO::PARAM_INT);
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+// Bind filter parameter if a filter is applied
+if ($filter) {
+    $stmt->bindValue(':filter', $filter);
+}
+
 $stmt->execute();
 $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Get total number of records to calculate total pages
+$totalStmt = $conn->prepare("
+    SELECT COUNT(*) 
+    FROM report AS r
+    LEFT JOIN 
+        violation AS v ON r.ticket_number = v.ticket_number
+    LEFT JOIN 
+        2_violation AS v2 ON r.ticket_number = v2.ticket_number
+    LEFT JOIN 
+        3_violation AS v3 ON r.ticket_number = v3.ticket_number
+    WHERE 
+        (r.ticket_number LIKE :searchTerm
+        OR r.first_name LIKE :searchTerm
+        OR r.last_name LIKE :searchTerm)
+");
+
+// Add the filter to the total count query
+if ($filter) {
+    $totalStmt->bindValue(':filter', $filter);
+}
+$totalStmt->bindValue(':searchTerm', '%' . $searchTerm . '%');
+$totalStmt->execute();
+$totalRecords = $totalStmt->fetchColumn();
+$totalPages = ceil($totalRecords / $limit);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <link rel="icon" href="/POSO/images/poso.png" type="image/png">
+    <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
     <link rel="stylesheet" href="/POSO/admin/css/d_style.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Sidebar and main layout styling (existing) */
+        /* Pagination container */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Pagination buttons */
+        .pagination-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;  /* Blue background */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        /* Add hover effect */
+        .pagination-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        /* Styling for the Previous and Next buttons */
+        .pagination-btn.previous {
+            background-color: #28a745;  /* Green background for Previous */
+        }
+
+        .pagination-btn.next {
+            background-color: #dc3545;  /* Red background for Next */
+        }
+
+        /* Active state when hovering over or clicking */
+        .pagination-btn:active {
+            transform: scale(1); /* Remove zoom effect on click */
+        }
+
+        /* Styling for the filter dropdown and buttons */
+        .search-filter form {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .search-filter select,
+        .search-filter input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 2px solid #007bff;  /* Blue border */
+            margin-right: 10px;
+            outline: none;
+            width: 250px;
+        }
+
+        .search-filter select:focus,
+        .search-filter input[type="text"]:focus {
+            border-color: #0056b3;  /* Darker blue on focus */
+        }
+
+        .search-filter button {
+            background-color: #007bff;  /* Blue background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        /* Add hover effect */
+        .search-filter button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        /* Styling for the filter button */
+        .search-filter button i {
+            margin-right: 8px;
+        }
+
+        .search-filter button:active {
+            transform: scale(1); /* Remove zoom effect on click */
+        }
+
+        /* Add media query for mobile responsiveness */
+        @media (max-width: 768px) {
+            .pagination-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -87,49 +248,57 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </header>
         <br><br>
         <div class="search-filter">
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               <input type="text" placeholder="Search">
-                <button><i class="fas fa-filter"></i> Filters</button>
-                <button><i class="fas fa-calendar-alt"></i> Date</button>
-            </div>
-        <div class="report-container">
-            
-            <table>
-                <thead>
+            <form method="GET" action="report.php">
+                <input type="text" name="search" placeholder="Search" value="<?php echo htmlspecialchars($searchTerm); ?>">
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
+            <form method="GET" action="report.php">
+                <select name="filter">
+                    <option value="">All Violations</option>
+                    <option value="First Violation" <?php echo ($filter == 'First Violation') ? 'selected' : ''; ?>>First Violation</option>
+                    <option value="Second Violation" <?php echo ($filter == 'Second Violation') ? 'selected' : ''; ?>>Second Violation</option>
+                    <option value="Third Violation" <?php echo ($filter == 'Third Violation') ? 'selected' : ''; ?>>Third Violation</option>
+
+                </select>
+                <button type="submit"><i class="fas fa-filter"></i> Filter</button>
+            </form>
+        </div>
+
+        <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Ticket No.</th>
+                    <th>Name</th>
+                    <th>Violation Level</th>
+                    <th>Violation Date</th>
+                    <th>Payment Status</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($reports as $report) : ?>
                     <tr>
-                        <th>Ticket Number</th>
-                        <th>Violation Number</th>
-                        <th>Date</th>
-                        <th>Violator's Name</th>
-                        <th>Payment Status 
-                            <span class="tooltip">
-                                <i class="fas fa-info-circle"></i>
-                                <span class="tooltiptext">Payment Status is verified by Biñan City Treasury and cannot be modified by any POSO admin.</span>
-                            </span>
-                        </th>
-                        <th>Action</th>
+                        <td><?php echo htmlspecialchars($report['ticket_number']); ?></td>
+                        <td><?php echo htmlspecialchars($report['first_name']) . ' ' . htmlspecialchars($report['last_name']); ?></td>
+                        <td><?php echo htmlspecialchars($report['violation_level']); ?></td>
+                        <td><?php echo htmlspecialchars($report['violation_date']); ?></td>
+                        <td><?php echo htmlspecialchars($report['payment_status']); ?></td>
+                        
                     </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($reports as $report) {
-                        $violatorName = $report['first_name'] . ' ' . $report['last_name'];
-                        $paymentStatus = $report['payment_status'] ? strtoupper($report['payment_status']) : 'UNPAID';
-                        echo "<tr>
-                                <td>{$report['ticket_number']}</td>
-                                <td>{$report['violation_level']}</td>
-                                <td>{$report['violation_date']}</td>
-                                <td>{$violatorName}</td>
-                                <td class='".strtolower($paymentStatus)."'>{$paymentStatus}</td>
-                                <td>
-                                    <a href='sm.php?ticket_number={$report['ticket_number']}'><i class='fas fa-eye'></i></a>
-                                    <a href='del_rec.php'><i class='fas fa-trash-alt'></i></a>
-                                </td>
-                              </tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>&search=<?php echo htmlspecialchars($searchTerm); ?>&filter=<?php echo htmlspecialchars($filter); ?>" class="pagination-btn previous">&laquo; Previous</a>
+            <?php endif; ?>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?php echo $i; ?>&search=<?php echo htmlspecialchars($searchTerm); ?>&filter=<?php echo htmlspecialchars($filter); ?>" class="pagination-btn"><?php echo $i; ?></a>
+            <?php endfor; ?>
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?php echo $page + 1; ?>&search=<?php echo htmlspecialchars($searchTerm); ?>&filter=<?php echo htmlspecialchars($filter); ?>" class="pagination-btn next">Next &raquo;</a>
+            <?php endif; ?>
         </div>
     </div>
 </body>

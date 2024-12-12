@@ -52,6 +52,26 @@ $_SESSION['ticket_number'] = $ticket_number;
     </style>
 </head>
 <body>
+<script>
+    // Automatically set today's date, time, and default city
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get current date and time
+        const today = new Date();
+        
+        // Format date as yyyy-MM-dd
+        const formattedDate = today.toISOString().slice(0, 10);
+
+        // Format time as HH:mm
+        const formattedTime = today.toTimeString().slice(0, 5);
+
+        // Set the values to the input fields
+        document.getElementById("date").value = formattedDate;
+        document.getElementById("time").value = formattedTime;
+
+        // Automatically set city to "Biñan City"
+        document.getElementById("city").value = "Biñan City";
+    });
+</script>
         <div class="container">
         <div class="ticket-container">
             <div class="header-container d-flex justify-content-between align-items-center"> 
