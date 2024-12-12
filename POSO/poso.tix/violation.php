@@ -100,12 +100,7 @@ $conn->close();
     </script>
 </head>
 <body>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
         <div class="ticket-container">
         <div class="header-container">
             <img src="/POSO/images/left.png" alt="Left Logo" class="logo">

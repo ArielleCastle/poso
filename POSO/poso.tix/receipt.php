@@ -25,6 +25,25 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("iii", $ticket_number, $ticket_number, $ticket_number);
 $stmt->execute();
 $result = $stmt->get_result();
+
+// Fetch officer information (combine lastname and firstname from hh_login table)
+$sql_officer = "SELECT CONCAT(lastname, ', ', firstname) AS officer_name FROM hh_login LIMIT 1"; 
+$stmt_officer = $conn->prepare($sql_officer);
+$stmt_officer->execute();
+$officer_result = $stmt_officer->get_result();
+$officer = $officer_result->fetch_assoc();
+$officer_name = $officer['officer_name'];
+
+// Fetch violator's information (name, license number, and plate number from report table)
+$sql_violator = "SELECT CONCAT(last_name, ', ', first_name) AS violator_name, license, plate_number FROM report WHERE ticket_number = ?";
+$stmt_violator = $conn->prepare($sql_violator);
+$stmt_violator->bind_param("i", $ticket_number);
+$stmt_violator->execute();
+$violator_result = $stmt_violator->get_result();
+$violator = $violator_result->fetch_assoc();
+$violator_name = $violator['violator_name'];
+$license_number = $violator['license'];
+$plate_number = $violator['plate_number'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +78,7 @@ $result = $stmt->get_result();
             font-size: 14px;   /* Smaller font size */
             margin: 5px;       /* Reduced margin */
             display: inline-block;
-
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -94,7 +113,20 @@ $result = $stmt->get_result();
                     <p class="ticket-label">Ordinance Infraction Ticket</p>
                     <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p>
                 </div>
+  <!-- Officer Information -->
+  <div class="gray">
+                    <h3>Officer Information</h3>
+                </div>
+                <p>Name: <?php echo htmlspecialchars($officer_name); ?></p>
 
+                <!-- Violator Information -->
+                <div class="gray">
+                    <h3>Violator Information</h3>
+                </div>
+                <p>Name: <?php echo htmlspecialchars($violator_name); ?></p>
+                <p>License Number: <?php echo htmlspecialchars($license_number); ?></p>
+                <p>Plate Number: <?php echo htmlspecialchars($plate_number); ?></p>
+                
                 <!-- Violation Breakdown -->
                 <div class="gray">
                     <h3>BREAKDOWN OF VIOLATION CHARGES</h3>
@@ -144,7 +176,7 @@ $result = $stmt->get_result();
                 </table>
 
                 <!-- Notes Section -->
-<br>
+                <br>
                 <h4>NOTES:</h4>
                 <ul>
                     <?php
@@ -171,25 +203,52 @@ $result = $stmt->get_result();
     <script>
         // Print function
         function printReceipt() {
-            // Trigger print
+    try {
+        // Check if the device-specific API is available
+        if (typeof InnerPrinter !== "undefined" && InnerPrinter.print) {
+            const receiptContent = document.querySelector('.container').innerHTML;
+
+            // Format the content for printing if needed
+            const formattedContent = `
+                <html>
+                    <head>
+                        <title>Receipt</title>
+                    </head>
+                    <body>
+                        ${receiptContent}
+                    </body>
+                </html>
+            `;
+
+            // Use the InnerPrinter SDK to send data to the printer
+            InnerPrinter.print(formattedContent, function (success) {
+                if (success) {
+                    alert("Printed successfully!");
+                } else {
+                    alert("Failed to print. Please try again.");
+                }
+            });
+        } else {
+            // Fallback for browser printing
             window.print();
-
-            // Enable "Next" button after a short delay (printing takes some time to complete)
-            setTimeout(() => {
-                document.getElementById('nextButton').disabled = false;
-            }, 2000); // Adjust delay as needed
         }
+    } catch (error) {
+        console.error("Printing error: ", error);
+        alert("Printing failed. Check your printer connection.");
+    }
 
-        // Redirect to next page
-        function goToNextPage() {
-            const ticketNumber = "<?php echo urlencode($ticket_number); ?>";
-            window.location.href = 'BLK.php?ticket_number=' + ticketNumber;
-        }
+    // Enable "Next" button after a short delay
+    setTimeout(() => {
+        document.getElementById('nextButton').disabled = false;
+    }, 2000);
+}
     </script>
 </body>
 </html>
 <?php
 // Close connection
 $stmt->close();
+$stmt_officer->close();
+$stmt_violator->close();
 $conn->close();
 ?>

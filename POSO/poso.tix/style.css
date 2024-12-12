@@ -30,7 +30,7 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     height: auto; /* Allows dynamic height */
-    max-height: 600px; /* Limits height on larger screens */
+    max-height: 800px; /* Limits height on larger screens */
     background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('/POSO/images/poso.png');
     background-position: center;
     background-repeat: no-repeat;
@@ -99,7 +99,7 @@ body {
 }
 
 .ticket-label {
-    font-size: 12px;
+    font-size: 13px;
     color: #000;
     font-weight: bold;
     text-transform: uppercase;
@@ -107,7 +107,7 @@ body {
 }
 
 .ticket-number {
-    font-size: 12px;
+    font-size: 18px;
     color: red;
     font-weight: bold;
     padding: 5px 10px;
