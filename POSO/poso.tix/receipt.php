@@ -34,8 +34,8 @@ $officer_result = $stmt_officer->get_result();
 $officer = $officer_result->fetch_assoc();
 $officer_name = $officer['officer_name'];
 
-// Fetch violator's information (name, license number, and plate number from report table)
-$sql_violator = "SELECT CONCAT(last_name, ', ', first_name) AS violator_name, license, plate_number FROM report WHERE ticket_number = ?";
+// Fetch violator's information (name, license number, plate number, street, city/municipality from report table)
+$sql_violator = "SELECT CONCAT(last_name, ', ', first_name) AS violator_name, license, plate_number, street, city FROM report WHERE ticket_number = ?";
 $stmt_violator = $conn->prepare($sql_violator);
 $stmt_violator->bind_param("i", $ticket_number);
 $stmt_violator->execute();
@@ -44,6 +44,8 @@ $violator = $violator_result->fetch_assoc();
 $violator_name = $violator['violator_name'];
 $license_number = $violator['license'];
 $plate_number = $violator['plate_number'];
+$street = $violator['street'];
+$city = $violator['city'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,12 +94,25 @@ $plate_number = $violator['plate_number'];
         th {
             background-color: #f0f0f0;
         }
-@media print {
-        .button-container {
-            display: none; /* Hide buttons during the printing process */
+ @media print {
+        * {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-    }
-    </style>
+
+        .button-container {
+            display: none; /* Hide buttons during printing */
+        }
+
+        .container {
+            width: 100%; /* Expand to full width for print */
+        }
+
+        .ticket-container {
+            margin: 0;
+            border: none; /* Adjust for clean edges in print */
+        }
+    }    </style>
 </head>
 <body>
     <div class="container">
@@ -118,11 +133,13 @@ $plate_number = $violator['plate_number'];
                     <p class="ticket-label">Ordinance Infraction Ticket</p>
                     <p class="ticket-number">No. <?php echo htmlspecialchars($ticket_number); ?></p>
                 </div>
-  <!-- Officer Information -->
-  <div class="gray">
-                    <h3>Officer Information</h3>
-                </div>
-                <p>Name: <?php echo htmlspecialchars($officer_name); ?></p>
+ <!-- Officer Information -->
+<div class="gray">
+    <h3>Officer Information</h3>
+</div>
+<p>Name: <?php echo htmlspecialchars($officer_name); ?></p>
+<p>Street: <?php echo htmlspecialchars($street); ?></p>
+<p>City/Municipality: <?php echo htmlspecialchars($city); ?></p>
 
                 <!-- Violator Information -->
                 <div class="gray">
@@ -197,7 +214,8 @@ $plate_number = $violator['plate_number'];
                 <!-- Buttons -->
                 <div class="button-container">
                     <button id="printButton" onclick="printReceipt()">Print</button>
-                    <button id="nextButton" class="btn btn-secondary" disabled onclick="goToNextPage()">Next</button>
+                    <button id="nextButton" class="btn btn-secondary" onclick="goToNextPage()">Next</button>
+
                 </div>
             </div>
         <?php else : ?>
@@ -206,7 +224,6 @@ $plate_number = $violator['plate_number'];
     </div>
 
     <script>
-   // Print function
 function printReceipt() {
     try {
         // Hide the buttons before starting the print process
@@ -240,26 +257,21 @@ function printReceipt() {
             // Fallback for browser printing
             window.print();
         }
-
     } catch (error) {
         console.error("Printing error: ", error);
         alert("Printing failed. Check your printer connection.");
+    } finally {
+        // Re-enable the buttons after printing is done
+        document.querySelector('.button-container').style.display = 'block';
     }
-
-    // Re-enable the buttons after printing is done
-    setTimeout(() => {
-        // Enable the "Next" button
-        document.getElementById('nextButton').disabled = false;
-
-        // Retrieve the ticket number from the session or current page
-        const ticketNumber = <?php echo json_encode($ticket_number); ?>;
-
-        // Redirect to BLK.php and pass the ticket number in the query string
-        window.location.href = "BLK.php?ticket_number=" + ticketNumber;
-    }, 1000);  // You can adjust this delay based on when printing completes
 }
 
-    </script>
+function goToNextPage() {
+    // Retrieve the ticket number from the PHP variable
+    const ticketNumber = <?php echo json_encode($ticket_number); ?>;
+    window.location.href = "BLK.php?ticket_number=" + ticketNumber;
+}
+</script>
 </body>
 </html>
 <?php

@@ -34,7 +34,7 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Pagination logic
-$limit = 10; // Number of records per page
+$limit = 8; // Number of records per page
 $page = isset($_GET['page']) ? $_GET['page'] : 1; // Current page
 $start = ($page - 1) * $limit; // Calculate the starting row
 
@@ -51,7 +51,15 @@ $sql = "
             WHEN v2.ticket_number IS NOT NULL THEN 'Second Violation'
             WHEN v3.ticket_number IS NOT NULL THEN 'Third Violation'
             ELSE 'Unknown'
-        END AS violation_level
+        END AS violation_level,
+        CONCAT(
+            IFNULL(v.first_violation, ''),
+            IFNULL(v.others_violation, ''),
+            IFNULL(v2.second_violation, ''),
+            IFNULL(v2.others_violation, ''),
+            IFNULL(v3.third_violation, ''),
+            IFNULL(v3.others_violation, '')
+        ) AS violations
     FROM 
         report AS r
     LEFT JOIN 
@@ -73,7 +81,6 @@ if ($filter) {
             WHEN v.ticket_number IS NOT NULL THEN 'First Violation'
             WHEN v2.ticket_number IS NOT NULL THEN 'Second Violation'
             WHEN v3.ticket_number IS NOT NULL THEN 'Third Violation'
-            
         END = :filter";
 }
 
@@ -246,21 +253,18 @@ $totalPages = ceil($totalRecords / $limit);
             <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
             <img src="/POSO/images/arman.png" alt="POSO Logo">
         </header>
-        <br><br>
+        
+        
         <div class="search-filter">
-            <form method="GET" action="report.php">
-                <input type="text" name="search" placeholder="Search" value="<?php echo htmlspecialchars($searchTerm); ?>">
-                <button type="submit"><i class="fas fa-search"></i> Search</button>
-            </form>
-            <form method="GET" action="report.php">
+            <form action="report.php" method="get">
+                <input type="text" name="search" placeholder="Search..." value="<?php echo htmlspecialchars($searchTerm); ?>">
                 <select name="filter">
-                    <option value="">All Violations</option>
+                    <option value="">All</option>
                     <option value="First Violation" <?php echo ($filter == 'First Violation') ? 'selected' : ''; ?>>First Violation</option>
                     <option value="Second Violation" <?php echo ($filter == 'Second Violation') ? 'selected' : ''; ?>>Second Violation</option>
                     <option value="Third Violation" <?php echo ($filter == 'Third Violation') ? 'selected' : ''; ?>>Third Violation</option>
-
                 </select>
-                <button type="submit"><i class="fas fa-filter"></i> Filter</button>
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
             </form>
         </div>
 
@@ -270,9 +274,10 @@ $totalPages = ceil($totalRecords / $limit);
                     <th>Ticket No.</th>
                     <th>Name</th>
                     <th>Violation Level</th>
+                    <th>Violation/s</th> <!-- New column for Violations -->
                     <th>Violation Date</th>
-                    <th>Payment Status</th>
-                    
+                    <th>Status</th>
+                    <th>Action</th> <!-- New column for the View action -->
                 </tr>
             </thead>
             <tbody>
@@ -281,25 +286,42 @@ $totalPages = ceil($totalRecords / $limit);
                         <td><?php echo htmlspecialchars($report['ticket_number']); ?></td>
                         <td><?php echo htmlspecialchars($report['first_name']) . ' ' . htmlspecialchars($report['last_name']); ?></td>
                         <td><?php echo htmlspecialchars($report['violation_level']); ?></td>
+                        <td><?php echo htmlspecialchars($report['violations']); ?></td> <!-- Display combined violations -->
                         <td><?php echo htmlspecialchars($report['violation_date']); ?></td>
                         <td><?php echo htmlspecialchars($report['payment_status']); ?></td>
-                        
+                        <td>
+                            <a href="sm.php?ticket_number=<?php echo htmlspecialchars($report['ticket_number']); ?>" class="pagination-btn">View</a>
+                        </td> <!-- View link -->
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
 
         <div class="pagination">
-            <?php if ($page > 1): ?>
-                <a href="?page=<?php echo $page - 1; ?>&search=<?php echo htmlspecialchars($searchTerm); ?>&filter=<?php echo htmlspecialchars($filter); ?>" class="pagination-btn previous">&laquo; Previous</a>
-            <?php endif; ?>
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="?page=<?php echo $i; ?>&search=<?php echo htmlspecialchars($searchTerm); ?>&filter=<?php echo htmlspecialchars($filter); ?>" class="pagination-btn"><?php echo $i; ?></a>
-            <?php endfor; ?>
-            <?php if ($page < $totalPages): ?>
-                <a href="?page=<?php echo $page + 1; ?>&search=<?php echo htmlspecialchars($searchTerm); ?>&filter=<?php echo htmlspecialchars($filter); ?>" class="pagination-btn next">Next &raquo;</a>
-            <?php endif; ?>
-        </div>
+    <?php 
+        // Show previous button only if not on the first page
+        if ($page > 1): 
+    ?>
+        <a href="?page=<?php echo max(1, $page - 1); ?>&search=<?php echo urlencode($searchTerm); ?>&filter=<?php echo urlencode($filter); ?>" class="pagination-btn previous">Prev</a>
+    <?php endif; ?>
+
+    <?php 
+        // Display numbered pagination links
+        for ($i = 1; $i <= $totalPages; $i++):
+            $activeClass = ($i == $page) ? 'active' : '';  // Highlight the current page
+    ?>
+        <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($searchTerm); ?>&filter=<?php echo urlencode($filter); ?>" class="pagination-btn <?php echo $activeClass; ?>"><?php echo $i; ?></a>
+    <?php endfor; ?>
+
+    <?php 
+        // Show next button only if not on the last page
+        if ($page < $totalPages): 
+    ?>
+        <a href="?page=<?php echo min($totalPages, $page + 1); ?>&search=<?php echo urlencode($searchTerm); ?>&filter=<?php echo urlencode($filter); ?>" class="pagination-btn next">Next</a>
+    <?php endif; ?>
+</div>
+
+
     </div>
 </body>
 </html>
