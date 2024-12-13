@@ -136,7 +136,7 @@ if ($violation3) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/POSO/admin/css/d_style.css?v=1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/d_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .signature-img {
@@ -144,6 +144,83 @@ if ($violation3) {
             height: auto; /* Maintain aspect ratio */
             max-height: 100px; /* Ensure the height doesn't exceed this */
         }
+
+form.sm {
+    max-height: 80vh;  /* Adjust the max height to ensure it fits within the screen */
+    max-width: 70vh;
+    overflow-y: auto;  /* Allow scrolling within the form if it overflows */
+    padding: 10px;  /* Add some padding to avoid content touching the edges */
+    box-sizing: border-box;  /* Ensure padding is included in the element's total width and height */
+    margin: 10px 0;  /* Add some space around the form */
+    text-align: left;  /* Align the content to the left */
+}
+
+h3.title {
+    text-align: center;  /* Center the title */
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.info-container div {
+    flex: 1;
+}
+    /* Ensure the main content does not scroll */
+    .main-content {
+        height: 100vh;  /* Full height of the viewport */
+        overflow: hidden;  /* Prevent scrolling */
+    }
+
+    /* Style for the signature image */
+    .signature-img {
+    width: 150px; /* Set the desired width */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100px; /* Ensure the height doesn't exceed this */
+}
+
+input:disabled,
+        select:disabled {
+            background-color: #f1f1f1;
+            cursor: not-allowed;
+        }
+
+        /* Edit Button */
+        .edit-btn,
+        .save-cancel-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Style for the Save and Cancel buttons */
+        .save-cancel-btn button {
+            margin: 0 10px;
+        }
+button[type="submit"] {
+    background-color: #007bff; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 12px 28px; /* Padding inside the button */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Keep it inline */
+    font-size: 12px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+button[type="submit"]:focus {
+    outline: none; /* Remove focus outline */
+}
+
     </style>
 </head>
 <body>
@@ -162,59 +239,163 @@ if ($violation3) {
 
     <div class="main-content">
         <header>
-            <img src="/POSO/images/left.png" alt="City Logo">
+            <img src="/POSO/images/left.png" alt="City">
             <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
-            <img src="/POSO/images/arman.png" alt="POSO Logo">
+            <img src="/POSO/images/arman.png" alt="POSO">
         </header>
 
-        <h2>Report for Ticket #<?= htmlspecialchars($report['ticket_number']) ?></h2>
 
-        <div class="violator-info">   
-            <br>
-            <h3>VIOLATOR INFORMATION</h3>
-            <br>
-            <p><strong>Violator's Name:</strong> <?= htmlspecialchars($report['first_name'] . ' ' . $report['middle_name'] . ' ' . $report['last_name']) ?></p>
-            <p><strong>Birthday:</strong> <?= htmlspecialchars($report['dob']) ?></p>
-            <p><strong>Address:</strong> <?= htmlspecialchars($report['address']) ?></p>
-            <p><strong>License Number:</strong> <?= htmlspecialchars($report['license']) ?></p>
-            <p><strong>Violation Date:</strong> <?= htmlspecialchars($report['violation_date']) ?></p>
-            <p><strong>Violation Time:</strong> <?= htmlspecialchars($report['violation_time']) ?></p>
-            <p><strong>License Confiscated:</strong> <?= htmlspecialchars($report['confiscated'] ? 'Yes' : 'No') ?></p>
+<form class="sm" method="POST" action="update_report.php?ticket_number=<?= $_GET['ticket_number'] ?>">
+    <div class="inside">
+        <h2 class="gray" style="display: flex; justify-content: space-between; align-items: center;">
+            ORDINANCE INFRACTION TICKET
+            <span style="color: red;">NO. <?= htmlspecialchars($report['ticket_number']) ?></span>
+        </h2>
+
+        <div class="violator-info">
+    <br>
+    <h3 class="title">VIOLATOR INFORMATION</h3>
+    <br>
+    <div class="info-container">
+        <div><strong>First Name:</strong></div>
+        <div><input type="text" name="first_name" value="<?= htmlspecialchars($report['first_name']) ?>"></div>
+    </div>
+
+    <div class="info-container">
+        <div><strong>Middle Name:</strong></div>
+        <div><input type="text" name="middle_name" value="<?= htmlspecialchars($report['middle_name']) ?>"></div>
+    </div>
+
+    <div class="info-container">
+        <div><strong>Last Name:</strong></div>
+        <div><input type="text" name="last_name" value="<?= htmlspecialchars($report['last_name']) ?>"></div>
+    </div>
+
+    <div class="info-container">
+        <div><strong>Birthday:</strong></div>
+        <div><input type="date" name="dob" value="<?= htmlspecialchars($report['dob']) ?>"></div>
+    </div>
+    <div class="info-container">
+        <div><strong>Address:</strong></div>
+        <div><input type="text" name="address" value="<?= htmlspecialchars($report['address']) ?>"></div>
+    </div>
+    <div class="info-container">
+        <div><strong>License Number:</strong></div>
+        <div><input type="text" name="license" value="<?= htmlspecialchars($report['license']) ?>" readonly></div>
+    </div>
+    <div class="info-container">
+        <div><strong>Violation Date:</strong></div>
+        <div><input type="date" name="violation_date" value="<?= htmlspecialchars($report['violation_date']) ?>" readonly></div>
+    </div>
+    <div class="info-container">
+        <div><strong>Violation Time:</strong></div>
+        <div><input type="time" name="violation_time" value="<?= htmlspecialchars($report['violation_time']) ?>" readonly></div>
+    </div>
+    <div class="info-container">
+        <div><strong>License Confiscated:</strong></div>
+        <div>
+            <select name="confiscated">
+                <option value="1" <?= $report['confiscated'] ? 'selected' : '' ?>>Yes</option>
+                <option value="0" <?= !$report['confiscated'] ? 'selected' : '' ?>>No</option>
+            </select>
         </div>
+    </div>
+</div>
 
         <div class="place-info">
             <br>
-            <h3>PLACE OF VIOLATION</h3>
+            <h3 class="title">PLACE OF VIOLATION</h3>
             <br>
-            <p><strong>Street:</strong> <?= htmlspecialchars($report['street']) ?></p>
-            <p><strong>City/Municipality:</strong> <?= htmlspecialchars($report['city']) ?></p>
-            <p><strong>Vehicle Type:</strong> <?= htmlspecialchars($report['vehicle_type']) ?></p>
-            <p><strong>Plate Number:</strong> <?= htmlspecialchars($report['plate_number']) ?></p>
-            <p><strong>Registration Number:</strong> <?= htmlspecialchars($report['registration']) ?></p>
-            <p><strong>Vehicle Owner:</strong> <?= htmlspecialchars($report['vehicle_owner']) ?></p>
+
+            <div class="info-container">
+                <div><strong>Street:</strong></div>
+                <div><input type="text" name="street" value="<?= htmlspecialchars($report['street']) ?>"readonly></div>
+            </div>
+            <div class="info-container">
+                <div><strong>City/Municipality:</strong></div>
+                <div><input type="text" name="city" value="<?= htmlspecialchars($report['city']) ?>"readonly></div>
+            </div>
+            <div class="info-container">
+    <div><strong>Vehicle Type:</strong></div>
+    <div>
+        <select id="vehicle_type" name="vehicle_type" class="form-control">
+            <option value="">Select Vehicle Type</option>
+            <option value="Passenger Car" <?= $report['vehicle_type'] == 'Passenger Car' ? 'selected' : '' ?>>Passenger Car</option>
+            <option value="Motorcycle or Scooter" <?= $report['vehicle_type'] == 'Motorcycle or Scooter' ? 'selected' : '' ?>>Motorcycle or Scooter</option>
+            <option value="Public Utility Vehicle" <?= $report['vehicle_type'] == 'Public Utility Vehicle' ? 'selected' : '' ?>>Public Utility Vehicle (PUV)</option>
+            <option value="Truck or Delivery Vehicle" <?= $report['vehicle_type'] == 'Truck or Delivery Vehicle' ? 'selected' : '' ?>>Truck or Delivery Vehicle</option>
+            <option value="Commercial Vehicle" <?= $report['vehicle_type'] == 'Commercial Vehicle' ? 'selected' : '' ?>>Commercial Vehicle</option>
+            <option value="Emergency Vehicle" <?= $report['vehicle_type'] == 'Emergency Vehicle' ? 'selected' : '' ?>>Emergency Vehicle</option>
+            <option value="Heavy Equipment" <?= $report['vehicle_type'] == 'Heavy Equipment' ? 'selected' : '' ?>>Heavy Equipment Vehicle</option>
+        </select>
+    </div>
+</div>
+
+            <div class="info-container">
+                <div><strong>Plate Number:</strong></div>
+                <div><input type="text" name="plate_number" value="<?= htmlspecialchars($report['plate_number']) ?>"readonly></div>
+            </div>
+            <div class="info-container">
+                <div><strong>Registration Number:</strong></div>
+                <div><input type="text" name="registration" value="<?= htmlspecialchars($report['registration']) ?>"readonly></div>
+            </div>
+            <div class="info-container">
+                <div><strong>Vehicle Owner:</strong></div>
+                <div><input type="text" name="vehicle_owner" value="<?= htmlspecialchars($report['vehicle_owner']) ?>"></div>
+            </div>
         </div>
 
         <div class="penalty-info">
             <br>
-            <h3>PENALTY</h3>
+            <h3 class="title">PENALTY</h3>
             <br>
-            <p><strong>Status:</strong> <?= htmlspecialchars($status) ?></p>
-            <p><strong>Total Amount:</strong> <?= htmlspecialchars($amount) ?></p>
-            <p><strong>Officer In Charge:</strong> <?= htmlspecialchars($officer_name) ?></p>
-            <p><strong>Officer Signature:</strong> 
-                <?php if ($officer_signature): ?>
-                    <img src="data:image/png;base64,<?= base64_encode($officer_signature) ?>" alt="Officer Signature" class="signature-img">
-                <?php endif; ?>
-            </p>
-            <p><strong>Violator's Signature:</strong> 
-                <?php if ($report['violator_signature']): ?>
-                    <img src="data:image/png;base64,<?= base64_encode($report['violator_signature']) ?>" alt="Violator Signature" class="signature-img">
-                <?php endif; ?>
-            </p>
-        </div>
+           
+            <div class="info-container">
+                <div><strong>Status:</strong></div>
+                <div><input type="text" name="status" value="<?= htmlspecialchars($status) ?>"></div>
+            </div>
+            <div class="info-container">
+                <div><strong>Total Amount:</strong></div>
+                <div><input type="number" name="amount" value="<?= htmlspecialchars($amount) ?>" step="0.01"></div>
+            </div>
+            <div class="info-container">
+                <div><strong>Officer In Charge:</strong></div>
+                <div><input type="text" name="officer_name" value="<?= htmlspecialchars($officer_name) ?>"readonly></div>
+            </div>
 
-        <a href="report.php">Back to Reports</a>
+            <h3 class="title">SIGNATURES</h3>
+            <div class="info-container">
+                <div><strong>Officer Signature:</strong></div>
+                <div>
+                    <?php if ($officer_signature): ?>
+                        <img src="data:image/png;base64,<?= base64_encode($officer_signature) ?>" alt="Officer Signature" class="signature-img">
+                    <?php else: ?>
+                        <?= htmlspecialchars($officer_signature) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="info-container">
+                <div><strong>Violator's Signature:</strong></div>
+                <div>
+                    <?php if ($report['violator_signature']): ?>
+                        <img src="data:image/png;base64,<?= base64_encode($report['violator_signature']) ?>" alt="Violator Signature" class="signature-img">
+                    <?php else: ?>
+                        <?= htmlspecialchars($report['violator_signature']) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div style="text-align: center;">
+    <button type="submit">Update Report</button>
+</div>
+
+</form>
+    </div>
+
+
 
 </body>
 </html>

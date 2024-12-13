@@ -12,7 +12,7 @@ body {
 .sidebar {
     width: 250px;
     background-color: #2161EC;
-    height: 100vh;
+    height: auto;
     padding: 20px;
 }
 
@@ -237,4 +237,80 @@ tbody tr:hover {
     opacity: 1;
 }
 
+/*SM*/
+.sm{
+    background-color: rgb(255, 255, 255);
+    border: 5px solid rgb(23, 81, 255);
+    padding-bottom: 8%;
+}
+
+.gray{
+    background-color: #cec6c6;
+    width: auto;
+    height: 9vh;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.84); 
+}
+
+
+.title {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    background-color: #a0bcfa;
+    width: auto;
+    height: 3vh;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.info-container {
+    display: grid;
+    grid-template-columns: 200px auto; /* Set column widths */
+    gap: 10px; /* Add spacing between columns */
+    margin-bottom: 10px; /* Add spacing between rows */
+    padding-left: 250px; /* Default padding for larger screens */
+    margin-left: auto; /* Automatically adjust left margin */
+    margin-right: auto; /* Automatically adjust right margin */
+    max-width: 80%; /* Limit the width to ensure it's not too wide */
+}
+.info-container div {
+    align-self: center; /* Vertically center the content */
+}
+
+.sign{
+    background-color: red;
+}
+
+.signature-img {
+    max-width: 200px; /* Ensure the image doesn't overflow */
+    height: auto;
+    border: 1px solid #ccc; /* Optional: add a border to the signature image */
+    padding: 5px; /* Optional: add padding inside the image container */
+}
+
+.back {
+    display: flex;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+
+    width: 100%;
+}
+
+.back:hover {
+    background-color: #0056b3;
 }
