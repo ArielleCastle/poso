@@ -162,7 +162,7 @@ session_start();
                 overlay.classList.add('fade-out');
                 setTimeout(() => {
                     overlay.remove();
-                    window.location.href = 'ticket.php'; // Redirect to the dashboard or desired page
+                    window.location.href = 'menu.php'; // Redirect to the dashboard or desired page
                 }, 500);
             }
         }
