@@ -87,88 +87,62 @@ function displayImage($imageData) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/POSO/admin/css/d_style.css?v1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/dashboard.css?v1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-.data-analytics-container {
-    width: 100%;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
-
-.analytics-container {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.container {
-    text-align: center;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    width: 280px;
-}
-
-h2 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-        .analytics-container {
-            display: flex;
-            justify-content: space-evenly;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .chart-container {
-            width: 250px;
-            height: 250px;
-            margin: 20px;
-        }
-
-        .container {
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="/POSO/images/right.png" alt="POSO Logo">
-        </div>
-        <ul>
-            <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+        <!-- <div class="sidebar">
+            <div class="logo">
+                <img src="/POSO/images/right.png" alt="POSO Logo">
+            </div>
+            <ul>
+                <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div> -->
+
+        <img class="bg" src="/POSO/images/db1.jpg" alt="Background Image">
+
 
     <div class="main-content">
-        <header>
-            <img src="/POSO/images/left.png" alt="City Logo">
-            <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
-            <img src="/POSO/images/arman.png" alt="POSO Logo">
-        </header>
+    <header class="navbar">
+    <img src="/POSO/images/left.png" alt="City Logo" class="logo">
+    <div>
+        <p class="public">PUBLIC ORDER & SAFETY OFFICE</p>
+        <p class="city">CITY OF BIÑAN, LAGUNA</p>
+    </div>
+    <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+    
+    <div class="hamburger" id="hamburger-icon">
+    <i class="fa fa-bars"></i> <!-- Font Awesome hamburger icon -->
+</div>
+
+<div class="sidebar" id="sidebar">
+    <div class="logo">
+        <img src="/POSO/images/right.png" alt="POSO Logo">
+    </div>
+    <ul>
+        <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
+        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+</div>
+
+
+</header>
+
+
+
+
 <div class="data-analytics-container">
-    <h1 style="text-align: center;">DATA ANALYTICS</h1>
+    <h1 class="data" style="text-align: center;">DATA ANALYTICS</h1>
     <div class="analytics-container">
         <div class="container">
             <h2>1st Violation Count</h2>
@@ -251,6 +225,15 @@ h2 {
                 cutout: '70%'
             }
         });
-    </script>
+
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerIcon.addEventListener('click', function() {
+        // Toggle the "show" class to the sidebar
+        sidebar.classList.toggle('show');
+    });
+</script>
+
 </body>
 </html>
