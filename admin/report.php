@@ -133,128 +133,45 @@ $totalPages = ceil($totalRecords / $limit);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/POSO/admin/css/d_style.css?v=1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/report.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Sidebar and main layout styling (existing) */
-        /* Pagination container */
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
 
-        /* Pagination buttons */
-        .pagination-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 10px;
-            background-color: #007bff;  /* Blue background */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        /* Add hover effect */
-        .pagination-btn:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: scale(1.05); /* Slight zoom effect */
-        }
-
-        /* Styling for the Previous and Next buttons */
-        .pagination-btn.previous {
-            background-color: #28a745;  /* Green background for Previous */
-        }
-
-        .pagination-btn.next {
-            background-color: #dc3545;  /* Red background for Next */
-        }
-
-        /* Active state when hovering over or clicking */
-        .pagination-btn:active {
-            transform: scale(1); /* Remove zoom effect on click */
-        }
-
-        /* Styling for the filter dropdown and buttons */
-        .search-filter form {
-            display: inline-block;
-            margin-right: 20px;
-        }
-
-        .search-filter select,
-        .search-filter input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 2px solid #007bff;  /* Blue border */
-            margin-right: 10px;
-            outline: none;
-            width: 250px;
-        }
-
-        .search-filter select:focus,
-        .search-filter input[type="text"]:focus {
-            border-color: #0056b3;  /* Darker blue on focus */
-        }
-
-        .search-filter button {
-            background-color: #007bff;  /* Blue background */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        /* Add hover effect */
-        .search-filter button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: scale(1.05); /* Slight zoom effect */
-        }
-
-        /* Styling for the filter button */
-        .search-filter button i {
-            margin-right: 8px;
-        }
-
-        .search-filter button:active {
-            transform: scale(1); /* Remove zoom effect on click */
-        }
-
-        /* Add media query for mobile responsiveness */
-        @media (max-width: 768px) {
-            .pagination-btn {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-        }
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="/POSO/images/right.png" alt="POSO Logo">
-        </div>
-        <ul>
-            <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="report.php" class="active"><i class="fas fa-file-alt"></i> Reports</a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+
+
     <div class="main-content">
-        <header>
-            <img src="/POSO/images/left.png" alt="City Logo">
-            <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
-            <img src="/POSO/images/arman.png" alt="POSO Logo">
-        </header>
-        
-        
+
+            <header class="navbar">
+            <img src="/POSO/images/left.png" alt="City Logo" class="logo">
+            <div>
+                <p class="public">PUBLIC ORDER & SAFETY OFFICE</p>
+                <p class="city">CITY OF BIÑAN, LAGUNA</p>
+            </div>
+            <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+            
+            <div class="hamburger" id="hamburger-icon">
+            <i class="fa fa-bars"></i> <!-- Font Awesome hamburger icon -->
+    </div>
+
+        <?php
+            $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
+        ?>
+
+            <div class="sidebar" id="sidebar">
+                <div class="logo">
+                    <img src="/POSO/images/right.png" alt="POSO Logo">
+                </div>
+                <ul>
+                    <li><a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'active' : '' ?>"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="profile.php" class="<?= $current_page == 'profile.php' ? 'active' : '' ?>"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="report.php" class="<?= $current_page == 'report.php' ? 'active' : '' ?>"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.php" class="<?= $current_page == 'settings.php' ? 'active' : '' ?>"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+            </header>
+
         <div class="search-filter">
             <form action="report.php" method="get">
                 <input type="text" name="search" placeholder="Search..." value="<?php echo htmlspecialchars($searchTerm); ?>">
@@ -268,7 +185,7 @@ $totalPages = ceil($totalRecords / $limit);
             </form>
         </div>
 
-        <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Ticket No.</th>
@@ -320,8 +237,17 @@ $totalPages = ceil($totalRecords / $limit);
         <a href="?page=<?php echo min($totalPages, $page + 1); ?>&search=<?php echo urlencode($searchTerm); ?>&filter=<?php echo urlencode($filter); ?>" class="pagination-btn next">Next</a>
     <?php endif; ?>
 </div>
-
-
     </div>
+
+    <script> 
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerIcon.addEventListener('click', function() {
+        // Toggle the "show" class to the sidebar
+        sidebar.classList.toggle('show');
+    });
+    </script>
+
 </body>
 </html>
