@@ -2,11 +2,38 @@
 // Start the session
 session_start();
 
-// Generate random 8-digit ticket number
-$ticket_number = rand(100000, 999999);
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "poso";
 
-// Store the ticket number in the session
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch the last issued ticket number from the database
+$sql = "SELECT ticket_number FROM report ORDER BY ID DESC LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $last_ticket_number = (int)$row['ticket_number']; // Convert to integer
+    $new_ticket_number = $last_ticket_number + 1; // Increment
+} else {
+    $new_ticket_number = 1; // Start from 000001 if no tickets exist
+}
+
+// Format the ticket number to six digits
+$ticket_number = str_pad($new_ticket_number, 6, '0', STR_PAD_LEFT);
+
+// Store in session for persistence
 $_SESSION['ticket_number'] = $ticket_number;
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -79,24 +106,36 @@ $_SESSION['ticket_number'] = $ticket_number;
         <form action="submit_ticket.php" method="POST">
             <input type="hidden" name="ticket_number" value="<?php echo $ticket_number; ?>">
 
-            <!-- Violator's Information Section -->
-            <div class="gray">
-                <p>Violator's Information:</p> 
-            </div>
-            <div class="section">
-                <label for="first_name">First Name:</label>
-                <input type="text" id="first_name" name="first_name" required class="form-control">
-                <label for="middle_name">Middle Name:</label>
-                <input type="text" id="middle_name" name="middle_name" class="form-control">
-                <label for="last_name">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" required class="form-control">
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required class="form-control">
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" required class="form-control">
-                <label for="license">License No.:</label>
-                <input type="text" id="license" name="license" required class="form-control">
-            </div>
+          <!-- Violator's Information Section -->
+<div class="gray">
+    <p>Violator's Information:</p> 
+</div>
+<div class="section">
+   <div class="section">
+    <label for="license">License No.:</label>
+    <div class="input-group">
+        <input type="text" id="license" name="license" required class="form-control">
+        <button type="button" class="btn btn-info" id="checkLicense">Check License</button>
+    </div>
+    <small id="licenseCheckResult" class="text-danger"></small>
+</div>
+    
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" required class="form-control">
+    
+    <label for="middle_name">Middle Name:</label>
+    <input type="text" id="middle_name" name="middle_name" class="form-control">
+    
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required class="form-control">
+    
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" required class="form-control">
+    
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required class="form-control">
+</div>
+
 
             <!-- License Confiscation Section -->
             <div class="gray">
@@ -160,10 +199,45 @@ $_SESSION['ticket_number'] = $ticket_number;
     </div>
 </div>
 
-
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $("#checkLicense").click(function () {
+        var licenseNo = $("#license").val().trim();
+        if (licenseNo === "") {
+            $("#licenseCheckResult").text("Please enter a License No.");
+            return;
+        }
+        
+        $.ajax({
+            url: "check_license.php",
+            type: "POST",
+            data: { license: licenseNo },
+            success: function (response) {
+                var result = JSON.parse(response);
+                if (result.status === "exists") {
+                    $("#licenseCheckResult").text("License number exists.").css("color", "green");
+
+                    // Auto-fill the violator's information
+                    $("#first_name").val(result.data.first_name);
+                    $("#middle_name").val(result.data.middle_name);
+                    $("#last_name").val(result.data.last_name);
+                    $("#dob").val(result.data.dob);
+                    $("#address").val(result.data.address);
+                } else {
+                    $("#licenseCheckResult").text("License number not found.").css("color", "red");
+                }
+            },
+            error: function () {
+                $("#licenseCheckResult").text("Error checking license.").css("color", "red");
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
