@@ -136,113 +136,46 @@ if ($violation3) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/POSO/admin/css/d_style.css">
+    <link rel="stylesheet" href="/POSO/admin/css/sm.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .signature-img {
-            width: 150px; /* Set the desired width */
-            height: auto; /* Maintain aspect ratio */
-            max-height: 100px; /* Ensure the height doesn't exceed this */
-        }
 
-form.sm {
-    max-height: 80vh;  /* Adjust the max height to ensure it fits within the screen */
-    max-width: 70vh;
-    overflow-y: auto;  /* Allow scrolling within the form if it overflows */
-    padding: 10px;  /* Add some padding to avoid content touching the edges */
-    box-sizing: border-box;  /* Ensure padding is included in the element's total width and height */
-    margin: 10px 0;  /* Add some space around the form */
-    text-align: left;  /* Align the content to the left */
-}
-
-h3.title {
-    text-align: center;  /* Center the title */
-}
-
-.info-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-}
-
-.info-container div {
-    flex: 1;
-}
-    /* Ensure the main content does not scroll */
-    .main-content {
-        height: 100vh;  /* Full height of the viewport */
-        overflow: hidden;  /* Prevent scrolling */
-    }
-
-    /* Style for the signature image */
-    .signature-img {
-    width: 150px; /* Set the desired width */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Ensure the height doesn't exceed this */
-}
-
-input:disabled,
-        select:disabled {
-            background-color: #f1f1f1;
-            cursor: not-allowed;
-        }
-
-        /* Edit Button */
-        .edit-btn,
-        .save-cancel-btn {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        /* Style for the Save and Cancel buttons */
-        .save-cancel-btn button {
-            margin: 0 10px;
-        }
-button[type="submit"] {
-    background-color: #007bff; /* Green background */
-    color: white; /* White text */
-    border: none; /* No border */
-    padding: 12px 28px; /* Padding inside the button */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Keep it inline */
-    font-size: 12px; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    border-radius: 8px; /* Rounded corners */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
-}
-
-button[type="submit"]:hover {
-    background-color: #45a049; /* Darker green on hover */
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
-}
-
-button[type="submit"]:focus {
-    outline: none; /* Remove focus outline */
-}
-
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="/POSO/images/right.png" alt="POSO Logo">
-        </div>
-        <ul>
-            <li><a href="dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="report.php" class="active"><i class="fas fa-file-alt"></i> Reports</a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
 
-    <div class="main-content">
-        <header>
-            <img src="/POSO/images/left.png" alt="City">
-            <h1>PUBLIC ORDER & SAFETY OFFICE<br>CITY OF BIÑAN</h1>
-            <img src="/POSO/images/arman.png" alt="POSO">
-        </header>
+        <nav class="navbar">
+            <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
+                    <div>
+                        <p class="public" >PUBLIC ORDER & SAFETY OFFICE</p>
+                        <p class="city">CITY OF BIÑAN, LAGUNA</p>
+                    </div>
+                    <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+
+                    <div class="hamburger" id="hamburger-icon">
+                       <i class="fa fa-bars"></i>
+
+        </nav>
+            <img class="bg" src="/POSO/images/plaza1.jpg" alt="Background Image">
+
+
+    <?php
+            $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
+        ?>
+
+            <div class="sidebar" id="sidebar">
+                <div class="logo">
+                    <img src="/POSO/images/right.png" alt="POSO Logo">
+                </div>
+                <ul>
+                    <li><a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'active' : '' ?>"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="profile.php" class="<?= $current_page == 'profile.php' ? 'active' : '' ?>"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="report.php" class="<?= $current_page == 'report.php' ? 'active' : '' ?>"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.php" class="<?= $current_page == 'settings.php' ? 'active' : '' ?>"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+            </header>
+
+            <img class="bg" src="/POSO/images/plaza1.jpg" alt="Background Image">
 
 
 <form class="sm" method="POST" action="update_report.php?ticket_number=<?= $_GET['ticket_number'] ?>">
@@ -395,6 +328,15 @@ button[type="submit"]:focus {
 </form>
     </div>
 
+    <script> 
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburgerIcon.addEventListener('click', function() {
+        // Toggle the "show" class to the sidebar
+        sidebar.classList.toggle('show');
+    });
+    </script>
 
 
 </body>
