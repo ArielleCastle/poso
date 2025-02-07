@@ -6,7 +6,8 @@ session_start();
 include 'connection.php'; // Ensure the path is correct
 
 // Get the ticket number from the session
-$ticket_number = $_SESSION['ticket_number'];
+$ticket_number = $_GET['ticket_number']; // Get from URL
+
 
 // Get the first name, last name, and total from the URL
 $first_name = $_GET['first_name'];

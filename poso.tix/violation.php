@@ -5,12 +5,13 @@ session_start();
 include 'connection.php'; // Ensure the path is correct
 
 // Get the ticket number from the session
-$ticket_number = $_SESSION['ticket_number'];
+$ticket_number = $_GET['ticket_number']; // Get from URL
+
 
 // Fetch the first name and last name from the report table using the ticket number
 $sql = "SELECT first_name, last_name FROM report WHERE ticket_number = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $ticket_number);
+$stmt->bind_param("s", $ticket_number);
 $stmt->execute();
 $result = $stmt->get_result();
 $report = $result->fetch_assoc();
@@ -117,7 +118,8 @@ $conn->close();
         </div>
 
         <!-- Violation Form -->
-        <form action="process_violation.php?first_name=<?php echo urlencode($first_name); ?>&last_name=<?php echo urlencode($last_name); ?>" method="POST">
+       <form action="process_violation.php?ticket_number=<?php echo urlencode($ticket_number); ?>&first_name=<?php echo urlencode($first_name); ?>&last_name=<?php echo urlencode($last_name); ?>" method="POST">
+
             <input type="hidden" name="ticket_number" value="<?php echo $ticket_number; ?>">
 
             <div class="gray1">

@@ -6,7 +6,7 @@ session_start();
 include 'connection.php'; // Ensure the path is correct
 
 // Get the ticket number from the session
-$ticket_number = $_SESSION['ticket_number'];
+$ticket_number = $_GET['ticket_number']; // Get from URL
 
 // Get the first name and last name from the URL
 $first_name = $_GET['first_name'];
@@ -15,7 +15,7 @@ $last_name = $_GET['last_name'];
 // Fetch the first name and last name from the report table using the ticket number
 $sql = "SELECT * FROM report WHERE ticket_number = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $ticket_number);
+$stmt->bind_param("s", $ticket_number);
 $stmt->execute();
 $result = $stmt->get_result();
 $report = $result->fetch_assoc();
@@ -52,17 +52,17 @@ if ($report) {
             // No previous violations found, this will be the first violation
             $sql_insert = "INSERT INTO violation (ticket_number, first_name, last_name, first_violation, first_total, others_violation, others_total, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("isssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
+            $stmt_insert->bind_param("ssssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
         } elseif ($violation_count == 1 && $violation_count2 == 0) {
             // One violation already exists, this will be the second violation
             $sql_insert = "INSERT INTO 2_violation (ticket_number, first_name, last_name, second_violation, second_total, others_violation, others_total, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("isssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
+            $stmt_insert->bind_param("ssssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
         } elseif ($violation_count == 1 && $violation_count2 == 1 && $violation_count3 == 0) {
             // Two violations already exist, this will be the third violation
             $sql_insert = "INSERT INTO 3_violation (ticket_number, first_name, last_name, third_violation, third_total, others_violation, others_total, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("isssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
+            $stmt_insert->bind_param("ssssssss", $ticket_number, $first_name, $last_name, implode(", ", $violations), $total_amount, $others_violation, $others_total, $notes);
         } else {
             echo "Cannot add more violations.";
             exit();
@@ -70,8 +70,9 @@ if ($report) {
 
         // Execute the insertion
         if ($stmt_insert->execute()) {
-            header("Location: receipt.php?first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&total=" . urlencode($total_amount));
-            exit();
+            header("Location: receipt.php?ticket_number=" . urlencode($ticket_number) . "&first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&total=" . urlencode($total_amount));
+exit();
+
         } else {
             echo "Error: " . $stmt_insert->error;
         }

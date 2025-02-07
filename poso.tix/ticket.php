@@ -1,5 +1,5 @@
 <?php
-// Start the session
+// Start session
 session_start();
 
 // Database connection
@@ -27,12 +27,13 @@ if ($result->num_rows > 0) {
     $new_ticket_number = 1; // Start from 000001 if no tickets exist
 }
 
-// Format the ticket number to six digits
+// Format ticket number with leading zeros
 $ticket_number = str_pad($new_ticket_number, 6, '0', STR_PAD_LEFT);
 
-// Store in session for persistence
+// Store in session
 $_SESSION['ticket_number'] = $ticket_number;
 
+// Close connection
 $conn->close();
 ?>
 
@@ -74,6 +75,28 @@ $conn->close();
         .fab i {
             font-size: 24px;
         }
+.btn-secondary {
+    background-color: #6c757d; /* Bootstrap grey */
+    border-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-transform: uppercase; /* Makes text all capital letters */
+    text-decoration: none; /* Removes underline */
+    display: block; /* Makes it behave like a block element */
+    width: 200px; /* Adjust width as needed */
+    text-align: center; /* Centers the text */
+    margin: 10px auto; /* Centers the button */
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade of grey */
+    border-color: #545b62;
+    text-decoration: none; /* Ensure underline doesn't appear */
+}
+
     </style>
 </head>
 <body>
@@ -206,6 +229,8 @@ $conn->close();
 
 <script>
 $(document).ready(function () {
+    var originalLicense = ""; // Store the original license number
+
     $("#checkLicense").click(function () {
         var licenseNo = $("#license").val().trim();
         if (licenseNo === "") {
@@ -221,13 +246,14 @@ $(document).ready(function () {
                 var result = JSON.parse(response);
                 if (result.status === "exists") {
                     $("#licenseCheckResult").text("License number exists.").css("color", "green");
+                    originalLicense = licenseNo; // Store the valid license number
 
-                    // Auto-fill the violator's information
-                    $("#first_name").val(result.data.first_name);
-                    $("#middle_name").val(result.data.middle_name);
-                    $("#last_name").val(result.data.last_name);
-                    $("#dob").val(result.data.dob);
-                    $("#address").val(result.data.address);
+                    // Auto-fill and disable fields
+                    $("#first_name").val(result.data.first_name).prop("readonly", true);
+                    $("#middle_name").val(result.data.middle_name).prop("readonly", true);
+                    $("#last_name").val(result.data.last_name).prop("readonly", true);
+                    $("#dob").val(result.data.dob).prop("readonly", true);
+                    $("#address").val(result.data.address).prop("readonly", true);
                 } else {
                     $("#licenseCheckResult").text("License number not found.").css("color", "red");
                 }
@@ -236,6 +262,16 @@ $(document).ready(function () {
                 $("#licenseCheckResult").text("Error checking license.").css("color", "red");
             }
         });
+    });
+
+    // Detect changes in the license input field
+    $("#license").on("input", function () {
+        var currentLicense = $(this).val().trim();
+        if (originalLicense !== "" && currentLicense !== originalLicense) {
+            // Clear fields and make them editable again
+            $("#first_name, #middle_name, #last_name, #dob, #address").val("").prop("readonly", false);
+            $("#licenseCheckResult").text(""); // Clear the validation message
+        }
     });
 });
 </script>
