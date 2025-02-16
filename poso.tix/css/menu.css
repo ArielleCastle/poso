@@ -1,0 +1,180 @@
+/* Global reset and box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+/* Center the container on the screen */
+.container {
+    display: flex;
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    min-height: 90vh;        /* Full viewport height for vertical centering */
+}
+
+/* Adjusted ticket-container for POS layout */
+.ticket-container {
+    width: 100%;
+    max-width: 425px; /* Ensures it's not too wide */
+    padding: 15px; /* Padding for content spacing */
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    height: auto; /* Allows dynamic height */
+    max-height: 800px; /* Limits height on larger screens */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('/POSO/images/poso.png');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Header container */
+.header-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0c1ddd;
+    height: 60px;
+    box-shadow: 0 4px 8px -2px rgb(80, 79, 79);
+    margin-bottom: 10px;
+}
+
+.logo {
+    padding: 5px;
+    width: 40px;
+    height: auto;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.city {
+    font-size: 10px;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .ticket-container {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .ticket-container {
+        margin: 5px;
+        padding: 10px;
+    }
+}
+
+/* Specific responsive adjustments for smaller devices */
+@media only screen and (max-width: 1080px) {
+    .ticket-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    h1 { font-size: 40px; }
+    label { font-size: 14px; }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .ticket-container {
+        padding: 5px;
+    }
+
+    h1 { font-size: 20px; }
+    .ticket-label { font-size: 14px; }
+    .ticket-number { font-size: 14px; }
+    label { font-size: 12px; }
+
+    input[type="text"], input[type="date"], input[type="time"] {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+/* html */
+.ticket-container {
+    width: 500px;
+    height: 600px;
+}
+
+.square-button {
+    width: 150px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 30px; /* Adds rounded corners */
+    font-size: 16px;
+    background-color: white; /* Transparent background */
+    border: 2px solid #007bff; /* Blue border */
+    color: #007bff; /* Blue text */
+    font-weight: bold;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+
+}
+
+.square-button:hover {
+    background-color: rgb(252, 252, 190); /* Slight blue background on hover */
+    color: #0056b3; /* Darker blue text on hover */
+    border-color: #0056b3; /* Darker blue border on hover */
+}
+
+.btn-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    justify-content: center; /* Center buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    gap: 20px; /* Adds space between the buttons */
+    height: 80%; /* Takes full height of the container */
+}
+
+.container {
+    height: 100vh; /* Full viewport height */
+}
+/* html */

@@ -13,81 +13,8 @@ session_start();
 
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/POSO/admin/css/style.css">
-    <style>
-        /* Fullscreen overlay styling */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1050;
-        }
-        
-        /* Popup styling */
-        .popup {
-            background-color: #ffffff;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
+    <link rel="stylesheet" href="/POSO/poso.tix/css/index.css">
 
-        /* Styling for success and error icons */
-        .popup .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        .popup .error-icon { color: #d9534f; }
-        .popup .success-icon { color: #28a745; }
-        
-        .popup h2 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .popup .error-text { color: #d9534f; }
-        .popup .success-text { color: #28a745; }
-
-        .popup p {
-            color: #6c757d;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .popup button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .popup .retry-btn { background-color: #d9534f; color: white; }
-        .popup .continue-btn { background-color: #28a745; color: white; }
-
-        /* Fade-in and fade-out animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-        .fade-out {
-            animation: fadeOut 0.5s ease forwards;
-        }
-    </style>
 </head>
 <body class="d-flex flex-column align-items-center justify-content-center vh-100">
     <!-- Error Popup Overlay -->
@@ -117,13 +44,34 @@ session_start();
     <?php endif; ?>
 
     <!-- Header Section -->
-    <div class="text-center mb-4">
-        <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
-        <h2>CITY OF BIÑAN</h2>
-<br>
-<br>
-    </div>
+    <nav class="navbar">
+    <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
+            <div>
+                <p class="public" >PUBLIC ORDER & SAFETY OFFICE</p>
+                <p class="city">CITY OF BIÑAN, LAGUNA</p>
+            </div>
+            <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+    </nav>
+
+
     <div class="container" style="max-width: 295px;">
+            <div class="login-form">
+                <h3>LOGIN</h3>
+                <form class="type" action="authenticate.php" method="POST">
+                    <label for="username"> Username</label>
+                    <input type="text" name="username" id="username" required>
+                    
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                    <a href="#">Forgot Password?</a>
+                    <br>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+
+
+    <!-- <div class="container" style="max-width: 295px;">
         <div class="card shadow-sm p-4">
             <form action="authenticate.php" method="POST">
                 <div class="mb-3">
@@ -141,7 +89,7 @@ session_start();
                 <button type="submit" class="btn btn-primary w-100">LOGIN</button>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
