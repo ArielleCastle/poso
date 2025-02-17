@@ -12,55 +12,59 @@ session_start();
     <title>POSO Ticketing System</title>
 
     <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/POSO/poso.tix/css/index.css">
-
+    <link rel="stylesheet" href="/poso/poso.tix/css/index.css">
 </head>
-<body class="d-flex flex-column align-items-center justify-content-center vh-100">
-    <!-- Error Popup Overlay -->
-    <?php if (isset($_SESSION['error'])): ?>
-        <div id="errorOverlay" class="overlay fade-in">
-            <div id="errorPopup" class="popup">
-                <div class="icon error-icon">✖</div>
-                <h2 class="error-text">Oh no!</h2>
-                <p><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></p>
-                <button onclick="closeError()" class="retry-btn">Try Again</button>
+<body>
+
+
+
+<div class="container d-flex justify-content-center align-items-center">
+        <div class="ticket-container d-flex flex-column justify-content-center align-items-center">
+            <div class="header-container d-flex justify-content-between align-items-center"> 
+                <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
+                <div class="col text-center">
+                    <p class="public">PUBLIC ORDER & SAFETY OFFICE</p>
+                    <p class="city">-City of Binan, Laguna-</p>
+                </div>
+                <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
             </div>
-        </div>
-    <?php endif; ?>
 
-    <!-- Success Popup Overlay -->
-    <?php if (isset($_SESSION['success'])): ?>
-        <div id="successOverlay" class="overlay fade-in">
-            <div id="successPopup" class="popup">
-                <div class="icon success-icon">✔</div>
-                <h2 class="success-text">Login Successfully!</h2>
-                <p><?php echo $_SESSION['success']; ?></p>
-                <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p> <!-- Display username here -->
-                <button onclick="continueToDashboard()" class="continue-btn">Continue</button>
+        <!-- Error Popup Overlay -->
+        <?php if (isset($_SESSION['error'])): ?>
+            <div id="errorOverlay" class="overlay fade-in">
+                <div id="errorPopup" class="popup">
+                    <div class="icon error-icon">✖</div>
+                    <h2 class="error-text">Oh no!</h2>
+                    <p><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></p>
+                    <button onclick="closeError()" class="retry-btn">Try Again</button>
+                </div>
             </div>
-        </div>
-        <?php unset($_SESSION['success']); // Remove success message after displaying ?>
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <!-- Header Section -->
-    <nav class="navbar">
-    <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
-            <div>
-                <p class="public" >PUBLIC ORDER & SAFETY OFFICE</p>
-                <p class="city">CITY OF BIÑAN, LAGUNA</p>
+        <!-- Success Popup Overlay -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <div id="successOverlay" class="overlay fade-in">
+                <div id="successPopup" class="popup">
+                    <div class="icon success-icon">✔</div>
+                    <h2 class="success-text">Login Successfully!</h2>
+                    <p><?php echo $_SESSION['success']; ?></p>
+                    <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
+                    <button onclick="continueToDashboard()" class="continue-btn">Continue</button>
+                </div>
             </div>
-            <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
-    </nav>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
 
-
-    <div class="container" style="max-width: 295px;">
+        <!-- Login Form -->
+        <div class="btn-container">
             <div class="login-form">
                 <h3>LOGIN</h3>
                 <form class="type" action="authenticate.php" method="POST">
                     <label for="username"> Username</label>
                     <input type="text" name="username" id="username" required>
-                    
+
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" required>
                     <a href="#">Forgot Password?</a>
@@ -69,27 +73,12 @@ session_start();
                 </form>
             </div>
         </div>
+    </div>
+</div>
 
+</div>
+</div>
 
-    <!-- <div class="container" style="max-width: 295px;">
-        <div class="card shadow-sm p-4">
-            <form action="authenticate.php" method="POST">
-                <div class="mb-3">
-                    <label for="username" class="form-label">USERNAME</label>
-                    <input type="text" name="username" id="username" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">PASSWORD</label>
-                    <input type="password" name="password" id="password" class="form-control" required>
-                </div>
-                <div class="text-end mb-3">
-                    <a href="#" class="small text-decoration-none">Forgot Password?</a>
-                </div>
-<br>
-                <button type="submit" class="btn btn-primary w-100">LOGIN</button>
-            </form>
-        </div>
-    </div> -->
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -110,12 +99,11 @@ session_start();
                 overlay.classList.add('fade-out');
                 setTimeout(() => {
                     overlay.remove();
-                    window.location.href = 'menu.php'; // Redirect to the dashboard or desired page
+                    window.location.href = 'menu.php'; 
                 }, 500);
             }
         }
 
-        // Automatically close the success popup after 4 seconds
         setTimeout(() => {
             if (document.getElementById('successOverlay')) {
                 continueToDashboard();

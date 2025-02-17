@@ -47,7 +47,7 @@ $conn->close();
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="stylesheet" href="/poso/poso.tix/style.css">
     <style>
         /* FAB styling */
         .fab {
@@ -85,7 +85,7 @@ $conn->close();
     text-transform: uppercase; /* Makes text all capital letters */
     text-decoration: none; /* Removes underline */
     display: block; /* Makes it behave like a block element */
-    width: 200px; /* Adjust width as needed */
+    width: 100%; /* Adjust width as needed */
     text-align: center; /* Centers the text */
     margin: 10px auto; /* Centers the button */
     transition: background-color 0.3s ease;

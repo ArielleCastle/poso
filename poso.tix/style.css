@@ -175,6 +175,7 @@ select {
     border-radius: 4px;
     font-size: 14px;
 }
+
 .radio-container {
     display: flex;
     align-items: center;
@@ -269,3 +270,5 @@ button:hover {
     max-width: 100%;
     height: auto;
 }
+
+/* DROPDOWN VIOLATION */

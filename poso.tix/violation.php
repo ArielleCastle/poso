@@ -53,6 +53,11 @@ $conn->close();
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="/POSO/images/poso.png" type="image/png">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"> </script>
+
     <link rel="stylesheet" href="style.css?v=1.0">
     <script>
         function calculateTotal() {
@@ -98,6 +103,44 @@ $conn->close();
                 checkbox.addEventListener('change', calculateTotal);
             });
         });
+
+        //DROPDOWN
+        $(document).ready(function() {
+    // Enable Select2 on the dropdown
+    $('.violations').select2({
+        placeholder: "Select Violations",
+        allowClear: true,
+        closeOnSelect: false, // Keep dropdown open to select multiple options
+    });
+
+    // Function to calculate total
+    function calculateTotal() {
+        let total = 0;
+        $('.violations option:selected').each(function() {
+            total += parseFloat($(this).data('price')) || 0;
+        });
+        $('#total').val(total.toFixed(2));
+        
+        // Handle 'OTHERS' field visibility
+        if ($('#others-checkbox').is(':selected')) {
+            $('#othersViolation').show();
+            $('#othersTotal').show();
+            $('#others_total').val(total.toFixed(2));  // Set the same total for OTHERS section
+        } else {
+            $('#othersViolation').hide();
+            $('#othersTotal').hide();
+        }
+    }
+
+    // Recalculate total on change in the select
+    $('.violations').on('change', function() {
+        calculateTotal();
+    });
+
+    // Initial total calculation on page load
+    calculateTotal();
+});
+
     </script>
 </head>
 <body>
@@ -125,7 +168,8 @@ $conn->close();
             <div class="gray1">
                 <p>You are hereby cited for committing the traffic violations:</p>
             </div>
-            <div class="section">
+            
+            <!-- <div class="section">
                 <input type="checkbox" name="violations[]" value="FAILURE TO WEAR HELMET - 200" data-price="200"> FAILURE TO WEAR HELMET <br>
                 <input type="checkbox" name="violations[]" value="OPEN MUFFLER/NUISANCE - 1000" data-price="1000"> OPEN MUFFLER/NUISANCE <br>
                 <input type="checkbox" name="violations[]" value="ARROGANT - 1000" data-price="1000"> ARROGANT<br>
@@ -159,20 +203,59 @@ $conn->close();
                     <label for="others_violation">Describe OTHERS Violation:</label>
                     <input type="text" id="others_violation" name="others_violation" placeholder="Specify others violation">
                 </div>
-            </div>
+            </div> -->
 
-            <div class="gray">
-                <p>Total Amount:</p>
-            </div>
+
             <div class="section">
-                <label for="total">Total:</label>
-                <input type="text" id="total" name="total" value="0.00" readonly>
-            </div>
+    <select class="violations" name="violations[]" multiple="multiple" style="width: 100%;">
+        <option value="ARROGANT - 1000" data-price="1000">ARROGANT</option>
+        <option value="DISREGARDING TRAFFIC OFFICER - 200" data-price="200">DISREGARDING TRAFFIC OFFICER</option>
+        <option value="DISREGARDING TRAFFIC SIGNS - 200" data-price="200">DISREGARDING TRAFFIC SIGNS</option>
+        <option value="DRIVING UNDER THE INFLUENCE OF LIQUOR - 200" data-price="200">DRIVING UNDER THE INFLUENCE OF LIQUOR</option>
+        <option value="DRIVING UNREGISTERED VEHICLE - 500" data-price="500">DRIVING UNREGISTERED VEHICLE</option>
+        <option value="DRIVING WITHOUT LICENSE/INVALID LICENSE - 1000" data-price="1000">DRIVING WITHOUT LICENSE/INVALID LICENSE</option>
+        <option value="FAILURE TO WEAR HELMET - 200" data-price="200">FAILURE TO WEAR HELMET</option>
+        <option value="ILLEGAL PARKING - 200" data-price="200">ILLEGAL PARKING</option>
+        <option value="ILLEGAL VENDING - 200" data-price="200">ILLEGAL VENDING</option>
+        <option value="IMPOUNDED - 800" data-price="800">IMPOUNDED</option>
+        <option value="INVOLVE IN ACCIDENT - 200" data-price="200">INVOLVE IN ACCIDENT</option>
+        <option value="JAY WALKING - 200" data-price="200">JAY WALKING</option>
+        <option value="LOADING/UNLOADING IN PROHIBITED ZONE - 200" data-price="200">LOADING/UNLOADING IN PROHIBITED ZONE</option>
+        <option value="NO OR/CR WHILE DRIVING - 500" data-price="500">NO OR/CR WHILE DRIVING</option>
+        <option value="NO SIDE MIRROR - 200" data-price="200">NO SIDE MIRROR</option>
+        <option value="OPEN MUFFLER/NUISANCE - 1000" data-price="1000">OPEN MUFFLER/NUISANCE</option>
+        <option value="ONEWAY - 200" data-price="200">ONEWAY</option>
+        <option value="OPERATING OUT OF LINE - 2000" data-price="2000">OPERATING OUT OF LINE</option>
+        <option value="OVERLOADING - 200" data-price="200">OVERLOADING</option>
+        <option value="RECKLESS DRIVING - 100" data-price="100">RECKLESS DRIVING</option>
+        <option value="SMOKE BELCHING - 500" data-price="500">SMOKE BELCHING</option>
+        <option value="STALLED VEHICLE - 200" data-price="200">STALLED VEHICLE</option>
+        <option value="TRIP - CUTTING - 200" data-price="200">TRIP - CUTTING</option>
+        <option value="TRUCK BAN - 200" data-price="200">TRUCK BAN</option>
+        <option value="UNREGISTERED MOTOR VEHICLE - 500" data-price="500">UNREGISTERED MOTOR VEHICLE</option>
+        <option value="INVALID OR NO FRANCHISE/COLORUM - 2000" data-price="2000">INVALID OR NO FRANCHISE/COLORUM</option>
+        <option value="WEARING SLIPPERS/SHORTS/SANDO - 300" data-price="300">WEARING SLIPPERS/SHORTS/SANDO</option>
+        <option value="OTHERS" id="others-checkbox" onclick="toggleOthersField()" data-price="0">OTHERS</option>
+    </select>
+    <div class="section" id="othersViolation" style="display:none;">
+        <label for="others_violation">Describe OTHERS Violation:</label>
+        <input type="text" id="others_violation" name="others_violation" placeholder="Specify others violation">
+    </div>
+</div>
 
-            <div class="section" id="othersTotal" style="display:none;">
-                <label for="others_total">Total for OTHERS:</label>
-                <input type="text" id="others_total" name="others_total" value="0.00">
-            </div>
+<div class="gray">
+    <p>Total Amount:</p>
+</div>
+
+<div class="section">
+    <label for="total">Total:</label>
+    <input type="text" id="total" name="total" value="0.00" readonly>
+</div>
+
+<div class="section" id="othersTotal" style="display:none;">
+    <label for="others_total">Total for OTHERS:</label>
+    <input type="text" id="others_total" name="others_total" value="0.00">
+</div>
 
             <div class="gray">
                 <p>Notes:</p>

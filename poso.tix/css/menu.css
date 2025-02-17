@@ -8,8 +8,11 @@
 /* Body styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    padding: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 50vh;
+    margin: 0;
 }
 
 /* Center the container on the screen */
@@ -17,20 +20,22 @@ body {
     display: flex;
     justify-content: center;  /* Center horizontally */
     align-items: center;      /* Center vertically */
-    min-height: 90vh;        /* Full viewport height for vertical centering */
+    height: 100vh;        /* Full viewport height for vertical centering */
 }
 
 /* Adjusted ticket-container for POS layout */
 .ticket-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;  /* Ensure header expands full width */
     width: 100%;
-    max-width: 425px; /* Ensures it's not too wide */
-    padding: 15px; /* Padding for content spacing */
-    margin: 20px auto;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    height: auto; /* Allows dynamic height */
-    max-height: 800px; /* Limits height on larger screens */
+    max-width: 425px;
+    padding: 0; /* Remove padding */
+    margin: 0;  /* Remove margin */
+    border-radius: 0; /* Remove rounding */
+    overflow: hidden; /* Prevent extra space */
+    height: 100%;
+    max-height: 100%;
     background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('/POSO/images/poso.png');
     background-position: center;
     background-repeat: no-repeat;
@@ -38,18 +43,17 @@ body {
 
 /* Header container */
 .header-container {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: #0c1ddd;
-    height: 60px;
+    height: 80px;
+    padding: 0;  /* Remove all padding */
+    margin: 0;   /* Remove any margin */
+    border-radius: 0; /* Remove any rounding */
     box-shadow: 0 4px 8px -2px rgb(80, 79, 79);
-    margin-bottom: 10px;
+    width: 100%;
+    z-index: 10;
 }
 
 .logo {
@@ -152,7 +156,6 @@ body {
     background-color: white; /* Transparent background */
     border: 2px solid #007bff; /* Blue border */
     color: #007bff; /* Blue text */
-    font-weight: bold;
     transition: all 0.3s ease; /* Smooth transition for hover effects */
     box-shadow: 0 0 10px rgb(0, 0, 0);
 
@@ -162,6 +165,7 @@ body {
     background-color: rgb(252, 252, 190); /* Slight blue background on hover */
     color: #0056b3; /* Darker blue text on hover */
     border-color: #0056b3; /* Darker blue border on hover */
+    font-weight: bold;
 }
 
 .btn-container {
