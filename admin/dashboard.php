@@ -106,7 +106,7 @@ function displayImage($imageData) {
             </ul>
         </div> -->
 
-        <img class="bg" src="/POSO/images/db1.jpg" alt="Background Image">
+        <img class="bg" src="/POSO/images/db.jpg" alt="Background Image">
 
 
     <div class="main-content">

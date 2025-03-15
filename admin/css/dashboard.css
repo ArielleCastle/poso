@@ -145,10 +145,8 @@ h2 {
     right: 20px;
 }
 .hamburger:hover{
-    color: #f29d27;
+    color: #95d6ff;
 }
-
-
 
 /* To show the sidebar */
 .sidebar.show {
@@ -177,7 +175,7 @@ h2 {
 }
 
 .sidebar ul li :hover {
-   background-color: #f29d27;
+   background-color: #95d6ff;
    width: 100%;
    border-radius: 5px;
     color: black;
@@ -192,7 +190,7 @@ h2 {
 }
 
 .sidebar ul li a.active {
-    background-color: #f29d27;
+    background-color: #95d6ff;
     border-radius: 5px;
     color: rgb(0, 0, 0);
 }
@@ -204,9 +202,6 @@ h2 {
 .main-content {
     flex-grow: 1;
 }
-
-
-
 
 header {
     text-align: center;

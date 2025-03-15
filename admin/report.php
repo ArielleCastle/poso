@@ -133,12 +133,11 @@ $totalPages = ceil($totalRecords / $limit);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/POSO/admin/css/report.css?v=1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/report.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <body>
-
 
     <div class="main-content">
 
