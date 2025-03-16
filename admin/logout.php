@@ -27,7 +27,7 @@ if (isset($_POST['confirm'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POSO Admin Logout</title>
-    <link rel="stylesheet" href="/POSO/admin/css/style.css?v=1.0">
+    <link rel="stylesheet" href="/POSO/admin/css/index.css?v=1.0">
     <script>
         function confirmLogout() {
             // Automatically submit the form for confirmation
@@ -36,21 +36,20 @@ if (isset($_POST['confirm'])) {
     </script>
 </head>
 <body>
-    <br>
-    <div class="header-container">
-        <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
+<nav class="navbar">
+<img src="/POSO/images/left.png" alt="Left Logo" class="logo">
         <div>
-            <h1>PUBLIC ORDER & SAFETY OFFICE</h1>
-            <h2>CITY OF BIÑAN</h2>
+            <p class="public" >PUBLIC ORDER & SAFETY OFFICE</p>
+            <p class="city">CITY OF BIÑAN, LAGUNA</p>
         </div>
-        <img src="/POSO/images/arman.png" alt="Right Logo" class="logo">
-    </div> 
-    <br><br><br>
-
+        <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+</nav>
+<img class="bg" src="/POSO/images/plaza1.jpg" alt="Background Image">
+<br><br><br>
     <div class="container">
         <div class="login-form">
             <h3>Logout Confirmation</h3>
-            <p>Are you sure you want to logout?</p>
+<p style="text-align: center; font-size: 18px;">Are you sure you want to logout?</p>
             <form id="logoutForm" method="POST" action="logout.php">
                 <input type="hidden" name="confirm" value="yes">
                 <button type="button" onclick="confirmLogout()">Yes</button>
