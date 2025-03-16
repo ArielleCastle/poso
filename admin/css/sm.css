@@ -32,7 +32,7 @@
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
     margin-bottom: 20px; /* Space below the header */
-    background-color: #e82222;
+    background-color: #000000;
     color: white;
     border-bottom-style: outset;
     border-color: rgb(234, 190, 34);
@@ -83,7 +83,7 @@ margin: 0 100px; /* Space between logo and text */
     right: 20px;
 }
 .hamburger:hover{
-    color: #f29d27;
+    color: #95d6ff;
 }
 
 /* To show the sidebar */
@@ -111,7 +111,7 @@ margin: 0 100px; /* Space between logo and text */
 }
 
 .sidebar ul li :hover {
-   background-color: #f29d27;
+   background-color: #95d6ff;
    width: 100%;
    border-radius: 5px;
     color: black;
@@ -126,7 +126,7 @@ margin: 0 100px; /* Space between logo and text */
 }
 
 .sidebar ul li a.active {
-    background-color: #f29d27;
+    background-color: #95d6ff;
     border-radius: 5px;
     color: rgb(0, 0, 0);
 }
