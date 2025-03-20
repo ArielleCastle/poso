@@ -105,13 +105,13 @@ $conn->close();
         });
 
         //DROPDOWN
-        $(document).ready(function() {
-    // Enable Select2 on the dropdown
-    $('.violations').select2({
-        placeholder: "Select Violations",
-        allowClear: true,
-        closeOnSelect: false, // Keep dropdown open to select multiple options
-    });
+                $(document).ready(function() {
+            // Enable Select2 on the dropdown
+            $('.violations').select2({
+                placeholder: "Select Violations ▼",
+                allowClear: true,
+                closeOnSelect: false, // Keep dropdown open to select multiple options
+            });
 
     // Function to calculate total
     function calculateTotal() {
@@ -140,10 +140,24 @@ $conn->close();
     // Initial total calculation on page load
     calculateTotal();
 });
-
     </script>
 </head>
 <body>
+    <style>
+    .select2-container--default .select2-selection--multiple{
+    height: 40px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #a0d4fa;
+    background-color: #eef6fa;
+    border-radius: 4px;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+}
+
+        </style>
 
         <div class="ticket-container">
         <div class="header-container">
@@ -169,7 +183,7 @@ $conn->close();
                 <p>You are hereby cited for committing the traffic violations:</p>
             </div>
             
-            <!-- <div class="section">
+            <!-- <div class="section" remove>
                 <input type="checkbox" name="violations[]" value="FAILURE TO WEAR HELMET - 200" data-price="200"> FAILURE TO WEAR HELMET <br>
                 <input type="checkbox" name="violations[]" value="OPEN MUFFLER/NUISANCE - 1000" data-price="1000"> OPEN MUFFLER/NUISANCE <br>
                 <input type="checkbox" name="violations[]" value="ARROGANT - 1000" data-price="1000"> ARROGANT<br>

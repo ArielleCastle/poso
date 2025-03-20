@@ -136,10 +136,21 @@ if ($violation3) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/poso/admin/css/sm.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"> </script>
+
+    <link rel="stylesheet" href="/poso/admin/css/sm2.css">
+
+
 </head>
 <body>
+<div id="overlay"></div>
+
     <nav class="navbar">
         <img src="/POSO/images/left.png" alt="Left Logo" class="logo">
         <div>
@@ -277,8 +288,8 @@ if ($violation3) {
                     <div><strong>Officer In Charge:</strong></div>
                     <div><input type="text" name="officer_name" value="<?= htmlspecialchars($officer_name) ?>"readonly></div>
                 </div>
-                <h3 class="title">VIOLATIONS</h3>
-                <div class="violations-container">
+                <h3 class="title">VIOLATIONS</h3> <br>
+                
 
 <script>
 function sortViolationsAlphabetically() {
@@ -306,9 +317,10 @@ window.addEventListener('load', sortViolationsAlphabetically);
 
 // or call it after the form is generated.
 // sortViolationsAlphabetically()
+
 </script>
 
-                    <label><input type="checkbox" name="violations[]" value="FAILURE TO WEAR HELMET"> FAILURE TO WEAR HELMET</label><br>
+                    <!-- <label><input type="checkbox" name="violations[]" value="FAILURE TO WEAR HELMET"> FAILURE TO WEAR HELMET</label><br>
                     <label><input type="checkbox" name="violations[]" value="OPEN MUFFLER/NUISANCE"> OPEN MUFFLER/NUISANCE</label><br>
                     <label><input type="checkbox" name="violations[]" value="ARROGANT"> ARROGANT</label><br>
                     <label><input type="checkbox" name="violations[]" value="ONEWAY"> ONEWAY</label><br>
@@ -336,9 +348,46 @@ window.addEventListener('load', sortViolationsAlphabetically);
                     <label><input type="checkbox" name="violations[]" value="WEARING SLIPPERS/SHORTS/SANDO"> WEARING SLIPPERS/SHORTS/SANDO</label><br>
                     <label><input type="checkbox" name="violations[]" value="ILLEGAL VENDING"> ILLEGAL VENDING</label><br>
                     <label><input type="checkbox" name="violations[]" value="IMPOUNDED"> IMPOUNDED</label><br>
-                    <label><input type="checkbox" name="violations[]" value="OTHERS"> OTHERS</label><br>
-                </div>
-                <h3 class="title">SIGNATURES</h3>
+                    <label><input type="checkbox" name="violations[]" value="OTHERS"> OTHERS</label><br> -->
+             
+                    <div class="section">
+                    <select class="violations" name="violations[]" multiple="multiple" style="width: 100%;">
+        <option value="ARROGANT - 1000" data-price="1000">ARROGANT</option>
+        <option value="DISREGARDING TRAFFIC OFFICER - 200" data-price="200">DISREGARDING TRAFFIC OFFICER</option>
+        <option value="DISREGARDING TRAFFIC SIGNS - 200" data-price="200">DISREGARDING TRAFFIC SIGNS</option>
+        <option value="DRIVING UNDER THE INFLUENCE OF LIQUOR - 200" data-price="200">DRIVING UNDER THE INFLUENCE OF LIQUOR</option>
+        <option value="DRIVING UNREGISTERED VEHICLE - 500" data-price="500">DRIVING UNREGISTERED VEHICLE</option>
+        <option value="DRIVING WITHOUT LICENSE/INVALID LICENSE - 1000" data-price="1000">DRIVING WITHOUT LICENSE/INVALID LICENSE</option>
+        <option value="FAILURE TO WEAR HELMET - 200" data-price="200">FAILURE TO WEAR HELMET</option>
+        <option value="ILLEGAL PARKING - 200" data-price="200">ILLEGAL PARKING</option>
+        <option value="ILLEGAL VENDING - 200" data-price="200">ILLEGAL VENDING</option>
+        <option value="IMPOUNDED - 800" data-price="800">IMPOUNDED</option>
+        <option value="INVOLVE IN ACCIDENT - 200" data-price="200">INVOLVE IN ACCIDENT</option>
+        <option value="JAY WALKING - 200" data-price="200">JAY WALKING</option>
+        <option value="LOADING/UNLOADING IN PROHIBITED ZONE - 200" data-price="200">LOADING/UNLOADING IN PROHIBITED ZONE</option>
+        <option value="NO OR/CR WHILE DRIVING - 500" data-price="500">NO OR/CR WHILE DRIVING</option>
+        <option value="NO SIDE MIRROR - 200" data-price="200">NO SIDE MIRROR</option>
+        <option value="OPEN MUFFLER/NUISANCE - 1000" data-price="1000">OPEN MUFFLER/NUISANCE</option>
+        <option value="ONEWAY - 200" data-price="200">ONEWAY</option>
+        <option value="OPERATING OUT OF LINE - 2000" data-price="2000">OPERATING OUT OF LINE</option>
+        <option value="OVERLOADING - 200" data-price="200">OVERLOADING</option>
+        <option value="RECKLESS DRIVING - 100" data-price="100">RECKLESS DRIVING</option>
+        <option value="SMOKE BELCHING - 500" data-price="500">SMOKE BELCHING</option>
+        <option value="STALLED VEHICLE - 200" data-price="200">STALLED VEHICLE</option>
+        <option value="TRIP - CUTTING - 200" data-price="200">TRIP - CUTTING</option>
+        <option value="TRUCK BAN - 200" data-price="200">TRUCK BAN</option>
+        <option value="UNREGISTERED MOTOR VEHICLE - 500" data-price="500">UNREGISTERED MOTOR VEHICLE</option>
+        <option value="INVALID OR NO FRANCHISE/COLORUM - 2000" data-price="2000">INVALID OR NO FRANCHISE/COLORUM</option>
+        <option value="WEARING SLIPPERS/SHORTS/SANDO - 300" data-price="300">WEARING SLIPPERS/SHORTS/SANDO</option>
+        <option value="OTHERS" id="others-checkbox" onclick="toggleOthersField()" data-price="0">OTHERS</option>
+    </select>
+    <div class="section" id="othersViolation" style="display:none;">
+        <label for="others_violation">Describe OTHERS Violation:</label>
+        <input type="text" id="others_violation" name="others_violation" placeholder="Specify others violation">
+    </div>
+             
+                </div> <br>
+                <h3 class="title">SIGNATURES</h3> <br>
                 <div class="info-container">
                     <div><strong>Officer Signature:</strong></div>
                     <div>
@@ -350,7 +399,7 @@ window.addEventListener('load', sortViolationsAlphabetically);
                     </div>
                 </div>
                 <div class="info-container">
-                    <div><strong>Violator's Signature:</strong></div>
+                    <div><strong>Violator's Signature:</strong></div>  <br><br><br><br><br><br>
                     <div>
                         <?php if ($report['violator_signature']): ?>
                             <img src="data:image/png;base64,<?= base64_encode($report['violator_signature']) ?>" alt="Violator Signature" class="signature-img">
@@ -361,19 +410,49 @@ window.addEventListener('load', sortViolationsAlphabetically);
                 </div>
             </div>
         </div>
-        <div style="text-align: center;">
-            <button type="submit">Update Report</button>
+        <div style="text-align: center;"> 
+            <button type="submit">Update</button> <br><br><br>
         </div>
     </form>
     </div>
-    <script>
-        const hamburgerIcon = document.getElementById('hamburger-icon');
-        const sidebar = document.getElementById('sidebar');
 
-        hamburgerIcon.addEventListener('click', function() {
-            // Toggle the "show" class to the sidebar
-            sidebar.classList.toggle('show');
-        });
+    <script>
+        //hamburger and sidebar
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
+hamburgerIcon.addEventListener('click', function(event) {
+    sidebar.classList.toggle('show'); // Toggle sidebar
+    overlay.classList.toggle('show'); // Show overlay
+    event.stopPropagation(); // Prevent immediate close
+});
+
+// Close sidebar & overlay when clicking on the overlay
+overlay.addEventListener('click', function() {
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+});
+
+// Close sidebar & overlay when clicking outside of the sidebar
+document.addEventListener('click', function(event) {
+    if (!sidebar.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    }
+});
+
+
+
+    //DROPDOWN of violations
+                $(document).ready(function() {
+            // Enable Select2 on the dropdown
+            $('.violations').select2({
+                placeholder: "Select Violations ▼",
+                allowClear: true,
+                closeOnSelect: false, // Keep dropdown open to select multiple options
+            });
+        })
     </script>
 </body>
 </html>

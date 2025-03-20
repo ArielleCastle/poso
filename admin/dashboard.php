@@ -87,12 +87,14 @@ function displayImage($imageData) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/POSO/admin/css/dashboard.css?v1.0">
+    <link rel="stylesheet" href="/poso/admin/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body>
+<div id="overlay"></div>
+
         <!-- <div class="sidebar">
             <div class="logo">
                 <img src="/POSO/images/right.png" alt="POSO Logo">
@@ -142,7 +144,7 @@ function displayImage($imageData) {
 
 
 <div class="data-analytics-container">
-    <h1 class="data" style="text-align: center;">DATA ANALYTICS</h1>
+    <h1 class="data" style="text-align: center; color:white;">DATA ANALYTICS</h1>
     <div class="analytics-container">
         <div class="container">
             <h2>1st Violation Count</h2>
@@ -226,13 +228,34 @@ function displayImage($imageData) {
             }
         });
 
-    const hamburgerIcon = document.getElementById('hamburger-icon');
-    const sidebar = document.getElementById('sidebar');
 
-    hamburgerIcon.addEventListener('click', function() {
-        // Toggle the "show" class to the sidebar
-        sidebar.classList.toggle('show');
-    });
+//hamburger and sidebar
+const hamburgerIcon = document.getElementById('hamburger-icon');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
+hamburgerIcon.addEventListener('click', function(event) {
+    sidebar.classList.toggle('show'); // Toggle sidebar
+    overlay.classList.toggle('show'); // Show overlay
+    event.stopPropagation(); // Prevent immediate close
+});
+
+// Close sidebar & overlay when clicking on the overlay
+overlay.addEventListener('click', function() {
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+});
+
+// Close sidebar & overlay when clicking outside of the sidebar
+document.addEventListener('click', function(event) {
+    if (!sidebar.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    }
+});
+
+    
+    
 </script>
 
 </body>

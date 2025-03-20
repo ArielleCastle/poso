@@ -133,11 +133,12 @@ $totalPages = ceil($totalRecords / $limit);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/POSO/admin/css/report.css">
+    <link rel="stylesheet" href="/poso/admin/css/report.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <body>
+<div id="overlay"></div>
 
     <div class="main-content">
 
@@ -239,13 +240,32 @@ $totalPages = ceil($totalRecords / $limit);
     </div>
 
     <script> 
-            const hamburgerIcon = document.getElementById('hamburger-icon');
-    const sidebar = document.getElementById('sidebar');
 
-    hamburgerIcon.addEventListener('click', function() {
-        // Toggle the "show" class to the sidebar
-        sidebar.classList.toggle('show');
-    });
+//hamburger and sidebar
+const hamburgerIcon = document.getElementById('hamburger-icon');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
+hamburgerIcon.addEventListener('click', function(event) {
+    sidebar.classList.toggle('show'); // Toggle sidebar
+    overlay.classList.toggle('show'); // Show overlay
+    event.stopPropagation(); // Prevent immediate close
+});
+
+// Close sidebar & overlay when clicking on the overlay
+overlay.addEventListener('click', function() {
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+});
+
+// Close sidebar & overlay when clicking outside of the sidebar
+document.addEventListener('click', function(event) {
+    if (!sidebar.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    }
+});
+
     </script>
 
 </body>
