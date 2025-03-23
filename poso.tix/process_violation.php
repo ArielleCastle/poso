@@ -76,108 +76,142 @@ if ($report) {
         // Execute the violation insertion
         if ($stmt_insert->execute()) {
             // Insert into discount table
-            $sql_discount = "INSERT INTO discount (ticket_number, license, first_name, last_name) VALUES (?, ?, ?, ?)";
+            $sql_discount = "INSERT INTO discount (ticket_number, license, first_name, last_name, OTHERS, OTHERS_P) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt_discount = $conn->prepare($sql_discount);
-            $stmt_discount->bind_param("ssss", $ticket_number, $license, $first_name, $last_name);
+            $stmt_discount->bind_param("ssssss", $ticket_number, $license, $first_name, $last_name, $others_violation, $others_total);
             $stmt_discount->execute();
 
             // Check each violation and update discount table
             foreach ($violations as $violation) {
                 $violation_name = explode(' - ', $violation)[0]; // Extract violation name
                 $sql_update_discount = "UPDATE discount SET ";
+                $setClauseAdded = false;
 
                 switch ($violation_name) {
                     case 'FAILURE TO WEAR HELMET':
                         $sql_update_discount .= "FTWH = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'OPEN MUFFLER/NUISANCE':
                         $sql_update_discount .= "OMN = 1000";
+                        $setClauseAdded = true;
                         break;
                     case 'ARROGANT':
                         $sql_update_discount .= "ARG = 1000";
+                        $setClauseAdded = true;
                         break;
                     case 'ONEWAY':
                         $sql_update_discount .= "ONEWAY = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'ILLEGAL PARKING':
                         $sql_update_discount .= "ILP = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'DRIVING WITHOUT LICENSE/INVALID LICENSE':
                         $sql_update_discount .= "DWL = 1000";
+                        $setClauseAdded = true;
                         break;
                     case 'NO OR/CR WHILE DRIVING':
                         $sql_update_discount .= "NORCR = 500";
+                        $setClauseAdded = true;
                         break;
                     case 'DRIVING UNREGISTERED VEHICLE':
                         $sql_update_discount .= "DUV = 500";
+                        $setClauseAdded = true;
                         break;
                     case 'UNREGISTERED MOTOR VEHICLE':
                         $sql_update_discount .= "UMV = 500";
+                        $setClauseAdded = true;
                         break;
                     case 'OBSTRUCTION':
                         $sql_update_discount .= "OBS = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'DISREGARDING TRAFFIC SIGNS':
                         $sql_update_discount .= "DTS = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'DISREGARDING TRAFFIC OFFICER':
                         $sql_update_discount .= "DTO = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'TRUCK BAN':
                         $sql_update_discount .= "TRB = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'STALLED VEHICLE':
-                        $sql_update_discount .= "STV =200";
+                        $sql_update_discount .= "STV = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'RECKLESS DRIVING':
                         $sql_update_discount .= "RCD = 100";
+                        $setClauseAdded = true;
                         break;
                     case 'DRIVING UNDER THE INFLUENCE OF LIQUOR':
                         $sql_update_discount .= "DUL = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'INVALID OR NO FRANCHISE/COLORUM':
                         $sql_update_discount .= "INF = 2000";
+                        $setClauseAdded = true;
                         break;
                     case 'OPERATING OUT OF LINE':
                         $sql_update_discount .= "OOL = 2000";
+                        $setClauseAdded = true;
                         break;
                     case 'TRIP - CUTTING':
                         $sql_update_discount .= "TCT = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'OVERLOADING':
                         $sql_update_discount .= "OVL = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'LOADING/UNLOADING IN PROHIBITED ZONE':
                         $sql_update_discount .= "LUZ = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'INVOLVE IN ACCIDENT':
                         $sql_update_discount .= "IVA = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'SMOKE BELCHING':
                         $sql_update_discount .= "SMB = 500";
+                        $setClauseAdded = true;
                         break;
                     case 'NO SIDE MIRROR':
                         $sql_update_discount .= "NSM = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'JAY WALKING':
                         $sql_update_discount .= "JWK = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'WEARING SLIPPERS/SHORTS/SANDO':
                         $sql_update_discount .= "WSS = 300";
+                        $setClauseAdded = true;
                         break;
                     case 'ILLEGAL VENDING':
                         $sql_update_discount .= "ILV = 200";
+                        $setClauseAdded = true;
                         break;
                     case 'IMPOUNDED':
                         $sql_update_discount .= "IMP = 800";
+                        $setClauseAdded = true;
                         break;
-                    // Add cases for other violations as needed
+                    default:
+                        // No SET clause needed if no match
+                        break;
                 }
 
-                $sql_update_discount .= " WHERE ticket_number = ?";
-                $stmt_update_discount = $conn->prepare($sql_update_discount);
-                $stmt_update_discount->bind_param("s", $ticket_number);
-                $stmt_update_discount->execute();
+                if ($setClauseAdded) {
+                    $sql_update_discount .= " WHERE ticket_number = ?";
+                    $stmt_update_discount = $conn->prepare($sql_update_discount);
+                    $stmt_update_discount->bind_param("s", $ticket_number);
+                    $stmt_update_discount->execute();
+                }
+
             }
 
             header("Location: receipt.php?ticket_number=" . urlencode($ticket_number) . "&first_name=" . urlencode($first_name) . "&last_name=" . urlencode($last_name) . "&total=" . urlencode($total_amount));
