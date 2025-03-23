@@ -101,7 +101,7 @@ function displayImage($imageData) {
             </div>
             <ul>
                 <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
                 <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
                 <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
                 <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -130,7 +130,7 @@ function displayImage($imageData) {
     </div>
     <ul>
         <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
         <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
         <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
