@@ -58,7 +58,7 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"> </script>
 
-    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="stylesheet" href="style1.css">
     <script>
         function calculateTotal() {
             let checkboxes = document.querySelectorAll('input[name="violations[]"]:checked');

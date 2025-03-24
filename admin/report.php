@@ -133,26 +133,42 @@ $totalPages = ceil($totalRecords / $limit);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports</title>
-    <link rel="stylesheet" href="/poso/admin/css/report.css">
+    <link rel="stylesheet" href="/poso/admin/css/report1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
+
 <body>
+
 <div id="overlay"></div>
 
-    <div class="main-content">
-
-            <header class="navbar">
-            <img src="/POSO/images/left.png" alt="City Logo" class="logo">
-            <div>
-                <p class="public">PUBLIC ORDER & SAFETY OFFICE</p>
-                <p class="city">CITY OF BIÑAN, LAGUNA</p>
-            </div>
-            <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
-            
-            <div class="hamburger" id="hamburger-icon">
-            <i class="fa fa-bars"></i> <!-- Font Awesome hamburger icon -->
+<div class="main-content">
+    <header class="navbar">
+    <img src="/POSO/images/left.png" alt="City Logo" class="logo">
+    <div>
+        <p class="public">PUBLIC ORDER & SAFETY OFFICE</p>
+        <p class="city">CITY OF BIÑAN, LAGUNA</p>
     </div>
+    <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+    
+    <div class="hamburger" id="hamburger-icon">
+    <i class="fa fa-bars"></i> <!-- Font Awesome hamburger icon -->
+    </div>
+    </header>
+
+
+<div class="sidebar" id="sidebar">
+    <div class="logo">
+        <img src="/POSO/images/right.png" alt="POSO Logo">
+    </div>
+    <ul>
+        <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
+        <li><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+</div>
 
         <?php
             $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
@@ -185,7 +201,7 @@ $totalPages = ceil($totalRecords / $limit);
             </form>
         </div>
 
-        <table class="table">
+        <table class="table mt-5">
             <thead>
                 <tr>
                     <th>Ticket No.</th>
@@ -265,7 +281,6 @@ document.addEventListener('click', function(event) {
         overlay.classList.remove('show');
     }
 });
-
     </script>
 
 </body>

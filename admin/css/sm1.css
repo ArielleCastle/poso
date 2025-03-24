@@ -38,7 +38,6 @@
     border-bottom-style: outset;
     border-color: #95d6ff;
     border-width: 5px; /* Set the width of the border */
-
 }
 
 .public{
@@ -338,9 +337,12 @@ padding: 10px;  /* Add some padding to avoid content touching the edges */
 box-sizing: border-box;  /* Ensure padding is included in the element's total width and height */
 margin: 10px auto;  /* Add some space around the form */
 text-align: left;  /* Align the content to the left */
+margin-top: 70px;
 }
 
-
+.spacer{
+    height:100px;
+}
 
 h3.title {
 text-align: center;  /* Center the title */

@@ -9,7 +9,9 @@ body {
     display: flex;
 }
 
-  .navbar {
+.navbar {
+    position: fixed;
+    width: 100%;
     display: flex; /* Use flexbox layout */
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
@@ -19,6 +21,7 @@ body {
     border-bottom-style: outset;
     border-color: #95d6ff;
     border-width: 5px; /* Set the width of the border */
+    z-index: 99;
 }
 
 .public{
@@ -39,6 +42,14 @@ height: auto;
 margin: 0 100px; /* Space between logo and text */
 }
 
+
+.data{
+color: rgb(0, 0, 0);
+text-align: center;
+font-size: 20px;
+margin-top: 15px;
+letter-spacing: 4px; 
+}
 
 /* Initially, the sidebar is hidden */
 .sidebar {
@@ -98,32 +109,18 @@ margin: 0 100px; /* Space between logo and text */
 }
 /* sidebar close */
 
-
 /* Style for the hamburger icon */
 .hamburger {
     font-size: 35px;
     cursor: pointer;
     z-index: 100;
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
 }
 .hamburger:hover{
-    color: #95d6ff !important;
+    color: #95d6ff;
 }
-
-.table {
-    border: 2px solid rgb(100, 100, 100);
-    padding: 20px;
-    text-align: center;
-    border-collapse: collapse;
-    margin: 20px auto; /* Adds space around the table and centers it */
-    width: 90%; /* Adjusts width for better spacing */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.84); 
-    background-color: white;
-}
-
-
 
 /* To show the sidebar */
 .sidebar.show {
@@ -145,6 +142,7 @@ margin: 0 100px; /* Space between logo and text */
 
 .sidebar ul {
     list-style: none;
+    text-align: center;
 }
 
 .sidebar ul li {
@@ -181,8 +179,22 @@ margin: 0 100px; /* Space between logo and text */
 
 .main-content {
     flex-grow: 1;
-    background-color: rgb(255, 255, 255) !important;
 }
+
+
+.table {
+    border: 2px solid rgb(100, 100, 100);
+    padding: 20px;
+    text-align: center;
+    border-collapse: collapse;
+    margin: 20px auto; /* Adds space around the table and centers it */
+    width: 90%; /* Adjusts width for better spacing */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.84); 
+    background-color: white;
+
+    margin-top: 90px;
+}
+
 
 header {
     text-align: center;

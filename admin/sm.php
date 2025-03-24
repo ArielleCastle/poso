@@ -144,7 +144,7 @@ if ($violation3) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"> </script>
 
-    <link rel="stylesheet" href="/poso/admin/css/sm2.css">
+    <link rel="stylesheet" href="/poso/admin/css/sm1.css">
 
 
 </head>
@@ -179,8 +179,9 @@ if ($violation3) {
         </ul>
     </div>
     </header>
+    
     <img class="bg" src="/POSO/images/plaza1.jpg" alt="Background Image">
-    <form class="sm" method="POST" action="update_report.php?ticket_number=<?= $_GET['ticket_number'] ?>">
+    <form class="sm mb-5" method="POST" action="update_report.php?ticket_number=<?= $_GET['ticket_number'] ?>">
         <div class="inside">
             <h2 class="gray" style="display: flex; justify-content: space-between; align-items: center;">
                 ORDINANCE INFRACTION TICKET
@@ -289,7 +290,7 @@ if ($violation3) {
                     <div><input type="text" name="officer_name" value="<?= htmlspecialchars($officer_name) ?>"readonly></div>
                 </div>
                 <h3 class="title">VIOLATIONS</h3> <br>
-                
+
 
 <script>
 function sortViolationsAlphabetically() {
@@ -320,36 +321,6 @@ window.addEventListener('load', sortViolationsAlphabetically);
 
 </script>
 
-                    <!-- <label><input type="checkbox" name="violations[]" value="FAILURE TO WEAR HELMET"> FAILURE TO WEAR HELMET</label><br>
-                    <label><input type="checkbox" name="violations[]" value="OPEN MUFFLER/NUISANCE"> OPEN MUFFLER/NUISANCE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="ARROGANT"> ARROGANT</label><br>
-                    <label><input type="checkbox" name="violations[]" value="ONEWAY"> ONEWAY</label><br>
-                    <label><input type="checkbox" name="violations[]" value="ILLEGAL PARKING"> ILLEGAL PARKING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="DRIVING WITHOUT LICENSE/INVALID LICENSE"> DRIVING WITHOUT LICENSE/INVALID LICENSE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="NO OR/CR WHILE DRIVING"> NO OR/CR WHILE DRIVING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="DRIVING UNREGISTERED VEHICLE"> DRIVING UNREGISTERED VEHICLE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="UNREGISTERED MOTOR VEHICLE"> UNREGISTERED MOTOR VEHICLE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="OBSTRUCTION"> OBSTRUCTION</label><br>
-                    <label><input type="checkbox" name="violations[]" value="DISREGARDING TRAFFIC SIGNS"> DISREGARDING TRAFFIC SIGNS</label><br>
-                    <label><input type="checkbox" name="violations[]" value="DISREGARDING TRAFFIC OFFICER"> DISREGARDING TRAFFIC OFFICER</label><br>
-                    <label><input type="checkbox" name="violations[]" value="TRUCK BAN"> TRUCK BAN</label><br>
-                    <label><input type="checkbox" name="violations[]" value="STALLED VEHICLE"> STALLED VEHICLE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="RECKLESS DRIVING"> RECKLESS DRIVING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="DRIVING UNDER THE INFLUENCE OF LIQUOR"> DRIVING UNDER THE INFLUENCE OF LIQUOR</label><br>
-                    <label><input type="checkbox" name="violations[]" value="INVALID OR NO FRANCHISE/COLORUM"> INVALID OR NO FRANCHISE/COLORUM</label><br>
-                    <label><input type="checkbox" name="violations[]" value="OPERATING OUT OF LINE"> OPERATING OUT OF LINE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="TRIP - CUTTING"> TRIP - CUTTING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="OVERLOADING"> OVERLOADING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="LOADING/UNLOADING IN PROHIBITED ZONE"> LOADING/UNLOADING IN PROHIBITED ZONE</label><br>
-                    <label><input type="checkbox" name="violations[]" value="INVOLVE IN ACCIDENT"> INVOLVE IN ACCIDENT</label><br>
-                    <label><input type="checkbox" name="violations[]" value="SMOKE BELCHING"> SMOKE BELCHING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="NO SIDE MIRROR"> NO SIDE MIRROR</label><br>
-                    <label><input type="checkbox" name="violations[]" value="JAY WALKING"> JAY WALKING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="WEARING SLIPPERS/SHORTS/SANDO"> WEARING SLIPPERS/SHORTS/SANDO</label><br>
-                    <label><input type="checkbox" name="violations[]" value="ILLEGAL VENDING"> ILLEGAL VENDING</label><br>
-                    <label><input type="checkbox" name="violations[]" value="IMPOUNDED"> IMPOUNDED</label><br>
-                    <label><input type="checkbox" name="violations[]" value="OTHERS"> OTHERS</label><br> -->
-             
                     <div class="section">
                     <select class="violations" name="violations[]" multiple="multiple" style="width: 100%;">
         <option value="ARROGANT - 1000" data-price="1000">ARROGANT</option>
@@ -415,6 +386,9 @@ window.addEventListener('load', sortViolationsAlphabetically);
         </div>
     </form>
     </div>
+
+    <div class="spacer"></div>
+
 
     <script>
         //hamburger and sidebar

@@ -160,6 +160,19 @@ table tbody tr:nth-child(odd) {
     text-align: right;
 }
 
+.select2-container--default .select2-selection--multiple {
+    height: auto !important;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px;
+    border: 2px solid #a0d4fa;
+    background-color: #eef6fa;
+    border-radius: 4px;
+    font-size: 17px;
+}
+
 /* Form input styles */
 input[type="text"],
 input[type="date"],

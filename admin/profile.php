@@ -62,166 +62,219 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/POSO/images/poso.png" type="image/png">
     <title>Admin Profile</title>
+    <link rel="stylesheet" href="/poso/admin/css/profile.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <style>
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .toggle-switch {
-            margin-top: 10px;
-        }
-        .update-notification {
-            margin-top: 10px;
-            color: green;
-            font-weight: bold;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-        }
-        input:checked + .slider {
-            background-color: #4CAF50;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-    </style>
+
+
+
 </head>
 <body>
-<div class="container mt-4">
-    <h2>Admin Profile</h2>
-    <div class="card p-3">
-        <!-- Toggle Switch -->
-        <div class="toggle-switch text-right">
-            <label class="switch">
-                <input type="checkbox" id="toggleUpdate" onclick="toggleUpdate()">
-                <span class="slider round"></span>
-            </label>
-            <span>Toggle Update Mode</span>
-            <div id="updateNotification" class="update-notification" style="display: none;">
-                You're updating your profile
-            </div>
-        </div>
 
-        <!-- Profile Form -->
-        <form method="POST" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <label>Profile Picture:</label>
-                    <div>
-                        <?php if ($user['image']): ?>
-                            <img src="data:image/jpeg;base64,<?= base64_encode($user['image']) ?>" alt="Profile Picture" class="profile-image mb-2">
-                        <?php else: ?>
-                            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-image mb-2">
-                        <?php endif; ?>
-                    </div>
-                    <input type="file" name="profile_image" class="form-control-file mb-3" id="profileImage" style="display: none;">
+<img class="bg" src="/POSO/images/paz.jpg" alt="Background Image">
+
+<div id="overlay"></div>
+
+
+<div class="main-content">
+    <header class="navbar">
+    <img src="/POSO/images/left.png" alt="City Logo" class="logo">
+    <div>
+        <p class="public">PUBLIC ORDER & SAFETY OFFICE</p>
+        <p class="city">CITY OF BIÑAN, LAGUNA</p>
+    </div>
+    <img src="/POSO/images/arman.png" alt="POSO Logo" class="logo">
+    
+    <div class="hamburger" id="hamburger-icon">
+    <i class="fa fa-bars"></i> <!-- Font Awesome hamburger icon -->
+    </div>
+    </header>
+
+
+<div class="sidebar" id="sidebar">
+    <div class="logo">
+        <img src="/POSO/images/right.png" alt="POSO Logo">
+    </div>
+    <ul>
+        <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
+        <li><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+</div>
+
+        <?php
+            $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
+        ?>
+
+            <div class="sidebar" id="sidebar">
+                <div class="logo">
+                    <img src="/POSO/images/right.png" alt="POSO Logo">
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label>Full Name:</label>
-                        <input type="text" name="firstname" class="form-control mb-2" value="<?= htmlspecialchars($user['firstname']) ?>" required id="firstname" disabled>
-                        <input type="text" name="lastname" class="form-control mb-2" value="<?= htmlspecialchars($user['lastname']) ?>" required id="lastname" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Username:</label>
-                        <input type="text" name="username" class="form-control mb-2" value="<?= htmlspecialchars($user['username']) ?>" required id="username" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" name="email" class="form-control mb-2" value="<?= htmlspecialchars($user['email']) ?>" required id="email" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Password:</label>
-                        <input type="password" name="password" class="form-control mb-2" value="<?= htmlspecialchars($user['password']) ?>" required id="password" disabled>
-                    </div>
-                    <button type="submit" name="update_profile" class="btn btn-primary" id="updateButton" style="display: none;">Update Profile</button>
-                </div>
+                <ul>
+                    <li><a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'active' : '' ?>"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="profile.php" class="<?= $current_page == 'profile.php' ? 'active' : '' ?>"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="report.php" class="<?= $current_page == 'report.php' ? 'active' : '' ?>"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.php" class="<?= $current_page == 'settings.php' ? 'active' : '' ?>"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
             </div>
-        </form>
+            </header>
+
+
+    <div class="card">
+        
+
+<!-- Profile Picture Positioned on Top of Form -->
+<div class="profile-container text-center mt-5">
+    <label for="profileImage" class="profile-image-label position-relative">
+        <?php if ($user['image']): ?>
+            <img src="data:image/jpeg;base64,<?= base64_encode($user['image']) ?>" alt="Profile Picture" class="profile-image">
+        <?php else: ?>
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-image">
+        <?php endif; ?>
+
+        <!-- Hidden File Input -->
+        <input type="file" name="profile_image" id="profileImage" class="d-none" accept="image/*">
+
+        <!-- Overlay with Camera Icon (Initially Hidden) -->
+        <div class="profile-overlay d-none" id="profileOverlay">
+            <i class="fas fa-camera"></i>
+        </div>
+    </label>
+</div>
+
+
+
+<!-- Profile Form -->
+<form method="POST" enctype="multipart/form-data" class="p-5 shadow rounded bg-white" id="profileForm">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            
+<!-- Edit Profile Button (Now centered inside the shadow box) -->
+<div class="d-flex flex-column align-items-center mb-3 mt-3">
+    <button type="button" id="toggleUpdate" class="edit btn btn-success">Edit Profile</button>
+    <div id="updateNotification" class="update-notification text-white mt-2" style="display: none;">
+        You're updating your profile
     </div>
 </div>
 
-<!-- Confirmation Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Toggle Update Mode</h5>
+
+            <div class="form-group text-center">
+                <input type="file" name="profile_image" class="form-control-file" id="profileImage" style="display: none;">
             </div>
-            <div class="modal-body">
-                You switched off Update Mode. Selecting "Confirm" will not save any changes.
+            <div class="form-group mt-5">
+                <label>First Name:</label>
+                <input type="text" name="firstname" class="form-control mb-2" value="<?= htmlspecialchars($user['firstname']) ?>" required id="firstname" disabled>
+                <label>Last Name:</label>
+                <input type="text" name="lastname" class="form-control mb-2" value="<?= htmlspecialchars($user['lastname']) ?>" required id="lastname" disabled>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="cancelToggleOff()">Cancel</button>
-                <button class="btn btn-danger" onclick="confirmToggleOff()">Confirm</button>
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" name="username" class="form-control mb-2" value="<?= htmlspecialchars($user['username']) ?>" required id="username" disabled>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" class="form-control mb-2" value="<?= htmlspecialchars($user['email']) ?>" required id="email" disabled>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" class="form-control mb-2" value="<?= htmlspecialchars($user['password']) ?>" required id="password" disabled>
+            </div>
+
+            <!-- Update Profile Button (Initially Hidden) -->
+            <div class="d-flex flex-column align-items-center mb-5 mt-5">
+            <button type="submit" name="update_profile" class="update btn btn-success" id="updateButton" style="display: none;">Update Profile</button>
             </div>
         </div>
     </div>
-</div>
+</form>
+
+    </div>
+
+
 
 <script>
-    function toggleUpdate() {
-        const isUpdating = document.getElementById("toggleUpdate").checked;
-        if (!isUpdating) {
-            $('#confirmationModal').modal('show');
-        } else {
-            enableUpdateMode(true);
+document.addEventListener("DOMContentLoaded", function () {
+        let isUpdating = false;
+        let originalValues = {};
+
+        document.getElementById("toggleUpdate").addEventListener("click", function () {
+            const toggleButton = document.getElementById("toggleUpdate");
+            const profileOverlay = document.getElementById("profileOverlay");
+
+            if (!isUpdating) {
+                // Store original values when entering edit mode
+                originalValues = {
+                    firstname: document.getElementById("firstname").value,
+                    lastname: document.getElementById("lastname").value,
+                    username: document.getElementById("username").value,
+                    email: document.getElementById("email").value,
+                    password: document.getElementById("password").value
+                };
+
+                toggleButton.innerText = "Cancel Edit";
+                isUpdating = true;
+
+                // Show camera overlay
+                profileOverlay.classList.remove("d-none");
+            } else {
+                // Restore original values when canceling
+                document.getElementById("firstname").value = originalValues.firstname;
+                document.getElementById("lastname").value = originalValues.lastname;
+                document.getElementById("username").value = originalValues.username;
+                document.getElementById("email").value = originalValues.email;
+                document.getElementById("password").value = originalValues.password;
+
+                toggleButton.innerText = "Edit Profile";
+                isUpdating = false;
+
+                // Hide camera overlay
+                profileOverlay.classList.add("d-none");
+            }
+
+            // Enable or disable fields
+            const elements = ["firstname", "lastname", "username", "email", "password", "profileImage"];
+            elements.forEach(id => document.getElementById(id).disabled = !isUpdating);
+
+            document.getElementById("updateButton").style.display = isUpdating ? "block" : "none";
+            document.getElementById("profileImage").style.display = isUpdating ? "block" : "none";
+            document.getElementById("updateNotification").style.display = isUpdating ? "block" : "none";
+        });
+    });
+        
+    //hamburger and sidebar
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    hamburgerIcon.addEventListener('click', function(event) {
+        sidebar.classList.toggle('show'); // Toggle sidebar
+        overlay.classList.toggle('show'); // Show overlay
+        event.stopPropagation(); // Prevent immediate close
+    });     
+
+    // Close sidebar & overlay when clicking on the overlay
+    overlay.addEventListener('click', function() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+    });
+
+    // Close sidebar & overlay when clicking outside of the sidebar
+    document.addEventListener('click', function(event) {
+        if (!sidebar.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
         }
-    }
+    });
 
-    function enableUpdateMode(enable) {
-        const elements = ["firstname", "lastname", "username", "email", "password", "profileImage"];
-        elements.forEach(id => document.getElementById(id).disabled = !enable);
-        document.getElementById("updateButton").style.display = enable ? "block" : "none";
-        document.getElementById("profileImage").style.display = enable ? "block" : "none";
-        document.getElementById("updateNotification").style.display = enable ? "block" : "none";
-    }
 
-    function confirmToggleOff() {
-        enableUpdateMode(false);
-        $('#confirmationModal').modal('hide');
-    }
-
-    function cancelToggleOff() {
-        document.getElementById("toggleUpdate").checked = true;
-        $('#confirmationModal').modal('hide');
-    }
+    
 </script>
 </body>
 </html>
