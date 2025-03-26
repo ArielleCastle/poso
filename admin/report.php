@@ -162,9 +162,9 @@ $totalPages = ceil($totalRecords / $limit);
         <img src="/POSO/images/right.png" alt="POSO Logo">
     </div>
     <ul>
-        <li><a href="dashboard.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="dashboard.php" > <i class="fas fa-home"></i> Home</a></li>
         <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
-        <li><a href="report.php"><i class="fas fa-file-alt"></i> Reports</a></li>
+        <li><a href="report.php" class="active"><i class="fas fa-file-alt"></i> Reports</a></li>
         <li><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
@@ -231,6 +231,7 @@ $totalPages = ceil($totalRecords / $limit);
         </table>
 
         <div class="pagination">
+
     <?php 
         // Show previous button only if not on the first page
         if ($page > 1): 
@@ -255,32 +256,33 @@ $totalPages = ceil($totalRecords / $limit);
 </div>
     </div>
 
+
     <script> 
 
-//hamburger and sidebar
-const hamburgerIcon = document.getElementById('hamburger-icon');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
+        //hamburger and sidebar
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
 
-hamburgerIcon.addEventListener('click', function(event) {
-    sidebar.classList.toggle('show'); // Toggle sidebar
-    overlay.classList.toggle('show'); // Show overlay
-    event.stopPropagation(); // Prevent immediate close
-});
+        hamburgerIcon.addEventListener('click', function(event) {
+            sidebar.classList.toggle('show'); // Toggle sidebar
+            overlay.classList.toggle('show'); // Show overlay
+            event.stopPropagation(); // Prevent immediate close
+        });
 
-// Close sidebar & overlay when clicking on the overlay
-overlay.addEventListener('click', function() {
-    sidebar.classList.remove('show');
-    overlay.classList.remove('show');
-});
+        // Close sidebar & overlay when clicking on the overlay
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+        });
 
-// Close sidebar & overlay when clicking outside of the sidebar
-document.addEventListener('click', function(event) {
-    if (!sidebar.contains(event.target) && !hamburgerIcon.contains(event.target)) {
-        sidebar.classList.remove('show');
-        overlay.classList.remove('show');
-    }
-});
+        // Close sidebar & overlay when clicking outside of the sidebar
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !hamburgerIcon.contains(event.target)) {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('show');
+            }
+        });
     </script>
 
 </body>

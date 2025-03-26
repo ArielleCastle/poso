@@ -343,13 +343,14 @@ input:checked + .slider:before {
     z-index: 1; 
 }
 
+
 .profile-image {
     width: 170px;
     height: 170px;
     border-radius: 50%;
-    border: 6px solid white;
+    border: 6px solid rgba(255, 255, 255, 0.872);
     object-fit: cover;
-    background-color: #fff;
+
 }
 
 .profile-overlay {
@@ -380,8 +381,8 @@ input:checked + .slider:before {
 
 .row{
     background-color: #73b2d9;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.84); 
-    border: 1px solid #3f6074 !important;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.555); /* X, Y, blur, spread */
+    border: 3px solid #3f6074 !important;
     border-radius: 30px;
 }
 
